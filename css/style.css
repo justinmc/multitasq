@@ -1,0 +1,102 @@
+html {
+	height: 100%;
+}
+
+body {
+	height: 100%;
+}	
+
+#container {
+	text-align: center;
+	height: 100%;
+	background: #efefef;
+}
+
+#header
+{
+	border-bottom: 1px #afafaf solid;
+	height: 110px;
+	background: #ffffff;
+}
+
+#content
+{
+	width: 100%;
+	text-align: left;
+	position: absolute;
+	top: 110px;
+	bottom: 25px;
+}
+
+	#content_center {
+		width: 80%;
+		margin: 0 auto;
+		text-align: left;
+	}
+
+	#content_tasksvg
+	{
+		background: #efefef;
+		position: relative;
+		height: 100%;
+		width: 100%;
+	}
+	
+		#content_tasksvg_bg
+		{
+			fill: transparent;
+		}	
+		.content_tasksvg_task_box
+		{
+			fill: #ffffff; 
+			stroke-width: 1;
+			stroke: #afafaf;
+		}
+		.pending .content_tasksvg_task_box
+		{
+			fill: #f1f1f1; 
+			stroke-width: 1;
+			stroke: #cfcfcf;
+		}
+		.content_tasksvg_task_text
+		{
+			fill: #afafaf;
+		}
+		.content_tasksvg_task_close
+		{
+			fill: #afafaf;
+			cursor: pointer;
+		}
+		.pending .content_tasksvg_task_close {
+			display: none;
+		}
+		.content_tasksvg_connector
+		{ 
+			stroke-width: 1;
+			stroke: #000000;
+		}
+		.pending .content_tasksvg_connector
+		{
+			stroke-width: 1;
+			stroke: #cfcfcf;
+		}
+		
+		/* The container for the form to edit a task */
+		.content_tasksvg_task_textfield_container {
+			height: 99%;
+			width: 99%;
+			background: #ffffff;
+			border: 1px #cfcfcf solid;
+			border-radius: 8px;
+		}
+
+#footer
+{
+	text-align: center;
+	margin: 0 auto;
+	width: 100%;
+	height: 32px;
+	position: fixed; bottom: 0px;
+	color: #afafaf;
+}
+

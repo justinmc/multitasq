@@ -1,0 +1,262 @@
+// Task Collection
+
+var Broccoli_TaskList = Backbone.Collection.extend({
+
+    // Reference to this collection's model.
+    model: Broccoli_Task,
+    
+    // Url to call to get the task list
+    //url: '/js/tasklist_spread.json',
+
+    // Save all of the todo items under the `"broccoli"` namespace.
+    localStorage: new Backbone.LocalStorage("broccoli-backbone"),
+    
+    // Array of the topmost node(s) in the collection
+    tops: [],
+    
+    initialize: function(sandbox) {
+	    // Each time something gets changed, sync with localstorage
+	    this.bind('reset', function() {
+	    	this.collectionUpdated(sandbox);
+	    });
+	    this.bind('add', function() {
+	    	this.collectionUpdated(sandbox);
+	    });
+	    
+	    // Sync parent data and localstorage on remove (don't update view automatically though!)
+	    this.bind('remove', function(task) {
+	   		// remove from parent's "children" data!
+			var parent = this.get(task.get('parent'));
+			if (parent != undefined) {
+				var siblings = parent.get('children');
+				siblings.splice($.inArray(task.get('id'), siblings), 1);
+				parent.save({'children': siblings});
+			}
+			
+	    	// delete from localstorage
+			Backbone.sync('delete', task, {
+				success: function() {return;},
+				error: function() {return;}
+			});
+	    });
+	},
+	
+	// Sync the data and the UI
+	collectionUpdated: function(sandbox) {
+	    // reset tops array, will be filled again below
+	    this.tops = [];
+	    
+	    // if the collection is empty, initialize it with a cool starter!
+		if (!this.length) {
+			this.create({
+				'id': this.newId(),
+				'title': 'First Task!'
+			});
+		}
+	    
+		// update broccoli data and sync to localstorage
+		var tasks = this;
+		this.each(function(obj, key) {
+			// set level
+			var parent = tasks.get(obj.get('parent'));
+			var level = ((parent == undefined) || (parent == -1)) ? 0 : (parent.get('level') + 1);
+			obj.save({'level': level});
+			
+			// add to the collection's top nodes if necessary
+			if ((level == 0) && ($.inArray(obj.get('id'), tasks.tops) == -1)) {
+				tasks.tops.push(obj.get('id'));
+			}
+			
+			// set children for parent if there is a parent
+			if (parent != undefined) {
+				var siblings = parent.get('children');
+				var id = obj.get('id');
+				if ($.inArray(obj.get('id'), siblings) == -1) {
+					siblings.push(obj.get('id'));
+					parent.save({'children': siblings});
+				}
+			}
+		});
+		
+		// update the view if what we created is valid
+		if (this.isValidTree()) {
+			sandbox.render();
+		}
+		// otherwise, clear all data
+		else {
+			alert("Error: Invalid data in localstorage, click OK to clear");
+			localStorage.clear(); // FIXME better way to do this using backbone sync?
+			this.reset();
+		}
+	},
+
+	// Returns true if the collection is a valid tree, false otherwise
+	// FIXME can't return false within loop, have to use this "valid" variable???
+	isValidTree: function() {
+		var valid = true;
+		
+		// for now, we don't support more than one top node
+		if (this.tops.length > 1) {
+			valid = false
+		}
+		
+		// check that all children ids exist
+		var tasks = this;
+		this.each(function(obj, key) {
+			var children = obj.get('children');
+			for (var i in children) {
+				if (tasks.get(children[i]) == undefined) {
+					valid = false;
+				}
+			}
+		});
+
+		return valid;
+	},
+	
+	// Returns a unique id not currently in the collection that can be used to add a task
+	newId: function() {
+		var taskNewestId = this.length ? parseInt(this.get(this.at(this.length - 1)).get('id')) : 0;
+
+		var id;
+		var i = 1;
+		var exists = true;
+		while (exists) {
+			id = taskNewestId + i;
+			if (!this.get(id)) {
+				exists = false;
+			}
+		}
+		
+		return id;
+	},
+	
+	// Remove the task and all tasks below it, depth first recursively
+	removeSubtree: function(task, sandbox) {
+		// Call helper fn to actually remove the tasks recursively
+		this.removeSubtreeRecurse(task);
+
+		// Update the view
+    	this.collectionUpdated(sandbox);		
+	},
+	
+	// Helper fn to removeSubtree, so that we can update the view after removing multiple
+	removeSubtreeRecurse: function(task) {
+		// recursively remove all children (if any)
+		var children = task.get('children');
+		while(children.length > 0) {
+			var child = this.get(children[0]);
+			this.removeSubtreeRecurse(child);
+		}
+		
+		// after the children are gone, remove the task itself
+		this.remove(task);
+	},
+	
+	// Remove all pending tasks from the collection
+	removePending: function() {
+		var pendings = this.where({
+			dontSync: true
+		});
+		this.remove(pendings);
+	},
+
+	// Mark the task and all below it finished, depth first recursively
+	setCompletedSubtree: function(task) {
+		// recursively mark children finished
+		var children = task.get('children');
+		for (var i = 0; i < children.length; i++) {
+			var child = this.get(children[i]);
+			this.setCompletedSubtree(child);
+		}					
+		
+		// after the children are gone, set the task itself as finished
+		task.setCompleted();
+	},
+	
+	// Make all pending tasks real
+	setPendingsReal: function(sandbox) {
+		var pendings = this.where({
+			dontSync: true
+		});
+		for (i in pendings) {
+			pendings[i].set({
+				dontSync: false
+			});
+		}
+	},
+
+    // Return all items at the given level (distance from root)
+    getAtLevel: function(level) {
+		var collection = this;
+		var atLevel = [];
+		
+		this.each(function(obj, key) {
+			if (collection.getLevel(obj) == level) {
+				atLevel.push(obj);
+			}
+		});
+		
+		return atLevel;
+	},
+
+	// Return the parent node of a given node
+	getParent: function(node) {
+		return this.get(node.get('parent'));
+	},
+	
+	// Recursively calculate the level (how far below the root node) of the given node 
+	getLevel: function(node) {
+		// base case
+		if ((node.get('parent') == -1) || (node.get('parent') == undefined)) {
+			return 0;
+		}
+		
+		// recurse up one level
+		return (this.getLevel(this.getParent(node)) + 1);
+	},
+	
+	// Recursively calculates how many levels exist directly below a given node (how many levels of children it has)
+	getHeight: function(node) {
+		var children = node.get('children');
+		
+		// base case
+		if (children.length == 0) {
+			return 0;
+		}
+		
+		// find height of highest child
+		var highest = 0;
+		for (i in children) {
+			var height = this.getHeight(this.get(children[i]));
+			
+			if (height > highest) {
+				highest = height;
+			}
+		}
+		
+		// this node's height is highest child + 1
+		return (highest + 1);
+	},
+	
+	// Given two related nodes, returns their nearest common ancestor
+	getNearestCommonAncestor: function(nodeA, nodeB) {
+		var levelA = nodeA.get('level');
+		var levelB = nodeB.get('level');
+		
+		// base case: nodes are the same node
+		if (nodeA.get('id') == nodeB.get('id')) {
+			return nodeA;
+		}		
+		
+		// if nodes aren't at same level, recurse with lower one's parent
+		if (levelA != levelB) {
+			if (levelA > levelB) {
+				return this.getNearestCommonAncestor(nodeA, this.get(nodeB.get('parent')));
+			}
+		}
+		
+		// recurse with each node's parent
+		return this.getNearestCommonAncestor(this.get(nodeA.get('parent')), this.get(nodeB.get('parent')));		
+	}
+});

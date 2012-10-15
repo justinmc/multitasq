@@ -1,0 +1,76 @@
+{
+"kind": "tasks#tasks",
+"etag": "\"QWw_flL05ZUhC9A8ENlJWWOcrSI/MjQ1ODc4MzY3\"",
+"items": [
+	{
+	"kind": "tasks#task",
+	"id": "MTMyNDU1NTY5OTc0MTIwMTM1MjI6MDoxNzE4MjE1Mzkz",
+	"etag": "\"QWw_flL05ZUhC9A8ENlJWWOcrSI/ODEyMDU4NjY0\"",
+	"title": "daguerreo",
+	"updated": "2012-06-19T11:00:28.000Z",
+	"selfLink": "https://www.googleapis.com/tasks/v1/lists/MTMyNDU1NTY5OTc0MTIwMTM1MjI6MDow/tasks/MTMyNDU1NTY5OTc0MTIwMTM1MjI6MDoxNzE4MjE1Mzkz",
+	"position": "00000000000033554431",
+	"status": "completed",
+	"completed": "2012-06-19T11:00:28.000Z"
+	},
+	{
+	"kind": "tasks#task",
+	"id": "MTMyNDU1NTY5OTc0MTIwMTM1MjI6MDoxNjQzNDQyNzc5",
+	"etag": "\"QWw_flL05ZUhC9A8ENlJWWOcrSI/LTc3NzI1NjkwMA\"",
+	"title": "figure out cloud files",
+	"updated": "2012-06-05T08:23:28.000Z",
+	"selfLink": "https://www.googleapis.com/tasks/v1/lists/MTMyNDU1NTY5OTc0MTIwMTM1MjI6MDow/tasks/MTMyNDU1NTY5OTc0MTIwMTM1MjI6MDoxNjQzNDQyNzc5",
+	"parent": "MTMyNDU1NTY5OTc0MTIwMTM1MjI6MDoxNzE4MjE1Mzkz",
+	"position": "00000000002147483647",
+	"status": "completed",
+	"completed": "2012-06-05T08:23:28.000Z"
+	},
+	{
+	"kind": "tasks#task",
+	"id": "MTMyNDU1NTY5OTc0MTIwMTM1MjI6MDo2MjA1NzM4Nw",
+	"etag": "\"QWw_flL05ZUhC9A8ENlJWWOcrSI/LTE3OTYwMDAzMTI\"",
+	"title": "post posts",
+	"updated": "2012-06-05T08:23:29.000Z",
+	"selfLink": "https://www.googleapis.com/tasks/v1/lists/MTMyNDU1NTY5OTc0MTIwMTM1MjI6MDow/tasks/MTMyNDU1NTY5OTc0MTIwMTM1MjI6MDo2MjA1NzM4Nw",
+	"parent": "MTMyNDU1NTY5OTc0MTIwMTM1MjI6MDoxNzE4MjE1Mzkz",
+	"position": "00000000003221225471",
+	"status": "completed",
+	"completed": "2012-06-05T08:23:29.000Z"
+	},
+	{
+	"kind": "tasks#task",
+	"id": "MTMyNDU1NTY5OTc0MTIwMTM1MjI6MDoxOTA4NDMzOTk",
+	"etag": "\"QWw_flL05ZUhC9A8ENlJWWOcrSI/LTI1ODU3MzA2NA\"",
+	"title": "style (bella?)",
+	"updated": "2012-06-05T08:23:29.000Z",
+	"selfLink": "https://www.googleapis.com/tasks/v1/lists/MTMyNDU1NTY5OTc0MTIwMTM1MjI6MDow/tasks/MTMyNDU1NTY5OTc0MTIwMTM1MjI6MDoxOTA4NDMzOTk",
+	"parent": "MTMyNDU1NTY5OTc0MTIwMTM1MjI6MDoxNzE4MjE1Mzkz",
+	"position": "00000000003758096383",
+	"status": "completed",
+	"completed": "2012-06-05T08:23:29.000Z"
+	},
+	{
+	"kind": "tasks#task",
+	"id": "MTMyNDU1NTY5OTc0MTIwMTM1MjI6MDo3MjA4MTY5MDY",
+	"etag": "\"QWw_flL05ZUhC9A8ENlJWWOcrSI/LTEwOTE5OTExMjA\"",
+	"title": "todo before leaving",
+	"updated": "2012-04-15T09:26:35.000Z",
+	"selfLink": "https://www.googleapis.com/tasks/v1/lists/MTMyNDU1NTY5OTc0MTIwMTM1MjI6MDow/tasks/MTMyNDU1NTY5OTc0MTIwMTM1MjI6MDo3MjA4MTY5MDY",
+	"position": "00000000000067108863",
+	"status": "completed",
+	"completed": "2012-04-15T09:26:35.000Z"
+	},
+	{
+	"kind": "tasks#task",
+	"id": "MTMyNDU1NTY5OTc0MTIwMTM1MjI6MDoyMjAyNzYzOTY",
+	"etag": "\"QWw_flL05ZUhC9A8ENlJWWOcrSI/Mzg4MTMxOTQ2\"",
+	"title": "gift shop",
+	"updated": "2012-04-15T09:26:35.000Z",
+	"selfLink": "https://www.googleapis.com/tasks/v1/lists/MTMyNDU1NTY5OTc0MTIwMTM1MjI6MDow/tasks/MTMyNDU1NTY5OTc0MTIwMTM1MjI6MDoyMjAyNzYzOTY",
+	"parent": "MTMyNDU1NTY5OTc0MTIwMTM1MjI6MDo3MjA4MTY5MDY",
+	"position": "00000000002147483647",
+	"status": "completed",
+	"completed": "2012-04-15T09:26:35.000Z"
+	}
+]
+}
