@@ -7,7 +7,7 @@ favicon.ico
 index.html
 css/style.css
 css/h5bp.css
-js/app/view/main.js
+js/app/view/sandbox.js
 js/app/model/task.js
 js/app/collection/tasks.js
 js/libs/backbone.js
@@ -15,8 +15,6 @@ js/libs/backbone.localStorage.js
 js/libs/underscore.js
 js/libs/jquery-1.7.1.min.js
 js/libs/modernizr-2.5.3.min.js
-apple-touch-icon*
-
 
 # Resources that require the user to be online.
 # NETWORK:

@@ -54,6 +54,7 @@ var Broccoli_Sandbox = Backbone.View.extend({
    	taskLeftmost: Infinity,
    	taskRightmost: 0,
    	scale: 1,
+   	translation: 0,
    	mousestopTimer: null,
    	colorActiveFill: 'green',
    	colorInactiveFill: '#ffffff',
@@ -184,11 +185,6 @@ var Broccoli_Sandbox = Backbone.View.extend({
 			this.tasks.setCompletedSubtree(task);
 			this.tasks.collectionUpdated(this);
 		}
-
-		// remove pending task
-		//removeTask($('.pending').data('task'));
-		// remove clicked task's whole subtree
-		//removeSubtree($(this).parent().data('task'));
 	},
 	
 	// Handler for clicking a task, either edit it or bring it back from completed status
@@ -360,11 +356,6 @@ var Broccoli_Sandbox = Backbone.View.extend({
 
 			var opacity = task.get('completed') ? 0.3 : 1;
 	    	
-	    	// Can't have more than one pending task!
-	    	//if ($('.pending').length && pending) {
-	    	//	return;
-	    	//}
-	    	
 	    	var x = ($("#content").width() / 2 - sandbox.taskWidth / 2);
 	    	var y = 0;
 	    	var level = 0;
@@ -373,10 +364,7 @@ var Broccoli_Sandbox = Backbone.View.extend({
 	    	if (parent != -1) {
 	    		y = parseInt($(".content_tasksvg_task_box.task"+parent).attr("y")) + 100;
 	    		
-	    		level = parseInt(sandbox.tasks.get(parent).get('level')) + 1; //parseInt($(".content_tasksvg_task.task"+parent).data('level')) + 1;
-	    		
-	        	// add the task we're creating to its parent's children
-	        	//$(".content_tasksvg_task.task"+parent).data('children').push(id);
+	    		level = parseInt(sandbox.tasks.get(parent).get('level')) + 1;
 	    	}
 	
 			// create the group for the whole task
@@ -384,6 +372,7 @@ var Broccoli_Sandbox = Backbone.View.extend({
 	    	var pendingClass = pending ? ' pending' : '';
 	    	group.setAttribute('class', ('content_tasksvg_task task'+id+pendingClass));
 			group.setAttribute('style', 'opacity: ' + opacity + ';');
+			group.setAttribute('transform', 'scale(' + sandbox.scale + ')translate(' + sandbox.translation + ')');
 	
 			// create the rect
 	    	var taskBox = document.createElementNS('http://www.w3.org/2000/svg','rect');
@@ -446,15 +435,19 @@ var Broccoli_Sandbox = Backbone.View.extend({
     	}
     	
     	// scale properly
-    	if (this.taskLeftmost <= 0) {
+    	var trueLeftmost = ($("#content").width() / 2 - sandbox.taskWidth / 2) - (($("#content").width() / 2 - sandbox.taskWidth / 2) - this.taskLeftmost) * this.scale;
+    	alert(trueLeftmost);
+    	if (trueLeftmost <= 0) {
     		var group = $('#content_tasksvg_group').get(0);
     		
     		// calculate the scale properties
     		this.scale = this.scale / 1.3;
-    		var translate = ($("#content").width() / 2) * (1 - this.scale);
+    		var width = (($("#content").width() / 2 - sandbox.taskWidth / 2) - this.taskLeftmost) * 2;
+    		this.translation = width - width * this.scale;
+    		//($("#content").width() / 2) * (1 - this.scale);
     		
     		// scale the tree
-    		group.setAttribute('transform', 'scale(' + this.scale + ') translate(' + translate + ')');
+    		group.setAttribute('transform', 'scale(' + this.scale + ') translate(' + this.translation + ')');
     		
     		/*// resize the svg itself
     		this.scale = this.scale / 1.1;

@@ -180,7 +180,7 @@ var Broccoli_TaskList = Backbone.Collection.extend({
 			dontSync: true
 		});
 		for (i in pendings) {
-			pendings[i].set({
+			pendings[i].save({
 				dontSync: false
 			});
 		}
