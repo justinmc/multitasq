@@ -118,14 +118,13 @@ var Broccoli_TaskList = Backbone.Collection.extend({
 	newId: function() {
 		var taskNewestId = this.length ? parseInt(this.get(this.at(this.length - 1)).get('id')) : 0;
 
-		var id;
-		var i = 1;
+		var id = taskNewestId + 1;
 		var exists = true;
 		while (exists) {
-			id = taskNewestId + i;
 			if (!this.get(id)) {
 				exists = false;
 			}
+			id++;
 		}
 		
 		return id;

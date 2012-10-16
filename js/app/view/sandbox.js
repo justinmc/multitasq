@@ -6,7 +6,10 @@
  edit task on add
  
 robust scaling maths
- 
+ 	findnearest doesn't correctly work after scale
+ 		because x/y attributes don't change
+ 		using jquery's position() is too slow...
+ 	
  reorder system
  	insert a task between two parent/child tasks
  	delete one task and have its children take its place, children are not deleted
@@ -640,7 +643,7 @@ var Broccoli_Sandbox = Backbone.View.extend({
     	}
     },
     
-    // returns the id of the non-pending task nearest and above the given coordinates
+    // returns the id of the non-pending task nearest and above the given coordinates O(n)
     nearestTask: function(x, y) {
     	var nearestTask;
     	var nearestDistance = Infinity;
@@ -666,7 +669,7 @@ var Broccoli_Sandbox = Backbone.View.extend({
 		return nearestTask;
     },
     
-    // returns the point on a task nearest the given coordinates
+    // returns the point on a task nearest the given coordinates O(1)
     nearestTaskPoint: function(id, x, y) {
     	var taskDom = $('.content_tasksvg_task_box.task' + id);
     	
