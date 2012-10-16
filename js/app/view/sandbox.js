@@ -436,7 +436,6 @@ var Broccoli_Sandbox = Backbone.View.extend({
     	
     	// scale properly
     	var trueLeftmost = ($("#content").width() / 2 - sandbox.taskWidth / 2) - (($("#content").width() / 2 - sandbox.taskWidth / 2) - this.taskLeftmost) * this.scale;
-    	alert(trueLeftmost);
     	if (trueLeftmost <= 0) {
     		var group = $('#content_tasksvg_group').get(0);
     		
