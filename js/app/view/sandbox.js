@@ -2,21 +2,20 @@
 
 /* todo:
  *
- 
 
-robust scaling maths
-	but wait, see viewBox?
- 	findnearest doesn't correctly work after scale
- 		because x/y attributes don't change
- 		using jquery's position() is too slow...
- 	
+scaling
+	scale bigger when you can
+	correct findNearest
+		https://groups.google.com/forum/?fromgroups=#!topic/raphaeljs/UHZ3RTTkHu8
+	any sketchiness and slowness 
+	
  reorder system
  	insert a task between two parent/child tasks
  	delete one task and have its children take its place, children are not deleted
  
- 	Don't do svg text, do foreignobject text
- 		this will allow you to limit the length of the text
- 		make sure it's still scalable
+Don't do svg text, do foreignobject text
+	this will allow you to limit the length of the text
+	make sure it's still scalable
  *   
  * limit title length in view
  * 
@@ -100,7 +99,6 @@ var Broccoli_Sandbox = Backbone.View.extend({
 		// restore the main group
 		var group = document.createElementNS('http://www.w3.org/2000/svg','g');
 		group.setAttribute('id', ('content_tasksvg_group'));
-		group.setAttribute('preserveAspectRatio', 'XMinYMin meet');
 		$(this.el).append(group);
 		
 		// restore the background
@@ -354,7 +352,7 @@ var Broccoli_Sandbox = Backbone.View.extend({
 
 			var opacity = task.get('completed') ? 0.3 : 1;
 	    	
-	    	var x = ($("#content").width() / 2 - sandbox.taskWidth / 2);
+	    	var x = (sandbox.getViewBoxWidth() / 2 - sandbox.taskWidth / 2);
 	    	var y = 0;
 	    	var level = 0;
 	
@@ -432,60 +430,24 @@ var Broccoli_Sandbox = Backbone.View.extend({
     		this.restructureTree(this.tasks.tops[i]);
     	}
     	
-    	// scale properly
-/*    	var trueLeftmost = ($("#content").width() / 2 - sandbox.taskWidth / 2) - (($("#content").width() / 2 - sandbox.taskWidth / 2) - this.taskLeftmost) * this.scale;
-    	if (trueLeftmost <= 0) {
-    		var group = $('#content_tasksvg_group').get(0);
-    		
-    		// calculate the scale properties
-    		this.scale = this.scale * this.scaleDownStep;
-    		//var width = (($("#content").width() / 2 - sandbox.taskWidth / 2) - this.taskLeftmost) * 2;
-    		var width = sandbox.taskRightmost - sandbox.taskLeftmost - sandbox.taskWidth;
-    		this.translation = (width - width * this.scale) / 2;
-    		//($("#content").width() / 2) * (1 - this.scale);
-    		
-    		// scale the tree
-   // 		group.setAttribute('transform', 'scale(' + this.scale + ')');
-    		
-    		// calculate distance from center of tree to center of screen
-    		this.translation = $("#content").width() / 2 - $('.content_tasksvg_task.task'+this.tasks.tops[0]).position().left;
-  //  		alert("move it move it by: " + this.translation);
-    		
-    		// translate the tree
-//    		group.setAttribute('transform', 'translate(' + this.translation + ')');
-    	*/	
-    		/*// resize the svg itself
-    		this.scale = this.scale / 1.1;
-	    	$(this.el).css({
-    			'-moz-transform': 'scale(' + this.scale + ')'
-    		});
-    		
-    		// adjust the width to fit everything if needed
-    		var width = this.taskRightmost - this.taskLeftmost;
-    		var left = '-100px';
-    		if (width <= 0) {
-    			width = $(this.el).parent().width();
-    		}
-    		width = width * 1.7;
-	    	$(this.el).css({
-    			'width': width + 'px',
-    			'left': left
-    		});
-    		
-    		// reposition the tree
-    		var reposHeight = $(this.el).parent().offset().top - $(this.el).offset().top;
-    		$(this.el).css({
-    			'top': reposHeight + 'px'
-    		});*/
-    	//}
-    	
-/*    	$(this.el).animate({
-    		transform: 'scale(2)',
-			left: '200px'
-    	}, 1000);
-    	
-    	$(this.el).effect("scale", {percent: 200, direction: 'horizontal' }, 1000);
- */
+    	// if we exceeded the screen, scale and rerender
+    	if (this.taskLeftmost <= 0) {
+			// get the viewBox width and height of the svg
+			var width = sandbox.getViewBoxWidth();
+			var height = sandbox.getViewBoxHeight();;
+			
+			// scale these parameters
+			width = Math.round(width / this.scaleDownStep);
+			height = Math.round(height / this.scaleDownStep);
+
+			// set these as viewBox on the SVG
+			$(sandbox.el)[0].setAttribute('viewBox', '0 0 ' + width + ' ' + height);
+
+			// clear taskLeftmost and taskRightmost and rerender
+			this.taskLeftmost = Infinity;
+			this.taskRightmost = 0;
+			this.render();
+		}
     },
     
     // reposition all nodes, and spread out if necessary to prevent overlap
@@ -709,6 +671,40 @@ var Broccoli_Sandbox = Backbone.View.extend({
     	return [nearestX, nearestY];
     },
     
+    // gets the height of the SVG according to its viewBox (if it exists)
+    getViewBoxWidth: function() {
+    	// if there is no viewBox yet, just return the size of the container
+    	if ($(this.el)[0].getAttribute('viewBox') == undefined) {
+    		return $('#content').width();
+    	}
+    	else {
+    		var params = $(this.el)[0].getAttribute('viewBox');
+    		// remove min-x
+    		params = params.substring(params.indexOf(' ') + 1, params.length);
+    		// remove min-y
+    		params = params.substring(params.indexOf(' ') + 1, params.length);
+    		// get width
+    		return parseInt(params.substring(0, params.indexOf(' ')));
+    	}
+    },
+    
+    // gets the height of the SVG according to its viewBox (if it exists)
+    getViewBoxHeight: function() {
+    	// if there is no viewBox yet, just return the size of the container
+    	if ($(this.el)[0].getAttribute('viewBox') == undefined) {
+    		return $('#content').height();
+    	}
+    	else {
+    		var params = $(this.el)[0].getAttribute('viewBox');
+    		// remove min-x
+    		params = params.substring(params.indexOf(' ') + 1, params.length);
+    		// remove min-y
+    		params = params.substring(params.indexOf(' ') + 1, params.length);
+    		// remove width, leaving you with height
+    		return parseInt(params.substring(params.indexOf(' ') + 1, params.length));
+    	}
+    },
+   
     // Math functions that I'd like to move to a separate js file!
 	getTaskMidX: function(which) {
     	if (which == -1) {
