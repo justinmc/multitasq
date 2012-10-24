@@ -3,9 +3,9 @@
 /* todo:
  *
  
- edit task on add
- 
+
 robust scaling maths
+	but wait, see viewBox?
  	findnearest doesn't correctly work after scale
  		because x/y attributes don't change
  		using jquery's position() is too slow...
@@ -23,17 +23,6 @@ robust scaling maths
  * tie to google tasks and/or my own db!
  * 
  * nearestSpace functionality
- * 
- * zoom: tougher than I thought...
- * probably post on stackoverflow
- * transform: scale works on divs and stuff, and on the svg itself, but not on the rects
- * other non-css scaling methods in svg?
- * would viewbox allow me to properly scale stuff within the svg?
- Wait a minute...
- 	scale the svg itself, but contain it in a div with overflow: hidden!
- 	don't allow it to move vertically, must grow down
- 	sides expand out as expected
- 	voila
  
  instead of current overlap system...
  	prevent any subtree from overlapping any other subtree's widest element vertically?
@@ -57,6 +46,7 @@ var Broccoli_Sandbox = Backbone.View.extend({
    	taskLeftmost: Infinity,
    	taskRightmost: 0,
    	scale: 1,
+   	scaleDownStep: .7,
    	translation: 0,
    	mousestopTimer: null,
    	colorActiveFill: 'green',
@@ -110,6 +100,7 @@ var Broccoli_Sandbox = Backbone.View.extend({
 		// restore the main group
 		var group = document.createElementNS('http://www.w3.org/2000/svg','g');
 		group.setAttribute('id', ('content_tasksvg_group'));
+		group.setAttribute('preserveAspectRatio', 'XMinYMin meet');
 		$(this.el).append(group);
 		
 		// restore the background
@@ -168,10 +159,14 @@ var Broccoli_Sandbox = Backbone.View.extend({
 		}
 		else {
 			// add a task whose parent is nearest to the mouse
+			var id = this.tasks.newId();
 			this.tasks.create({
-				'id': 		this.tasks.newId(),
+				'id': 		id,
 				'parent':	this.nearest
 			});
+			
+			// start editing the task
+			this.editTask(id);
 		}
 	},	
 	
@@ -438,19 +433,27 @@ var Broccoli_Sandbox = Backbone.View.extend({
     	}
     	
     	// scale properly
-    	var trueLeftmost = ($("#content").width() / 2 - sandbox.taskWidth / 2) - (($("#content").width() / 2 - sandbox.taskWidth / 2) - this.taskLeftmost) * this.scale;
+/*    	var trueLeftmost = ($("#content").width() / 2 - sandbox.taskWidth / 2) - (($("#content").width() / 2 - sandbox.taskWidth / 2) - this.taskLeftmost) * this.scale;
     	if (trueLeftmost <= 0) {
     		var group = $('#content_tasksvg_group').get(0);
     		
     		// calculate the scale properties
-    		this.scale = this.scale / 1.3;
-    		var width = (($("#content").width() / 2 - sandbox.taskWidth / 2) - this.taskLeftmost) * 2;
-    		this.translation = width - width * this.scale;
+    		this.scale = this.scale * this.scaleDownStep;
+    		//var width = (($("#content").width() / 2 - sandbox.taskWidth / 2) - this.taskLeftmost) * 2;
+    		var width = sandbox.taskRightmost - sandbox.taskLeftmost - sandbox.taskWidth;
+    		this.translation = (width - width * this.scale) / 2;
     		//($("#content").width() / 2) * (1 - this.scale);
     		
     		// scale the tree
-    		group.setAttribute('transform', 'scale(' + this.scale + ') translate(' + this.translation + ')');
+   // 		group.setAttribute('transform', 'scale(' + this.scale + ')');
     		
+    		// calculate distance from center of tree to center of screen
+    		this.translation = $("#content").width() / 2 - $('.content_tasksvg_task.task'+this.tasks.tops[0]).position().left;
+  //  		alert("move it move it by: " + this.translation);
+    		
+    		// translate the tree
+//    		group.setAttribute('transform', 'translate(' + this.translation + ')');
+    	*/	
     		/*// resize the svg itself
     		this.scale = this.scale / 1.1;
 	    	$(this.el).css({
@@ -474,7 +477,7 @@ var Broccoli_Sandbox = Backbone.View.extend({
     		$(this.el).css({
     			'top': reposHeight + 'px'
     		});*/
-    	}
+    	//}
     	
 /*    	$(this.el).animate({
     		transform: 'scale(2)',

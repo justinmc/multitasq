@@ -40,6 +40,13 @@ body {
 		position: relative;
 		height: 100%;
 		width: 100%;
+		text-align: center;
+		margin: 0 auto;
+	}
+	
+	#content_tasksvg_group {
+		margin: 0 auto;
+		text-align: center;
 	}
 	
 		#content_tasksvg_bg
