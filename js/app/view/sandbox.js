@@ -5,8 +5,6 @@
 
 scaling
 	scale bigger when you can
-	correct findNearest
-		https://groups.google.com/forum/?fromgroups=#!topic/raphaeljs/UHZ3RTTkHu8
 	any sketchiness and slowness 
 	
  reorder system
@@ -135,8 +133,19 @@ var Broccoli_Sandbox = Backbone.View.extend({
 	// Update the position of the pending task based on the mouse position
 	updateTaskSelected: function(e){
 		// no need to update if we're outside the svg, or hovering over a task itself
-		if ($('#content_tasksvg_bg:hover')) {
-			var nearestNew = this.nearestTask((e.pageX), (e.pageY - $(this.el).offset().top));
+		if ($('#content_tasksvg_bg:hover')) {			
+			// get the dimensions of the viewBox and real SVG
+			var widthSVG = $('#content').width();
+			var heightSVG = $('#content').height();
+			var widthViewBox = this.getViewBoxWidth();
+			var heightViewBox = this.getViewBoxHeight();
+			
+			// convert real coords to viewBox coords
+			var x = e.pageX * widthViewBox / widthSVG;
+			var y = (e.pageY - $(this.el).offset().top) * heightViewBox / heightSVG;
+			
+			// find the point nearest to this in viewBox coords
+			var nearestNew = this.nearestTask(x, y);
 			
 			// if the nearest task has changed
 			if (nearestNew != this.nearest) {
@@ -434,7 +443,7 @@ var Broccoli_Sandbox = Backbone.View.extend({
     	if (this.taskLeftmost <= 0) {
 			// get the viewBox width and height of the svg
 			var width = sandbox.getViewBoxWidth();
-			var height = sandbox.getViewBoxHeight();;
+			var height = sandbox.getViewBoxHeight();
 			
 			// scale these parameters
 			width = Math.round(width / this.scaleDownStep);

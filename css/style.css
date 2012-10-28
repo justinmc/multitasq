@@ -24,8 +24,14 @@ h3 {
 	margin: 0 auto;
 }
 
+a {
+	color: #000000;
+}
 a:visited {
 	color: #000000;
+}
+a:hover {
+	color: green;
 }
 
 #container {
