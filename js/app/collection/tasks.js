@@ -54,7 +54,7 @@ var Broccoli_TaskList = Backbone.Collection.extend({
 			});
 		}
 	    
-		// update broccoli data and sync to localstorage
+		// update data
 		var tasks = this;
 		this.each(function(obj, key) {
 			// set level
@@ -139,7 +139,8 @@ var Broccoli_TaskList = Backbone.Collection.extend({
     	this.collectionUpdated(sandbox);		
 	},
 	
-	// Helper fn to removeSubtree, so that we can update the view after removing multiple
+	// Helper fn to removeSubtree, so that we can update the data afterwards
+	// Note this is necessary for removing, but not for below changing complete status
 	removeSubtreeRecurse: function(task) {
 		// recursively remove all children (if any)
 		var children = task.get('children');
@@ -152,12 +153,17 @@ var Broccoli_TaskList = Backbone.Collection.extend({
 		this.remove(task);
 	},
 	
-	// Remove all pending tasks from the collection
-	removePending: function() {
-		var pendings = this.where({
-			dontSync: true
-		});
-		this.remove(pendings);
+	// Mark the task and all below it finished, depth first recursively
+	setIncompleteSubtree: function(task) {
+		// recursively mark children finished
+		var children = task.get('children');
+		for (var i = 0; i < children.length; i++) {
+			var child = this.get(children[i]);
+			this.setIncompleteSubtree(child);
+		}					
+		
+		// after the children are set, set the task itself as finished
+		task.setIncomplete();
 	},
 
 	// Mark the task and all below it finished, depth first recursively
@@ -173,18 +179,6 @@ var Broccoli_TaskList = Backbone.Collection.extend({
 		task.setCompleted();
 	},
 	
-	// Make all pending tasks real
-	setPendingsReal: function(sandbox) {
-		var pendings = this.where({
-			dontSync: true
-		});
-		for (i in pendings) {
-			pendings[i].save({
-				dontSync: false
-			});
-		}
-	},
-
     // Return all items at the given level (distance from root)
     getAtLevel: function(level) {
 		var collection = this;

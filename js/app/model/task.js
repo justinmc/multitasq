@@ -12,18 +12,17 @@ var Broccoli_Task = Backbone.Model.extend({
       return {
         kind: "tasks#task",
         id: '0',				// FIXME you'll have to use the google task api to create a new id
-        etag: '0',				// FIXME api
+        etag: '0',				// FIXME google task api
         title: this.defaultTitle,
         updated: date,
-        selfLink: '0',			// FIXME api
+        selfLink: '0',			// FIXME google task api
     	parent: -1,
-        position: '0',			// FIXME api
+        position: '0',			// FIXME google task api
         status: 'needsAction',
         completed: null,
-        // not Google Tasks data, only Broccoli
+        // not Google Tasks data, only Multitasq
         children: [],
-        level: 0,
-        dontSync: false,		// dont store if true (pending task)
+        level: 0
       };
     },
 
@@ -31,9 +30,6 @@ var Broccoli_Task = Backbone.Model.extend({
     initialize: function(id, title) {
       if (!this.get("title")) {
         this.set({"title": this.defaults.title});
-      }
-      if (!this.get('dontSync')) {
-          this.set({'dontSync': this.defaults.dontSync});
       }
     },
 
@@ -69,9 +65,8 @@ var Broccoli_Task = Backbone.Model.extend({
 		return date;
 	},
 
-    // Remove this Task from *localStorage* and delete its view.
+    // Remove this task from localStorage and delete its view.
     clear: function() {
       this.destroy();
     }
-
 });

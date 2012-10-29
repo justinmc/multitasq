@@ -3,26 +3,26 @@
 /* todo:
  *
 
-scaling
-	scale bigger when you can
-	any sketchiness and slowness 
-	
+ instead of current overlap system...
+ 	prevent any subtree from overlapping any other subtree's widest element vertically?
+
+after scale, textfield text is invisible
+
+limit title length in view
+	Don't do svg text, do foreignobject text
+		this will allow you to limit the length of the text
+		make sure it's still scalable
+
  reorder system
  	insert a task between two parent/child tasks
  	delete one task and have its children take its place, children are not deleted
  
-Don't do svg text, do foreignobject text
-	this will allow you to limit the length of the text
-	make sure it's still scalable
- *   
- * limit title length in view
- * 
- * tie to google tasks and/or my own db!
- * 
  * nearestSpace functionality
  
- instead of current overlap system...
- 	prevent any subtree from overlapping any other subtree's widest element vertically?
+ restore stuff!
+ 	manifest
+ 	jquery from google cdn
+ rename broccoli to multitasq
  * 
  */
 
@@ -42,7 +42,6 @@ var Broccoli_Sandbox = Backbone.View.extend({
    	taskSpacing: 20,
    	taskLeftmost: Infinity,
    	taskRightmost: 0,
-   	scale: 1,
    	scaleDownStep: .7,
    	translation: 0,
    	mousestopTimer: null,
@@ -67,7 +66,8 @@ var Broccoli_Sandbox = Backbone.View.extend({
 		'mouseenter .content_tasksvg_task_box':			'enterTask',
 		'mouseenter .content_tasksvg_task_close':		'enterTask',
 		'mouseenter .content_tasksvg_task_text':		'enterTask',
-		'submit .content_tasksvg_task_textfield_form':	'clickSubmit'
+		'submit .content_tasksvg_task_textfield_form':	'clickSubmit',
+		'keyup':										'keypress'
 	},
 	
 	initialize: function(nodes) {
@@ -93,6 +93,10 @@ var Broccoli_Sandbox = Backbone.View.extend({
 	// Remove everything from the svg
 	clear: function() {
 		$(this.el).empty();
+		
+		// reset stored values
+		this.taskLeftmost = Infinity;
+		this.taskRightmost = 0;
 		
 		// restore the main group
 		var group = document.createElementNS('http://www.w3.org/2000/svg','g');
@@ -197,18 +201,21 @@ var Broccoli_Sandbox = Backbone.View.extend({
 		var id = $(e.target).parent().data('task');
 		var task = this.tasks.get(id);
 
-		// if the task is completed, bring it back to life
-		if (task.get('completed')) {
-			task.setIncomplete();
-			this.tasks.collectionUpdated(this);
-		}
-		// if incomplete, edit the title
-		else {
-			// if we're already editing something, confirm that one first
-			if ($('.content_tasksvg_task_textfield').length) {
-				this.editTaskConfirmAll();
+		// the task's parent must not be completed
+		if ((task.get('level') == 0) || !this.tasks.get(task.get('parent')).get('completed')) {
+			// if the task is completed, bring it back to life
+			if (task.get('completed')) {
+				this.tasks.setIncompleteSubtree(task);
+				this.tasks.collectionUpdated(this);
 			}
-			this.editTask(id);
+			// if incomplete, edit the title
+			else {
+				// if we're already editing something, confirm that one first
+				if ($('.content_tasksvg_task_textfield').length) {
+					this.editTaskConfirmAll();
+				}
+				this.editTask(id);
+			}
 		}
 	},
 	
@@ -226,15 +233,19 @@ var Broccoli_Sandbox = Backbone.View.extend({
 		this.setTaskActive(id);
 	},
 	
+	// Read keypresses
+	keypress: function(e) {
+		// if the escape key is hit, cancel all edits
+		if (e.keyCode == 27) {
+			this.editTaskCancel();
+		}
+	},
+	
 	/*** End Event Functions ***/
 	
 	// click to edit task text
 	editTask: function(id) {
 		var label = $('.content_tasksvg_task_text.task' + id);
-		// if we're editing a pending task, make it real first
-		/*if (this.hasClassSVG($(e.target).parent(), 'pending')) {
-			this.removeClassSVG($('.content_tasksvg_task.pending'), 'pending');
-		}*/
 		
 		// save the current text and remove it in the svg
 		var text = label.get(0).textContent;
@@ -276,6 +287,24 @@ var Broccoli_Sandbox = Backbone.View.extend({
 		// select the input text for the user
 		var input = $('.content_tasksvg_task_textfield.task'+label.parent().data('task')).find('input[type=text]').get(0);
 		input.select();
+	},
+	
+	// Cancel all open task edits without saving
+	editTaskCancel: function() {
+		if ($('.content_tasksvg_task_textfield').length) {
+			var sandbox = this;
+			$('.content_tasksvg_task_textfield').each(function() {
+				// get the task's id
+				var id = $(this).data('task');
+		
+				// rever to the title stored in data
+				var label = $('.content_tasksvg_task_text.task' + id);
+				label.get(0).textContent = sandbox.tasks.get(id).get('title');
+		
+				// remove the textfield
+				$(this).remove();
+			});
+		}
 	},
 	
 	// Confirm all open task edits
@@ -377,7 +406,6 @@ var Broccoli_Sandbox = Backbone.View.extend({
 	    	var pendingClass = pending ? ' pending' : '';
 	    	group.setAttribute('class', ('content_tasksvg_task task'+id+pendingClass));
 			group.setAttribute('style', 'opacity: ' + opacity + ';');
-			group.setAttribute('transform', 'scale(' + sandbox.scale + ')translate(' + sandbox.translation + ')');
 	
 			// create the rect
 	    	var taskBox = document.createElementNS('http://www.w3.org/2000/svg','rect');
@@ -439,23 +467,14 @@ var Broccoli_Sandbox = Backbone.View.extend({
     		this.restructureTree(this.tasks.tops[i]);
     	}
     	
-    	// if we exceeded the screen, scale and rerender
-    	if (this.taskLeftmost <= 0) {
-			// get the viewBox width and height of the svg
-			var width = sandbox.getViewBoxWidth();
-			var height = sandbox.getViewBoxHeight();
-			
-			// scale these parameters
-			width = Math.round(width / this.scaleDownStep);
-			height = Math.round(height / this.scaleDownStep);
-
-			// set these as viewBox on the SVG
-			$(sandbox.el)[0].setAttribute('viewBox', '0 0 ' + width + ' ' + height);
-
-			// clear taskLeftmost and taskRightmost and rerender
-			this.taskLeftmost = Infinity;
-			this.taskRightmost = 0;
-			this.render();
+    	// if we exceeded the screen, shrink and rerender
+    	var viewBoxWidthScaled = this.getViewBoxWidth() * this.scaleDownStep;
+    	if ((this.taskLeftmost <= 0) || (this.taskRightmost > this.getViewBoxWidth())) {
+			sandbox.scale(1 / this.scaleDownStep);
+		}
+		// otherwise if we can grow by one step and still fit on screen, without getting ugly huge, scale and rerender
+		else if (((this.taskRightmost - this.taskLeftmost) < viewBoxWidthScaled) && ((this.taskWidth / viewBoxWidthScaled) < .12)) {
+			sandbox.scale(this.scaleDownStep);
 		}
     },
     
@@ -507,7 +526,7 @@ var Broccoli_Sandbox = Backbone.View.extend({
 			if (position < this.taskLeftmost) {
 				this.taskLeftmost = position;
 			}
-			if (position > (this.taskRightmost + this.taskWidth)) {
+			if (position > (this.taskRightmost - this.taskWidth)) {
 				this.taskRightmost = (position + this.taskWidth);
 			}
 			
@@ -520,6 +539,23 @@ var Broccoli_Sandbox = Backbone.View.extend({
 		var level = this.tasks.getLevel(this.tasks.get(top)) + 1;
 		
 		return;
+	},
+	
+	// scales the svg by the given amount
+	scale: function(factor) {
+		// get the viewBox width and height of the svg
+		var width = this.getViewBoxWidth();
+		var height = this.getViewBoxHeight();
+		
+		// scale these parameters
+		width = Math.round(width * factor);
+		height = Math.round(height * factor);
+
+		// set these as viewBox on the SVG
+		$(this.el)[0].setAttribute('viewBox', '0 0 ' + width + ' ' + height);
+
+		// rerender the view in order to center it
+		this.render();
 	},
     
 	// returns array of ids of first overlapping nodes on the given level, emtpy array if no overlap
