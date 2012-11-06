@@ -37,14 +37,18 @@
 				<h3>
 					Source: <a href="http://www.github.com/justinmc/multitasq/">Github</a>
 				</h3>
-				<h3>
-					<a href="#">Help!</a>
-				</h3>
 			</div>
 			<h1>Multitasq</h1>
 			<h2>Do more stuff</h2>
 		</div>
 		<div id="content">
+			<div id="warning" style="width: 40%; margin: 0 auto;">
+				<h4>In Development</h4>
+				<p>
+					Multitasq is currently in the middle of development.  If you don't mind using alpha software, click the button below to check out the latest version.  Just don't be mad if your browser crashes.
+				</p>
+				<a href="#" id="warning_ok">I like to live dangerously</a>
+			</div>
 			<div style="height: 100%; width: 100%; overflow: hidden; background: #efefef; text-align: center;">
 				<svg id="content_tasksvg" height="100%" width="100%" version="1.1" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMin meet">
 					<g id="content_tasksvg_group">
@@ -79,8 +83,12 @@
 	<script src="js/script.js"></script>
 	<script>
 		$(function(){
-			// create the app!
-			var broccoli_sandbox = new Broccoli_Sandbox();
+			// alpha warning
+			$('#warning_ok').on('click', function() {			
+				$('#warning').hide();
+				// create the app!
+				var broccoli_sandbox = new Broccoli_Sandbox();
+			});
 		});
 	</script>
 	<!-- end scripts -->

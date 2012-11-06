@@ -269,7 +269,7 @@ var Broccoli_Sandbox = Backbone.View.extend({
 		var fieldBodyFormInput = document.createElement('input');
 		fieldBodyFormInput.setAttribute('type', 'text');
 		fieldBodyFormInput.setAttribute('value', text);
-		fieldBodyFormInput.setAttribute('style', ('width: ' + (this.taskWidth - 10) + 'px'));
+		fieldBodyFormInput.setAttribute('style', ('width: ' + (this.taskWidth - 22) + 'px'));
 		// create the submit button
 		var fieldBodyFormSubmit = document.createElement('input');
 		fieldBodyFormSubmit.setAttribute('type', 'submit');
@@ -423,7 +423,6 @@ var Broccoli_Sandbox = Backbone.View.extend({
 	        taskText.setAttribute('class', ('content_tasksvg_task_text task'+id));
 	        taskText.setAttribute('x', (x + 5));
 	        taskText.setAttribute('y', (y + 40));
-	        taskText.setAttribute('textLength', sandbox.taskWidth);
 	    	var textNode = document.createTextNode(text);
 	        taskText.appendChild(textNode);
 	        group.appendChild(taskText);
