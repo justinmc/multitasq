@@ -6,6 +6,9 @@
 show full title on hover
 	width of text node in svg??
 	or, put a foreignobject in the dom on hover
+	also fix title shortener
+		hitting escape doesn't shorten it, only submitting
+		create a shortener function, use it for edit and render and editcancel
 
 after scale, textfield text is invisible
 
