@@ -5,6 +5,14 @@
 
  instead of current overlap system...
  	prevent any subtree from overlapping any other subtree's widest element vertically?
+ 		your current implementation doesn't work
+ 			you are calculating width of children
+ 			this doesn't take into consideration grandchildren that extend to either side of the children
+ 			Solution
+ 				need to keep track of leftmost and rightmost subnode for each node
+ 				can not just do width! need absolute position!
+ 				Oh wait...
+ 					That also doesn't work, because how do you place them in the first place??
 
 after scale, textfield text is invisible
 
@@ -468,7 +476,8 @@ var Broccoli_Sandbox = Backbone.View.extend({
     	}
     	
     	// if we exceeded the screen, shrink and rerender
-    	var viewBoxWidthScaled = this.getViewBoxWidth() * this.scaleDownStep;
+    	// FIXME also check for vertically exceeding the screen size
+/*    	var viewBoxWidthScaled = this.getViewBoxWidth() * this.scaleDownStep;
     	if ((this.taskLeftmost <= 0) || (this.taskRightmost > this.getViewBoxWidth())) {
 			sandbox.scale(1 / this.scaleDownStep);
 		}
@@ -476,6 +485,7 @@ var Broccoli_Sandbox = Backbone.View.extend({
 		else if (((this.taskRightmost - this.taskLeftmost) < viewBoxWidthScaled) && ((this.taskWidth / viewBoxWidthScaled) < .12)) {
 			sandbox.scale(this.scaleDownStep);
 		}
+		*/
     },
     
     // reposition all nodes, and spread out if necessary to prevent overlap
@@ -483,7 +493,12 @@ var Broccoli_Sandbox = Backbone.View.extend({
 		var level = this.tasks.getLevel(this.tasks.get(top));
 		spacing = (spacing == undefined) ? this.getSpacingAt(level + 1) : spacing;
     	
+    	// calculate spacing
+//    	this.getSpacing(top);
+    	
     	this.restructureTreePosition(top, spacing);
+    	
+    	//this.bushifyTree(top);
     	
     	// check for overlap and spread out this level if there is overlap
 		var task = this.tasks.get(top);
@@ -500,6 +515,85 @@ var Broccoli_Sandbox = Backbone.View.extend({
 		}
     },
     
+    // depth-first recursively spread out nodes to prevent overlap
+    // returns the minimum spacing needed to place the node
+    bushifyTree: function(top) {
+    	var children = $(".content_tasksvg_task.task"+top).data("children") || [];
+    	var limits = {leftmost: Infinity, rightmost: -Infinity};
+    	
+    	// base case: 0 or 1 children, nothing to bushify
+    	if (children.length <= 1) {
+    		limits.leftmost = parseInt($(".content_tasksvg_task_box.task"+top).attr('x'));
+    		limits.rightmost = parseInt($(".content_tasksvg_task_box.task"+top).attr('x')) + this.taskWidth;
+    	}
+    	else {
+			// get limits
+			for (var i = 0; i < children.length; i++) {
+				var limitsChild = this.bushifyTree(children[i]);
+				
+				if (limitsChild.leftmost < limits.leftmost) {
+					limits.leftmostId = children[i];
+				}
+				if (limitsChild.rightmost > limits.rightmost) {
+					limits.rightmostId = children[i];
+				}
+			}
+			
+			// calculate childrens' spacing
+			var leftOfCenter = (parseInt($(".content_tasksvg_task_box.task"+top).attr('x')) + this.taskWidth / 2) - limits.leftmost;
+			var rightOfCenter = limits.rightmost - (parseInt($(".content_tasksvg_task_box.task"+top).attr('x')) + this.taskWidth / 2);
+			var distanceFromCenter = (leftOfCenter > rightOfCenter) ? leftOfCenter : rightOfCenter;
+			var spacing =  distanceFromCenter * 2 - this.taskWidth + this.taskSpacing;
+			
+			// position children
+			for (var i = 0; i < children.length; i++) {
+				// left or right of center?
+				var sign = (i < Math.floor(children.length / 2)) ? -1 : 1;
+				
+				// calculate the offset based on distance from center nodes
+				var offset = sign * (this.taskWidth + spacing) * Math.floor(Math.abs(i -((children.length - 1) / 2)));
+				
+				// if there are an even # of children, not centered, a offset by half
+				if (children.length % 2 == 0) {
+					offset = offset + (sign * (this.taskWidth / 2 + spacing / 2));
+				}
+				
+				// reposition this child and its subtree
+				this.translateTreeBy(children[i], offset);
+			
+				// check if it's leftmost or rightmost overall and keep track of the position if so
+				var position = (parseInt($(".content_tasksvg_task_box.task"+top).attr("x")) + offset);
+				if (position < this.taskLeftmost) {
+					this.taskLeftmost = position;
+				}
+				if (position > (this.taskRightmost - this.taskWidth)) {
+					this.taskRightmost = (position + this.taskWidth);
+				}
+			}
+			
+			// FIXME calculate limit again after the move
+	    }
+	    
+	    return limits;
+    },
+    
+    // recursively translate the x position of an entire tree/subtree by the given amount
+    translateTreeBy: function(id, x) {
+	    var children =  $(".content_tasksvg_task.task"+id).data("children");
+		var xOld = parseInt($(".content_tasksvg_task_box.task"+id).attr('x'));
+		
+		// move the top node
+    	this.moveTaskTo(id, (xOld + x));
+    	
+    	// move its children if it has any
+    	if (children != undefined) {
+			for (var i = 0; i < children.length; i++) {
+				this.translateTreeBy(children[i], x);
+			}
+    	}
+    },
+    
+    
     // recursively repositions all nodes below the given node, at the given spacing
     restructureTreePosition: function(top, spacing) {
     	var children =  $(".content_tasksvg_task.task"+top).data("children");
@@ -512,7 +606,7 @@ var Broccoli_Sandbox = Backbone.View.extend({
 			// calculate the offset based on distance from center nodes
 			var offset = sign * (this.taskWidth + spacing) * Math.floor(Math.abs(i -((children.length - 1) / 2)));
 			
-			// if there are an odd # of children, not centered, a offset by half
+			// if there are an even # of children, not centered, a offset by half
 			if (children.length % 2 == 0) {
 				offset = offset + (sign * (this.taskWidth / 2 + spacing / 2));
 			}
@@ -539,6 +633,75 @@ var Broccoli_Sandbox = Backbone.View.extend({
 		var level = this.tasks.getLevel(this.tasks.get(top)) + 1;
 		
 		return;
+	},
+	
+	// recursively calculate spacing for each set of siblings, and write it to data-spacing on parent
+	getSpacing: function(id) {
+		var children =  $(".content_tasksvg_task.task"+id).data("children");
+		var spacing = 0;
+		var limits = {leftmost: Infinity, rightmost: -Infinity};
+		
+    	// base case: if there are 0 or 1 children, then spacing will not be used, just set to 0
+    	if (children.length <= 1) {
+    		spacing = 0;
+    	}
+    	else {
+			// loop through the children and recurse on each to find the widest child
+			var maxWidth = this.taskWidth;
+			for (var i = 0; i < children.length; i++) {				
+				var spacingChild = this.getSpacing(children[i]);
+				var grandChildren =  $(".content_tasksvg_task.task"+children[i]).data("children");
+				
+				if (grandChildren.length) {
+					var widthChild = spacingChild * (grandChildren.length - 1) + (this.taskWidth) * grandChildren.length;
+					if (widthChild > maxWidth) {
+						maxWidth = widthChild;
+					}
+				}
+			}
+			
+			// calculate spacing giving each child the same spacing as the widest child
+			spacing = (maxWidth != this.taskWidth) ? maxWidth - this.taskWidth + this.taskSpacing : this.taskSpacing;
+		}
+		
+		// write the spacing to data-spacing and return the value as well
+		$(".content_tasksvg_task.task"+id).data('spacing', spacing);
+		return spacing;
+	},
+	
+	// recursively gets the width of the subtree of the given id's node
+	getWidthSubtree: function(id) {
+		var subLimits = this.getLimitsSubtree(id);
+		
+		return subLimits.leftmost - subLimits.rightmost;
+	},
+	
+	// recursively gets leftmost/rightmost points of subtree (O(n) where n is nodes in subtree)
+	getLimitsSubtree: function(id) {
+		var children =  $(".content_tasksvg_task.task"+id).data("children");
+		var limits = {leftmost: Infinity, rightmost: -Infinity};
+		
+    	// base case: if there are no children, the limits are its own size
+    	if (children.length == 0) {
+    		limits.leftmost = parseInt($('.content_tasksvg_task_box.task'+id).attr('x'));
+    		limits.rightmost = parseInt($('.content_tasksvg_task_box.task'+id).attr('x')) + this.taskWidth;
+    	}
+    	else {
+			// loop through the children and recurse on each
+			for (var i = 0; i < children.length; i++) {
+				var limitsChild = this.getLimitsSubtree(children[i]);
+				if (limitsChild.leftmost < limits.leftmost) {
+					limits.leftmost = limitsChild.leftmost;
+				}
+				if (limitsChild.rightmost > limits.rightmost) {
+					limits.rightmost = limitsChild.rightmost;
+				}
+			}
+		}
+		
+		// set the limits as a data attribute and return them as well
+		$('.content_tasksvg_task_box.task'+id).data('limits', limits);
+		return limits;
 	},
 	
 	// scales the svg by the given amount
@@ -611,9 +774,6 @@ var Broccoli_Sandbox = Backbone.View.extend({
     		i++;
     		
     		// if there are no siblings, then spacing must be normal
-    		if (siblings == undefined) {
-    			alert("sibs undefined, level " + level + ' and parent ' + parent);
-    		}
     		if ((i >= bb_atlevel.length) && (siblings.length < 2)) {
     			return this.taskSpacing;
     		}
@@ -632,6 +792,7 @@ var Broccoli_Sandbox = Backbone.View.extend({
     		return this.taskSpacing;
     	}
     	
+    	// finally, calculate spacing
     	var spacing = (Math.abs(sib1x - sib2x) - this.taskWidth);
     	
     	// a row in the process of an add will give a negative spacing, just return taskSpacing if so
