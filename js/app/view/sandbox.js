@@ -3,6 +3,12 @@
 /* todo:
  *
 
+show full title on hover
+	width of text node in svg??
+	or, put a foreignobject in the dom on hover
+
+after scale, textfield text is invisible
+
  instead of current overlap system...
  	prevent any subtree from overlapping any other subtree's widest element vertically?
  		your current implementation doesn't work
@@ -13,13 +19,6 @@
  				can not just do width! need absolute position!
  				Oh wait...
  					That also doesn't work, because how do you place them in the first place??
-
-after scale, textfield text is invisible
-
-limit title length in view
-	Don't do svg text, do foreignobject text
-		this will allow you to limit the length of the text
-		make sure it's still scalable
 
  reorder system
  	insert a task between two parent/child tasks
@@ -50,6 +49,7 @@ var Broccoli_Sandbox = Backbone.View.extend({
    	taskSpacing: 20,
    	taskLeftmost: Infinity,
    	taskRightmost: 0,
+   	taskTitleLength: 14,
    	scaleDownStep: .7,
    	translation: 0,
    	mousestopTimer: null,
@@ -254,9 +254,9 @@ var Broccoli_Sandbox = Backbone.View.extend({
 	// click to edit task text
 	editTask: function(id) {
 		var label = $('.content_tasksvg_task_text.task' + id);
+		var task = this.tasks.get(id);
 		
-		// save the current text and remove it in the svg
-		var text = label.get(0).textContent;
+		// remove the current text in the svg
 		label.get(0).textContent = '';
 
 		// create foreign object in svg
@@ -276,7 +276,7 @@ var Broccoli_Sandbox = Backbone.View.extend({
 		// create the text input field
 		var fieldBodyFormInput = document.createElement('input');
 		fieldBodyFormInput.setAttribute('type', 'text');
-		fieldBodyFormInput.setAttribute('value', text);
+		fieldBodyFormInput.setAttribute('value', task.get('title'));
 		fieldBodyFormInput.setAttribute('style', ('width: ' + (this.taskWidth - 22) + 'px'));
 		// create the submit button
 		var fieldBodyFormSubmit = document.createElement('input');
@@ -338,17 +338,33 @@ var Broccoli_Sandbox = Backbone.View.extend({
 	
 	// Set a task as visually active (and clear any other active tasks)
 	setTaskActive: function(id) {
+		var task = this.tasks.get(id);
+		
 		// set all as inactive
 		$('.content_tasksvg_task_box').css('fill', this.colorInactiveFill);
 		
-		// set given as active
+		// set given as active by...
+		// coloring it
 		$('.content_tasksvg_task_box.task' + id).css('fill', this.colorActiveFill);
+		// and showing the full title
+//		$('.content_tasksvg_task_text.task' + id).text(task.get('title'));
+//		$('.content_tasksvg_task_box.task' + id).attr('width', '200');
 	},
 	
 	// Set a task as visually inactive, or if no id given, set all inactive
 	setTaskInactive: function(id) {
 		var whichSelect = (id == undefined) ? '' : ('.task' + id);
+		
+		// make it normal color
 		$('.content_tasksvg_task_box' + whichSelect).css('fill', '#ffffff');
+		
+		// limit the title length again
+		$('.content_tasksvg_task_text' + whichSelect).text(text);
+		if (id != undefined) {
+			var task = this.tasks.get(id);
+			var text = task.get('title').substring(0, this.taskTitleLength) + "...";
+			$('.content_tasksvg_task_text' + whichSelect).text(text);
+		}
 	},
 	
 	// Set a task as visually selected (and clear any other selected tasks)
@@ -394,7 +410,14 @@ var Broccoli_Sandbox = Backbone.View.extend({
 			var id = task.get('id');
 	    	var parent = task.get('parent');
 		    var pending = task.get('dontSync') ? true : false;
+		    
 		    var text = task.get('title');
+		    
+		    // limit the length of the title text
+	        if (text.length > sandbox.taskTitleLength) {
+	        	text = text.substring(0, (sandbox.taskTitleLength - 1));
+	        	text = text + "...";
+	        }
 
 			var opacity = task.get('completed') ? 0.3 : 1;
 	    	
