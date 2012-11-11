@@ -407,92 +407,11 @@ var Broccoli_Sandbox = Backbone.View.extend({
 	render: function() {
 		this.clear();
 
-		// loop through and add each task
+		// loop through and create each task view
 		var sandbox = this;
 		this.tasks.each(function(task, key) {
-			var id = task.get('id');
-	    	var parent = task.get('parent');
-		    var pending = task.get('dontSync') ? true : false;
-		    
-		    var text = task.get('title');
-		    
-		    // limit the length of the title text
-	        if (text.length > sandbox.taskTitleLength) {
-	        	text = text.substring(0, (sandbox.taskTitleLength - 1));
-	        	text = text + "...";
-	        }
-
-			var opacity = task.get('completed') ? 0.3 : 1;
-	    	
-	    	var x = (sandbox.getViewBoxWidth() / 2 - sandbox.taskWidth / 2);
-	    	var y = 2;
-	    	var level = 0;
-	
-			// if we're not adding the very first task
-	    	if (parent != -1) {
-	    		y = parseInt($(".content_tasksvg_task_box.task"+parent).attr("y")) + 100;
-	    		
-	    		level = parseInt(sandbox.tasks.get(parent).get('level')) + 1;
-	    	}
-	
-			// create the group for the whole task
-	    	var group = document.createElementNS('http://www.w3.org/2000/svg','g');
-	    	var pendingClass = pending ? ' pending' : '';
-	    	group.setAttribute('class', ('content_tasksvg_task task'+id+pendingClass));
-			group.setAttribute('style', 'opacity: ' + opacity + ';');
-	
-			// create the rect
-	    	var taskBox = document.createElementNS('http://www.w3.org/2000/svg','rect');
-	    	taskBox.setAttribute('class', ('content_tasksvg_task_box task'+id));
-	    	taskBox.setAttribute('x', x);
-	    	taskBox.setAttribute('y', y);
-	    	taskBox.setAttribute('rx', '10');
-	    	taskBox.setAttribute('ry', '10');
-	    	taskBox.setAttribute('width', sandbox.taskWidth);
-	    	taskBox.setAttribute('height', sandbox.taskHeight);
-	    	group.appendChild(taskBox);
-	        
-	        // create the title text
-	        var taskText = document.createElementNS('http://www.w3.org/2000/svg','text');
-	        taskText.setAttribute('class', ('content_tasksvg_task_text task'+id));
-	        taskText.setAttribute('x', (x + 5));
-	        taskText.setAttribute('y', (y + 40));
-	    	var textNode = document.createTextNode(text);
-	        taskText.appendChild(textNode);
-	        group.appendChild(taskText);
-	        
-	        // create the X button
-	        var close = document.createElementNS('http://www.w3.org/2000/svg','text');
-	        close.setAttribute('class', ('content_tasksvg_task_close task'+id));
-	        close.setAttribute('x', (x + sandbox.taskWidth - 16));
-	        close.setAttribute('y', (y + 16));
-	        close.setAttribute('textLength', 20);
-	        var closeText = document.createTextNode('X');
-	        close.appendChild(closeText);
-	        group.appendChild(close);
-	        
-	        // create the connector to its parent (if it has one)
-	        if (parent != -1) {
-		    	var connect = document.createElementNS('http://www.w3.org/2000/svg','line');
-		    	connect.setAttribute('class', 'content_tasksvg_connector task'+parent+' task'+id);
-		    	connect.setAttribute('x1', sandbox.getTaskMidX(parent));
-		    	connect.setAttribute('y1', sandbox.getTaskMidBotY(parent));
-		    	connect.setAttribute('x2', (x + (sandbox.taskWidth / 2)));
-		    	connect.setAttribute('y2', y);
-	    		group.appendChild(connect);
-	        }
-	
-			// put it in the dom
-	    	$("#content_tasksvg_group").append(group);
-	
-	    	// set data attributes
-	    	$('.content_tasksvg_task.task'+id).data('task', id);
-	    	$('.content_tasksvg_task.task'+id).data('parent', parent);
-	    	$('.content_tasksvg_task.task'+id).data('children', task.get('children'));
-	    	$('.content_tasksvg_task.task'+id).data('level', level);
-	    	
-			// FIXME use aanother view!
-			// var taskview = new Broccoli_Taskview();
+			var taskview = new Multitasq_TaskView(task);
+			taskview.render(sandbox);
 	    });
     	
     	// reposition the nodes properly
@@ -502,7 +421,7 @@ var Broccoli_Sandbox = Backbone.View.extend({
     	
     	// if we exceeded the screen, shrink and rerender
     	// FIXME also check for vertically exceeding the screen size
-/*    	var viewBoxWidthScaled = this.getViewBoxWidth() * this.scaleDownStep;
+    	var viewBoxWidthScaled = this.getViewBoxWidth() * this.scaleDownStep;
     	if ((this.taskLeftmost <= 0) || (this.taskRightmost > this.getViewBoxWidth())) {
 			sandbox.scale(1 / this.scaleDownStep);
 		}
@@ -510,7 +429,6 @@ var Broccoli_Sandbox = Backbone.View.extend({
 		else if (((this.taskRightmost - this.taskLeftmost) < viewBoxWidthScaled) && ((this.taskWidth / viewBoxWidthScaled) < .12)) {
 			sandbox.scale(this.scaleDownStep);
 		}
-		*/
     },
     
     // reposition all nodes, and spread out if necessary to prevent overlap
