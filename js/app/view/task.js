@@ -63,7 +63,18 @@ var Multitasq_TaskView = Backbone.View.extend({
     	taskBox.setAttribute('height', sandbox.taskHeight);
     	group.appendChild(taskBox);
         
+        // create the title text
+        var taskText = document.createElementNS('http://www.w3.org/2000/svg','text');
+        taskText.setAttribute('class', ('content_tasksvg_task_text task'+id));
+        taskText.setAttribute('x', (x + 5));
+        taskText.setAttribute('y', (y + 40));
+        taskText.setAttribute('textLength', sandbox.taskWidth);
+        var textNode = document.createTextNode(text);
+		taskText.appendChild(textNode);
+		group.appendChild(taskText);
+        
         // create the title text via foreignobject
+        /*
 		var title = document.createElementNS('http://www.w3.org/2000/svg','foreignObject');
 		title.setAttribute('class', ('content_tasksvg_task_text task'+id));
         title.setAttribute('x', (x + 5));
@@ -81,6 +92,7 @@ var Multitasq_TaskView = Backbone.View.extend({
 		titleBody.appendChild(titleBodyP);
         title.appendChild(titleBody);
         group.appendChild(title);
+        */
                 
         // create the X button
         var close = document.createElementNS('http://www.w3.org/2000/svg','text');

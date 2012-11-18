@@ -426,7 +426,7 @@ var Broccoli_Sandbox = Backbone.View.extend({
 			sandbox.scale(1 / this.scaleDownStep);
 		}
 		// otherwise if we can grow by one step and still fit on screen, without getting ugly huge, scale and rerender
-		else if (((this.taskRightmost - this.taskLeftmost) < viewBoxWidthScaled) && ((this.taskWidth / viewBoxWidthScaled) < .12)) {
+		else if (((this.taskRightmost - this.taskLeftmost) < viewBoxWidthScaled) && ((this.taskWidth / viewBoxWidthScaled) < .1)) {
 			sandbox.scale(this.scaleDownStep);
 		}
     },
