@@ -94,7 +94,17 @@ var Multitasq_TaskView = Backbone.View.extend({
         group.appendChild(title);
         */
                 
-        // create the X button
+        // create the -/+ minimize button
+        var minimize = document.createElementNS('http://www.w3.org/2000/svg','text');
+        minimize.setAttribute('class', ('content_tasksvg_task_minimize task'+id));
+        minimize.setAttribute('x', (x + sandbox.taskWidth - 36));
+        minimize.setAttribute('y', (y + 16));
+        minimize.setAttribute('textLength', 20);
+        var minimizeText = document.createTextNode(this.task.get("minimized") ? '+' : '-');
+        minimize.appendChild(minimizeText);
+        group.appendChild(minimize);
+        
+        // create the X close button
         var close = document.createElementNS('http://www.w3.org/2000/svg','text');
         close.setAttribute('class', ('content_tasksvg_task_close task'+id));
         close.setAttribute('x', (x + sandbox.taskWidth - 16));
@@ -121,7 +131,7 @@ var Multitasq_TaskView = Backbone.View.extend({
     	// set data attributes
     	$('.content_tasksvg_task.task'+id).data('task', id);
     	$('.content_tasksvg_task.task'+id).data('parent', parent);
-    	$('.content_tasksvg_task.task'+id).data('children', this.task.get('children'));
+    	$('.content_tasksvg_task.task'+id).data('children', this.task.get('minimized') ? [] : this.task.get('children'));
     	$('.content_tasksvg_task.task'+id).data('level', level);
 	}
 });

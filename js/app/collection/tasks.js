@@ -210,11 +210,12 @@ var Broccoli_TaskList = Backbone.Collection.extend({
 	},
 	
 	// Recursively calculates how many levels exist directly below a given node (how many levels of children it has)
+	// Does not count minimized nodes
 	getHeight: function(node) {
 		var children = node.get('children');
 		
 		// base case
-		if (children.length == 0) {
+		if ((children.length == 0) || (node.get('minimized') == true)) {
 			return 0;
 		}
 		

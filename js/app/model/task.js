@@ -22,7 +22,8 @@ var Broccoli_Task = Backbone.Model.extend({
         completed: null,
         // not Google Tasks data, only Multitasq
         children: [],
-        level: 0
+        level: 0,
+        minimized: false
       };
     },
 
@@ -31,6 +32,16 @@ var Broccoli_Task = Backbone.Model.extend({
       if (!this.get("title")) {
         this.set({"title": this.defaults.title});
       }
+    },
+    
+    // Toggle the minimized setting true/false
+    toggleMinimized: function() {
+    	if (this.get("minimized") == false) {
+    		this.save({minimized: true});
+    	}
+    	else {
+    		this.save({minimized: false});
+    	}
     },
 
     // Toggle the completed state of the task

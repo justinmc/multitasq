@@ -105,8 +105,10 @@ a:hover {
 			fill: #afafaf;
 			cursor: pointer;
 		}
-		.pending .content_tasksvg_task_close {
-			display: none;
+		.content_tasksvg_task_minimize
+		{
+			fill: #afafaf;
+			cursor: pointer;
 		}
 		.content_tasksvg_connector
 		{ 

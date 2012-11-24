@@ -3,6 +3,10 @@
 /* todo:
  *
 
+mimimize/expand
+
+to 
+
 show full title on hover
 	width of text node in svg??
 	or, put a foreignobject in the dom on hover
@@ -71,6 +75,7 @@ var Broccoli_Sandbox = Backbone.View.extend({
 		'mouseenter #content_tasksvg_bg':				'sandboxBgEnter',
 		'click #content_tasksvg_bg':					'clickAdd',
 		'click .content_tasksvg_task_close':			'clickRemove',
+		'click .content_tasksvg_task_minimize':			'clickMinimize',
 		'click .content_tasksvg_task_text':				'clickReviveEdit',
 		'click .content_tasksvg_task_box':				'clickReviveEdit',
 		'click .content_tasksvg_task_textfield_submit':	'clickSubmit',
@@ -179,7 +184,8 @@ var Broccoli_Sandbox = Backbone.View.extend({
 		if ($('.content_tasksvg_task_textfield').length) {
 			this.editTaskConfirmAll();
 		}
-		else {
+		// can't add a task to a minimized parent
+		else if (!this.tasks.get(this.nearest).get("minimized")) {
 			// add a task whose parent is nearest to the mouse
 			var id = this.tasks.newId();
 			this.tasks.create({
@@ -205,6 +211,13 @@ var Broccoli_Sandbox = Backbone.View.extend({
 			this.tasks.setCompletedSubtree(task);
 			this.tasks.collectionUpdated(this);
 		}
+	},
+	
+	// - button click to minimize/expand
+	clickMinimize: function(e) {
+		var task = this.tasks.get($(e.target).parent().data('task'));
+		task.toggleMinimized();
+		this.tasks.collectionUpdated(this);
 	},
 	
 	// Handler for clicking a task, either edit it or bring it back from completed status
@@ -405,17 +418,14 @@ var Broccoli_Sandbox = Backbone.View.extend({
 */	
     // clear the view and render everything in this.tasks
 	render: function() {
-		this.clear();
-
-		// loop through and create each task view
 		var sandbox = this;
-		this.tasks.each(function(task, key) {
-			var taskview = new Multitasq_TaskView(task);
-			taskview.render(sandbox);
-	    });
+	
+		// clear anything existing in the view
+		this.clear();
     	
-    	// reposition the nodes properly
+    	// create and reposition the nodes properly
     	for (i in this.tasks.tops) {
+    		this.renderSubtree(this.tasks.tops[i]);
     		this.restructureTree(this.tasks.tops[i]);
     	}
     	
@@ -428,6 +438,23 @@ var Broccoli_Sandbox = Backbone.View.extend({
 		// otherwise if we can grow by one step and still fit on screen, without getting ugly huge, scale and rerender
 		else if (((this.taskRightmost - this.taskLeftmost) < viewBoxWidthScaled) && ((this.taskWidth / viewBoxWidthScaled) < .1)) {
 			sandbox.scale(this.scaleDownStep);
+		}
+    },
+    
+    // recursively renders a subtree
+    renderSubtree: function(id) {
+    	var task = this.tasks.get(id);
+    	
+    	// render this task
+    	var taskview = new Multitasq_TaskView(task);
+		taskview.render(this);
+		
+		// render this task's children if not minimized
+		if (!task.get("minimized")) {
+			var children = task.get("children");
+			for (var i in children) {
+				this.renderSubtree(children[i]);
+			}
 		}
     },
     
@@ -567,7 +594,7 @@ var Broccoli_Sandbox = Backbone.View.extend({
 				this.taskRightmost = (position + this.taskWidth);
 			}
 			
-			// and recursively restructure all of this child's children, if it has any
+			// and recursively restructure all of this child's children, if it has any, and if it's not minimized
 			if ($(".content_tasksvg_task.task"+children[i]).data('children').length > 0) {
 				this.restructureTreePosition(children[i], this.getSpacingAt(parseInt($(".content_tasksvg_task.task"+children[i]).data("level")) + 1));
 			}
@@ -747,6 +774,7 @@ var Broccoli_Sandbox = Backbone.View.extend({
     	$(".content_tasksvg_task_box.task"+which).get(0).setAttribute('x', where);
     	$(".content_tasksvg_task_text.task"+which).get(0).setAttribute('x', (where + 5));
     	$(".content_tasksvg_task_close.task"+which).get(0).setAttribute('x', (where + this.taskWidth - 16));
+    	$(".content_tasksvg_task_minimize.task"+which).get(0).setAttribute('x', (where + this.taskWidth - 32));
     	// move connector based on parent's position
     	var parentPos = parseInt($('.content_tasksvg_task_box.task'+$('.content_tasksvg_task.task'+which).data('parent')).attr('x'));
     	$(".content_tasksvg_connector.task"+which).get(0).setAttribute('x1', (parentPos + (this.taskWidth / 2)));
