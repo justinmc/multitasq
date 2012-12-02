@@ -11,8 +11,8 @@ var Broccoli_TaskList = Backbone.Collection.extend({
     // Save all of the todo items under the `"broccoli"` namespace.
     localStorage: new Backbone.LocalStorage("broccoli-backbone"),
     
-    // Array of the topmost node(s) in the collection
-    tops: [],
+    // Topmost node in the collection
+    top: null,
     
     initialize: function(sandbox) {
 	    // Each time something gets changed, sync with localstorage
@@ -43,32 +43,32 @@ var Broccoli_TaskList = Backbone.Collection.extend({
 	
 	// Sync the data and the UI
 	collectionUpdated: function(sandbox) {
-	    // reset tops array, will be filled again below
-	    this.tops = [];
+	    // reset top variable, will be filled again below
+	    this.top = null;
 	    
 	    // if the collection is empty, initialize it with a cool starter!
 		if (!this.length) {
 			this.create({
 				'id': this.newId(),
-				'title': 'First Task!'
+				'title': 'Conquer the world'
 			});
 		}
 	    
 		// update data
 		var tasks = this;
+		var tops = [];
 		this.each(function(obj, key) {
 			// set level
 			var parent = tasks.get(obj.get('parent'));
 			var level = ((parent == undefined) || (parent == -1)) ? 0 : (parent.get('level') + 1);
 			obj.save({'level': level});
 			
-			// add to the collection's top nodes if necessary
-			if ((level == 0) && ($.inArray(obj.get('id'), tasks.tops) == -1)) {
-				tasks.tops.push(obj.get('id'));
+			// add to tops if it has no parent
+			if ((parent == undefined) || (parent == -1)) {
+				tops.push(obj.get('id'));
 			}
-			
 			// set children for parent if there is a parent
-			if (parent != undefined) {
+			else {
 				var siblings = parent.get('children');
 				var id = obj.get('id');
 				if ($.inArray(obj.get('id'), siblings) == -1) {
@@ -77,6 +77,26 @@ var Broccoli_TaskList = Backbone.Collection.extend({
 				}
 			}
 		});
+		
+		// if there are multiple top level nodes, create one parent for them all
+		if (tops.length > 1) {
+			var id = this.newId();
+			
+			for (var i in tops) {
+				this.get(tops[i]).save({'parent': id});
+			}
+			
+			this.top = id;
+			this.create({
+				'id': 		id,
+				'parent':	-1,
+				'title': 'Conquer the world'
+			});
+		}
+		// if only 1 top, then set the collection's top element variable
+		else if (tops.length == 1) {
+			this.top = tops[0];
+		}
 		
 		// update the view if what we created is valid
 		if (this.isValidTree()) {
@@ -95,8 +115,8 @@ var Broccoli_TaskList = Backbone.Collection.extend({
 	isValidTree: function() {
 		var valid = true;
 		
-		// for now, we don't support more than one top node
-		if (this.tops.length > 1) {
+		// make sure we have a top node
+		if (this.top == null) {
 			valid = false
 		}
 		

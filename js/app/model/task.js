@@ -31,6 +31,7 @@ var Broccoli_Task = Backbone.Model.extend({
     initialize: function(id, title) {
       if (!this.get("title")) {
         this.set({"title": this.defaults.title});
+        this.set({"title": this.defaults.parent});
       }
     },
     

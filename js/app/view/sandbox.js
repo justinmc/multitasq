@@ -3,9 +3,7 @@
 /* todo:
  *
 
-mimimize/expand
-
-to 
+to top
 
 show full title on hover
 	width of text node in svg??
@@ -424,10 +422,8 @@ var Broccoli_Sandbox = Backbone.View.extend({
 		this.clear();
     	
     	// create and reposition the nodes properly
-    	for (i in this.tasks.tops) {
-    		this.renderSubtree(this.tasks.tops[i]);
-    		this.restructureTree(this.tasks.tops[i]);
-    	}
+    	this.renderSubtree(this.tasks.top);
+    	this.restructureTree(this.tasks.top);
     	
     	// if we exceeded the screen, shrink and rerender
     	// FIXME also check for vertically exceeding the screen size
