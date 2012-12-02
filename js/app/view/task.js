@@ -40,7 +40,7 @@ var Multitasq_TaskView = Backbone.View.extend({
     	var level = 0;
 
 		// if we're not adding the very first task
-    	if (parent != -1) {
+    	if ((parent != -1) && (!this.task.get("upped"))) {
     		y = parseInt($(".content_tasksvg_task_box.task"+parent).attr("y")) + 100;
     		
     		level = parseInt(sandbox.tasks.get(parent).get('level')) + 1;
@@ -93,13 +93,23 @@ var Multitasq_TaskView = Backbone.View.extend({
         title.appendChild(titleBody);
         group.appendChild(title);
         */
+        
+        // create the up/down arrrow button
+        var updown = document.createElementNS('http://www.w3.org/2000/svg','text');
+        updown.setAttribute('class', ('content_tasksvg_task_updown task'+id));
+        updown.setAttribute('x', (x + sandbox.taskWidth - 54));
+        updown.setAttribute('y', (y + 16));
+        updown.setAttribute('textLength', 0);
+        var updownText = document.createTextNode((this.task.get("id") == sandbox.tasks.top) ? '↓' : '↑');
+        updown.appendChild(updownText);
+        group.appendChild(updown);
                 
         // create the -/+ minimize button
         var minimize = document.createElementNS('http://www.w3.org/2000/svg','text');
         minimize.setAttribute('class', ('content_tasksvg_task_minimize task'+id));
         minimize.setAttribute('x', (x + sandbox.taskWidth - 36));
         minimize.setAttribute('y', (y + 16));
-        minimize.setAttribute('textLength', 20);
+        minimize.setAttribute('textLength', 0);
         var minimizeText = document.createTextNode(this.task.get("minimized") ? '+' : '-');
         minimize.appendChild(minimizeText);
         group.appendChild(minimize);

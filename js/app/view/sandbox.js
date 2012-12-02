@@ -74,6 +74,7 @@ var Broccoli_Sandbox = Backbone.View.extend({
 		'click #content_tasksvg_bg':					'clickAdd',
 		'click .content_tasksvg_task_close':			'clickRemove',
 		'click .content_tasksvg_task_minimize':			'clickMinimize',
+		'click .content_tasksvg_task_updown':			'clickUpdown',
 		'click .content_tasksvg_task_text':				'clickReviveEdit',
 		'click .content_tasksvg_task_box':				'clickReviveEdit',
 		'click .content_tasksvg_task_textfield_submit':	'clickSubmit',
@@ -214,7 +215,19 @@ var Broccoli_Sandbox = Backbone.View.extend({
 	// - button click to minimize/expand
 	clickMinimize: function(e) {
 		var task = this.tasks.get($(e.target).parent().data('task'));
-		task.toggleMinimized();
+		
+		// if the task has no children, you cannot minimize/expand
+		if (task.get("children").length > 0) {
+			task.toggleMinimized();
+			this.tasks.collectionUpdated(this);
+		}
+	},
+	
+	// updown arrow buttons to send a task to top or restore
+	clickUpdown: function(e) {
+		var task = this.tasks.get($(e.target).parent().data('task'));
+		
+		task.toggleUpdown();
 		this.tasks.collectionUpdated(this);
 	},
 	
@@ -770,6 +783,7 @@ var Broccoli_Sandbox = Backbone.View.extend({
     	$(".content_tasksvg_task_box.task"+which).get(0).setAttribute('x', where);
     	$(".content_tasksvg_task_text.task"+which).get(0).setAttribute('x', (where + 5));
     	$(".content_tasksvg_task_close.task"+which).get(0).setAttribute('x', (where + this.taskWidth - 16));
+    	$(".content_tasksvg_task_updown.task"+which).get(0).setAttribute('x', (where + this.taskWidth - 54));
     	$(".content_tasksvg_task_minimize.task"+which).get(0).setAttribute('x', (where + this.taskWidth - 32));
     	// move connector based on parent's position
     	var parentPos = parseInt($('.content_tasksvg_task_box.task'+$('.content_tasksvg_task.task'+which).data('parent')).attr('x'));

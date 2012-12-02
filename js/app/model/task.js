@@ -23,7 +23,8 @@ var Broccoli_Task = Backbone.Model.extend({
         // not Google Tasks data, only Multitasq
         children: [],
         level: 0,
-        minimized: false
+        minimized: false,
+        upped: false
       };
     },
 
@@ -42,6 +43,16 @@ var Broccoli_Task = Backbone.Model.extend({
     	}
     	else {
     		this.save({minimized: false});
+    	}
+    },
+    
+    // Toggle the updown setting true/false
+    toggleUpdown: function() {
+    	if (this.get("upped") == false) {
+    		this.save({upped: true});
+    	}
+    	else {
+    		this.save({upped: false});
     	}
     },
 

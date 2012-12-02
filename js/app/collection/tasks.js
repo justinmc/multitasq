@@ -42,10 +42,7 @@ var Broccoli_TaskList = Backbone.Collection.extend({
 	},
 	
 	// Sync the data and the UI
-	collectionUpdated: function(sandbox) {
-	    // reset top variable, will be filled again below
-	    this.top = null;
-	    
+	collectionUpdated: function(sandbox) {	    
 	    // if the collection is empty, initialize it with a cool starter!
 		if (!this.length) {
 			this.create({
@@ -56,12 +53,18 @@ var Broccoli_TaskList = Backbone.Collection.extend({
 	    
 		// update data
 		var tasks = this;
-		var tops = [];
+		var tops = [];		// nodes with no parent
+		var ups = [];		// nodes with the upped property
 		this.each(function(obj, key) {
 			// set level
 			var parent = tasks.get(obj.get('parent'));
 			var level = ((parent == undefined) || (parent == -1)) ? 0 : (parent.get('level') + 1);
 			obj.save({'level': level});
+			
+			// add to ups if it has the "upped" property set
+			if (obj.get("upped")) {
+				ups.push(obj.get("id"));
+			}
 			
 			// add to tops if it has no parent
 			if ((parent == undefined) || (parent == -1)) {
@@ -78,24 +81,38 @@ var Broccoli_TaskList = Backbone.Collection.extend({
 			}
 		});
 		
-		// if there are multiple top level nodes, create one parent for them all
-		if (tops.length > 1) {
-			var id = this.newId();
-			
-			for (var i in tops) {
-				this.get(tops[i]).save({'parent': id});
+		// if there is an "upped" node, set that as top
+		if (ups.length > 0) {
+			if (ups.length == 1) {
+				this.top = ups[0];
 			}
-			
-			this.top = id;
-			this.create({
-				'id': 		id,
-				'parent':	-1,
-				'title': 'Conquer the world'
-			});
+			// proactively unset ups, if somehow there are multiple ups in the data
+			else {
+				for (var i in ups) {
+					this.get(ups[i]).save({upped: false});
+				}
+			}
 		}
-		// if only 1 top, then set the collection's top element variable
-		else if (tops.length == 1) {
-			this.top = tops[0];
+		else {
+			// if there are multiple top level nodes, create one parent for them all
+			if (tops.length > 1) {
+				var id = this.newId();
+			
+				for (var i in tops) {
+					this.get(tops[i]).save({'parent': id});
+				}
+			
+				this.top = id;
+				this.create({
+					'id': 		id,
+					'parent':	-1,
+					'title': 'Conquer the world'
+				});
+			}
+			// if only 1 top, then set the collection's top element variable
+			else if (tops.length == 1) {
+				this.top = tops[0];
+			}
 		}
 		
 		// update the view if what we created is valid
