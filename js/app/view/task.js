@@ -125,7 +125,7 @@ var Multitasq_TaskView = Backbone.View.extend({
         group.appendChild(close);
         
         // create the connector to its parent (if it has one)
-        if (parent != -1) {
+        if ((parent != -1) && (!this.task.get("upped"))) {
 	    	var connect = document.createElementNS('http://www.w3.org/2000/svg','line');
 	    	connect.setAttribute('class', 'content_tasksvg_connector task'+parent+' task'+id);
 	    	connect.setAttribute('x1', sandbox.getTaskMidX(parent));
