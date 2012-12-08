@@ -105,7 +105,7 @@ a:hover {
 			fill: #afafaf;
 			cursor: pointer;
 		}
-		.content_tasksvg_task_minimize
+		.content_tasksvg_task_updown, .content_tasksvg_task_minimize
 		{
 			fill: #afafaf;
 			cursor: pointer;
