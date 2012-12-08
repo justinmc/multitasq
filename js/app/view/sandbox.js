@@ -3,8 +3,6 @@
 /* todo:
  *
 
-to top
-
 show full title on hover
 	width of text node in svg??
 	or, put a foreignobject in the dom on hover
@@ -332,9 +330,9 @@ var Broccoli_Sandbox = Backbone.View.extend({
 				// get the task's id
 				var id = $(this).data('task');
 		
-				// rever to the title stored in data
+				// revert to the title stored in data
 				var label = $('.content_tasksvg_task_text.task' + id);
-				label.get(0).textContent = sandbox.tasks.get(id).get('title');
+				label.get(0).textContent = sandbox.tasks.get(id).get('title').substring(0, sandbox.taskTitleLength) + "...";
 		
 				// remove the textfield
 				$(this).remove();

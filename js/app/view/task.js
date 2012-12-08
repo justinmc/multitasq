@@ -94,15 +94,17 @@ var Multitasq_TaskView = Backbone.View.extend({
         group.appendChild(title);
         */
         
-        // create the up/down arrrow button
-        var updown = document.createElementNS('http://www.w3.org/2000/svg','text');
-        updown.setAttribute('class', ('content_tasksvg_task_updown task'+id));
-        updown.setAttribute('x', (x + sandbox.taskWidth - 54));
-        updown.setAttribute('y', (y + 16));
-        updown.setAttribute('textLength', 0);
-        var updownText = document.createTextNode((this.task.get("id") == sandbox.tasks.top) ? '↓' : '↑');
-        updown.appendChild(updownText);
-        group.appendChild(updown);
+        // create the up/down arrrow button if not the absolute top node
+		if (parent != -1) {
+	        var updown = document.createElementNS('http://www.w3.org/2000/svg','text');
+        	updown.setAttribute('class', ('content_tasksvg_task_updown task'+id));
+    	    updown.setAttribute('x', (x + sandbox.taskWidth - 54));
+	        updown.setAttribute('y', (y + 16));
+        	updown.setAttribute('textLength', 0);
+    	    var updownText = document.createTextNode((this.task.get("id") == sandbox.tasks.top) ? '↓' : '↑');
+	        updown.appendChild(updownText);
+        	group.appendChild(updown);
+		}
                 
         // create the -/+ minimize button
         var minimize = document.createElementNS('http://www.w3.org/2000/svg','text');
