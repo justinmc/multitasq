@@ -3,14 +3,6 @@
 /* todo:
  *
 
-Fix scaling calculations (scaling up)
-
-bushify so cool!
-	but compounding spacing :(
-		(most noticeable for single child lines)
-		do not add spacing to parent? something like that, I'm too hungry to think
-	
-
 show full title on hover
 	width of text node in svg??
 	or, put a foreignobject in the dom on hover
@@ -49,6 +41,7 @@ var Broccoli_Sandbox = Backbone.View.extend({
    	taskSpacing: 20,
    	taskLeftmost: Infinity,
    	taskRightmost: 0,
+   	taskBottommost: 0,
    	taskTitleLength: 14,
    	scaleDownStep: .6,
    	translation: 0,
@@ -107,6 +100,7 @@ var Broccoli_Sandbox = Backbone.View.extend({
 		// reset stored values
 		this.taskLeftmost = Infinity;
 		this.taskRightmost = 0;
+		this.taskBottommost = 0;
 		
 		// restore the main group
 		var group = document.createElementNS('http://www.w3.org/2000/svg','g');
@@ -434,13 +428,15 @@ var Broccoli_Sandbox = Backbone.View.extend({
     	this.bushifyTree(this.tasks.top);
     	
     	// if we exceeded the screen, shrink and rerender
-    	// FIXME also check for vertically exceeding the screen size
     	var viewBoxWidthScaled = this.getViewBoxWidth() * this.scaleDownStep;
-    	if ((this.taskLeftmost <= 0) || (this.taskRightmost > this.getViewBoxWidth())) {
+    	var viewBoxHeightScaled = this.getViewBoxHeight() * this.scaleDownStep;
+    	var treeWidth = this.taskRightmost - this.taskLeftmost;
+    	var taskBottomBuff = this.taskBottommost + this.taskSpacing * 2;
+    	if ((this.taskLeftmost <= 0) || (this.taskRightmost > this.getViewBoxWidth()) || (taskBottomBuff > this.getViewBoxHeight())) {
 			sandbox.scale(1 / this.scaleDownStep);
 		}
 		// otherwise if we can grow by one step and still fit on screen, without getting ugly huge, scale and rerender
-		else if (((this.taskRightmost - this.taskLeftmost - 2 * this.taskWidth) < viewBoxWidthScaled) && ((this.taskWidth / viewBoxWidthScaled) < .1)) {
+		else if ((treeWidth < viewBoxWidthScaled) && (taskBottomBuff < viewBoxHeightScaled) && ((this.taskWidth / viewBoxWidthScaled) < .12)) {
 			sandbox.scale(this.scaleDownStep);
 		}
     },
@@ -459,6 +455,14 @@ var Broccoli_Sandbox = Backbone.View.extend({
 			for (var i in children) {
 				this.renderSubtree(children[i]);
 			}
+			
+			// if no children, check if bottommost and record if so
+			if (!children.length) {
+				var bottom = parseInt($(".content_tasksvg_task_box.task"+id).attr("y")) + this.taskHeight;
+				if (bottom > this.taskBottommost) {
+					this.taskBottommost = bottom;
+				}
+			}
 		}
     },
     
@@ -467,7 +471,7 @@ var Broccoli_Sandbox = Backbone.View.extend({
     bushifyTree: function(top) {
     	var children = $(".content_tasksvg_task.task"+top).data("children") || [];
 
-    	// base case: 0 or 1 children, nothing to bushify
+    	// base case spacing: 0 children
     	var limits = {left: (this.taskWidth / 2 + this.taskSpacing / 2), right: (this.taskWidth / 2 + this.taskSpacing / 2)};
     	
     	if (children.length > 0) {
@@ -479,7 +483,7 @@ var Broccoli_Sandbox = Backbone.View.extend({
 				
 				limitsChildren.push(limitsChild);
 				
-				width = width + this.taskSpacing + limitsChild.left + limitsChild.right;
+				width = width + limitsChild.left + limitsChild.right;
 			}
 			
 			// set the limits of this parent
@@ -501,11 +505,11 @@ var Broccoli_Sandbox = Backbone.View.extend({
 			
 				for (var i = 0; i < children.length; i++) {
 					// reposition this child and its subtree
-					var goto = limitLeft + limitsChildren[i].left - this.taskWidth / 2 + this.taskSpacing / 2;
+					var goto = limitLeft + limitsChildren[i].left - this.taskWidth / 2;
 				
 					this.translateTreeBy(children[i], goto);
 				
-					limitLeft = limitLeft + limitsChildren[i].left + limitsChildren[i].right + this.taskSpacing;
+					limitLeft = limitLeft + limitsChildren[i].left + limitsChildren[i].right;
 				}
 			}
 	    }
