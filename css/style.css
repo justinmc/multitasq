@@ -87,8 +87,8 @@ a:hover {
 		.content_tasksvg_task_box
 		{
 			fill: #ffffff; 
-			stroke-width: 1;
-			stroke: #afafaf;
+			stroke-width: 2;
+			stroke: #000000;
 		}
 		.pending .content_tasksvg_task_box
 		{
@@ -113,7 +113,7 @@ a:hover {
 		.content_tasksvg_connector
 		{ 
 			stroke-width: 1;
-			stroke: #000000;
+			stroke: #cfcfcf;
 		}
 		.pending .content_tasksvg_connector
 		{
@@ -139,8 +139,7 @@ a:hover {
 	position: fixed; bottom: 0px;
 	color: #afafaf;
 }
-
-	#footer a {color: #afafaf;}
+#footer a {color: #afafaf;}
 
 
 /* width where header title collides with header_right */

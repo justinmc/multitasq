@@ -588,7 +588,7 @@ var Broccoli_Sandbox = Backbone.View.extend({
     	
     	// If nothing above, return the root
     	if (nearestTask == undefined) {
-    		nearestTask = this.tasks.at(0).get('id');
+    		nearestTask = this.tasks.top;
     	}
 		return nearestTask;
     },
