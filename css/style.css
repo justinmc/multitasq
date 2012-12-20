@@ -140,6 +140,8 @@ a:hover {
 	color: #afafaf;
 }
 
+	#footer a {color: #afafaf;}
+
 
 /* width where header title collides with header_right */
 @media all and (max-width: 690px), (max-height: 610px) {

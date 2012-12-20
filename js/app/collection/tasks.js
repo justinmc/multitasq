@@ -42,7 +42,10 @@ var Broccoli_TaskList = Backbone.Collection.extend({
 	},
 	
 	// Sync the data and the UI
-	collectionUpdated: function(sandbox) {	    
+	collectionUpdated: function(sandbox) {
+		// reset anything that will be recalculated here
+		this.top = null;
+
 	    // if the collection is empty, initialize it with a cool starter!
 		if (!this.length) {
 			this.create({
@@ -53,25 +56,29 @@ var Broccoli_TaskList = Backbone.Collection.extend({
 	    
 		// update data
 		var tasks = this;
-		var tops = [];		// nodes with no parent
-		var ups = [];		// nodes with the upped property
+		var orphans = [];
 		this.each(function(obj, key) {
 			// set level
 			var parent = tasks.get(obj.get('parent'));
 			var level = ((parent == undefined) || (parent == -1)) ? 0 : (parent.get('level') + 1);
 			obj.save({'level': level});
 			
-			// add to ups if it has the "upped" property set
-			if (obj.get("upped")) {
-				ups.push(obj.get("id"));
+			// add to parentless if it has no parent
+			if ((parent == undefined) || (parent == -1)) {
+				orphans.push(obj.get("id"));
+			}
+
+			// if it has no parent or is upped, it could be the top node
+			if ((orphans.indexOf(obj.get("id")) != -1) || (obj.get("upped"))) {
+				// if it's lower level than the current parent, set as top
+				var parentLevel = (tasks.top == null) ? -Infinity : tasks.get(tasks.top).get("level");
+				if (obj.get('level') > parentLevel) {
+					tasks.top = obj.get('id');
+				}
 			}
 			
-			// add to tops if it has no parent
-			if ((parent == undefined) || (parent == -1)) {
-				tops.push(obj.get('id'));
-			}
 			// set children for parent if there is a parent
-			else {
+			if ((parent != undefined) && (parent != -1)) {
 				var siblings = parent.get('children');
 				var id = obj.get('id');
 				if ($.inArray(obj.get('id'), siblings) == -1) {
@@ -81,38 +88,20 @@ var Broccoli_TaskList = Backbone.Collection.extend({
 			}
 		});
 		
-		// if there is an "upped" node, set that as top
-		if (ups.length > 0) {
-			if (ups.length == 1) {
-				this.top = ups[0];
+		// if there are multiple top level nodes, create one parent for them all
+		if (orphans.length > 1) {
+			var id = this.newId();
+		
+			for (var i in orphans) {
+				this.get(orphans[i]).save({'parent': id});
 			}
-			// proactively unset ups, if somehow there are multiple ups in the data
-			else {
-				for (var i in ups) {
-					this.get(ups[i]).save({upped: false});
-				}
-			}
-		}
-		else {
-			// if there are multiple top level nodes, create one parent for them all
-			if (tops.length > 1) {
-				var id = this.newId();
-			
-				for (var i in tops) {
-					this.get(tops[i]).save({'parent': id});
-				}
-			
-				this.top = id;
-				this.create({
-					'id': 		id,
-					'parent':	-1,
-					'title': 'Conquer the world'
-				});
-			}
-			// if only 1 top, then set the collection's top element variable
-			else if (tops.length == 1) {
-				this.top = tops[0];
-			}
+		
+			this.top = id;
+			this.create({
+				'id': 		id,
+				'parent':	-1,
+				'title': 'Conquer the world'
+			});
 		}
 		
 		// update the view if what we created is valid

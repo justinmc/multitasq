@@ -30,25 +30,13 @@
 
 	<div id="container" role="main">
 		<div id="header">
-			<div id="header_right">
-				<h3>
-					By: <a href="http://www.justinmccandless.com">Justin McCandless</a>
-				</h3>
-				<h3>
-					Source: <a href="http://www.github.com/justinmc/multitasq/">Github</a>
-				</h3>
-			</div>
 			<h1>Multitasq</h1>
-			<h2>Do more stuff</h2>
+			<h2>A new todo</h2>
+			<a href="https://github.com/justinmc/multitasq" style="z-index: 2; position: absolute; top: 0px; right: 0px;">
+				<img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub">
+			</a>
 		</div>
 		<div id="content">
-			<div id="warning" style="width: 40%; margin: 0 auto; display: none;">
-				<h4>In Development</h4>
-				<p>
-					Multitasq is currently in the middle of development.  If you don't mind using alpha software, click the button below to check out the latest version.  Just don't be mad if your browser crashes.
-				</p>
-				<a href="#" id="warning_ok">I like to live dangerously</a>
-			</div>
 			<div style="height: 100%; width: 100%; overflow: hidden; background: #efefef; text-align: center;">
 				<svg id="content_tasksvg" height="100%" width="100%" version="1.1" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMin meet">
 					<g id="content_tasksvg_group">
@@ -60,7 +48,7 @@
 		</div>
 	</div>
 	<div id="footer">
-		<h3>&copy; Justin McCandless 2012</h3>
+		<h3>&copy; <a href="http://www.justinmccandless.com">Justin McCandless</a> 2012</h3>
 	</div>
 	
 	<!-- JavaScript at the bottom for fast page loading -->
@@ -85,22 +73,7 @@
 	<script>
 		$(function(){
 			// create the app
-			var multitasq_sandbox = null;
-			
-			// alpha warning
-			if (window.localStorage.getItem('multitasq-warning') != 'false') {
-				$('#warning').show();
-				
-				// if user dismisses warning
-				$('#warning_ok').on('click', function() {
-					window.localStorage.setItem('multitasq-warning', false);
-					$('#warning').hide();
-					multitasq_sandbox = new Broccoli_Sandbox();
-				});
-			}
-			else {
-				multitasq_sandbox = new Broccoli_Sandbox();
-			}
+			var multitasq_sandbox = new Broccoli_Sandbox();
 		});
 	</script>
 	<!-- end scripts -->
