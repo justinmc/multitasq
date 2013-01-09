@@ -1,15 +1,15 @@
 // Task Collection
 
-var Broccoli_TaskList = Backbone.Collection.extend({
+var Multitasq_TaskList = Backbone.Collection.extend({
 
     // Reference to this collection's model.
-    model: Broccoli_Task,
+    model: Multitasq_Task,
     
     // Url to call to get the task list
     //url: '/js/tasklist_spread.json',
 
-    // Save all of the todo items under the `"broccoli"` namespace.
-    localStorage: new Backbone.LocalStorage("broccoli-backbone"),
+    // Save all of the todo items under the `"multitasq"` namespace.
+    localStorage: new Backbone.LocalStorage("multitasq-backbone"),
     
     // Topmost node in the collection
     top: null,

@@ -6,9 +6,6 @@
 show full title on hover
 	width of text node in svg??
 	or, put a foreignobject in the dom on hover
-	also fix title shortener
-		hitting escape doesn't shorten it, only submitting
-		create a shortener function, use it for edit and render and editcancel
 
  reorder system
  	insert a task between two parent/child tasks
@@ -16,10 +13,6 @@ show full title on hover
  
  * nearestSpace functionality
  
- restore stuff!
- 	manifest
- 	jquery from google cdn
- rename broccoli to multitasq
  * 
  */
 
@@ -73,7 +66,7 @@ var Multitasq_Sandbox = Backbone.View.extend({
 	
 	initialize: function(nodes) {
 		// create our main collection of tasks
-		this.tasks = new Broccoli_TaskList(this);
+		this.tasks = new Multitasq_TaskList(this);
 		
 		/*mytasks.fetch({ 
 			succes:	function() {
