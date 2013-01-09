@@ -10,8 +10,6 @@ show full title on hover
 		hitting escape doesn't shorten it, only submitting
 		create a shortener function, use it for edit and render and editcancel
 
-after scale, textfield text is invisible
-
  reorder system
  	insert a task between two parent/child tasks
  	delete one task and have its children take its place, children are not deleted
@@ -27,7 +25,7 @@ after scale, textfield text is invisible
 
 
 // The main sandbox for manipulating tasks
-var Broccoli_Sandbox = Backbone.View.extend({
+var Multitasq_Sandbox = Backbone.View.extend({
 
 	// The SVG element
 	el: $("#content_tasksvg"),
@@ -42,7 +40,7 @@ var Broccoli_Sandbox = Backbone.View.extend({
    	taskLeftmost: Infinity,
    	taskRightmost: 0,
    	taskBottommost: 0,
-   	taskTitleLength: 14,
+   	taskTitleLength: 18,
    	scaleDownStep: .6,
    	translation: 0,
    	mousestopTimer: null,

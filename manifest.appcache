@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# 2012-10-13
+# 2013-01-09
 
 # Explicitly cached 'master entries'.
 CACHE:
@@ -8,6 +8,7 @@ index.html
 css/style.css
 css/h5bp.css
 js/app/view/sandbox.js
+js/app/view/task.js
 js/app/model/task.js
 js/app/collection/tasks.js
 js/libs/backbone.js

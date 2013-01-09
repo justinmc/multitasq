@@ -61,11 +61,26 @@ a:hover {
 	bottom: 0px;
 }
 
-	#content_center {
-		width: 80%;
+	/* help overlay */
+	#content_overlay {
+		display: none;
+		overflow: scroll;
+		height: 100%;
 		margin: 0 auto;
+		padding: 8px 10% 0 10%;
 		text-align: left;
 	}
+
+		#content_overlay table td {
+			padding: 6px;
+			border: 1px #ffffff solid;
+		}
+		#content_overlay table tr:nth-child(2n+1) {
+			background: #ffffff;
+		}
+		#content_overlay table td:nth-child(1) {
+			font-weight: bold;
+		}
 
 	#content_tasksvg
 	{
@@ -80,43 +95,39 @@ a:hover {
 		text-align: center;
 	}
 	
-		#content_tasksvg_bg
-		{
+		#content_tasksvg_bg {
 			fill: transparent;
 		}	
-		.content_tasksvg_task_box
-		{
+		.content_tasksvg_task_box {
 			fill: #ffffff; 
 			stroke-width: 2;
-			stroke: #000000;
+			stroke: #afafaf;
 		}
-		.pending .content_tasksvg_task_box
-		{
+		.pending .content_tasksvg_task_box {
 			fill: #f1f1f1; 
 			stroke-width: 1;
 			stroke: #cfcfcf;
 		}
-		.content_tasksvg_task_text
-		{
+		.content_tasksvg_task_text {
 			fill: #afafaf;
+			font-size: 13px;
 		}
-		.content_tasksvg_task_close
-		{
-			fill: #afafaf;
-			cursor: pointer;
+		.content_tasksvg_task_textfield_form {
+			font-size: 13px;
 		}
-		.content_tasksvg_task_updown, .content_tasksvg_task_minimize
-		{
+		.content_tasksvg_task_close {
 			fill: #afafaf;
 			cursor: pointer;
 		}
-		.content_tasksvg_connector
-		{ 
+		.content_tasksvg_task_updown, .content_tasksvg_task_minimize {
+			fill: #afafaf;
+			cursor: pointer;
+		}
+		.content_tasksvg_connector { 
 			stroke-width: 1;
 			stroke: #cfcfcf;
 		}
-		.pending .content_tasksvg_connector
-		{
+		.pending .content_tasksvg_connector {
 			stroke-width: 1;
 			stroke: #cfcfcf;
 		}
@@ -130,14 +141,14 @@ a:hover {
 			border-radius: 8px;
 		}
 
-#footer
-{
+#footer {
 	text-align: center;
 	margin: 0 auto;
 	width: 100%;
 	padding: 4px;
 	position: fixed; bottom: 0px;
 	color: #afafaf;
+	background: #efefef;
 }
 #footer a {color: #afafaf;}
 

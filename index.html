@@ -5,7 +5,7 @@
 <!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
 <!-- Consider adding a manifest.appcache: h5bp.com/d/Offline -->
 <!--[if gt IE 8]><!--> 
-<html class="no-js" lang="en"> <!--manifest="manifest.appcache" --> <!--<![endif]-->
+<html class="no-js" lang="en" manifest="manifest.appcache"> <!--<![endif]-->
 <head>
 	<link href='http://fonts.googleapis.com/css?family=Walter+Turncoat' rel='stylesheet' type='text/css'>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -15,7 +15,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="description" content="">
 	<!-- Mobile viewport optimized: h5bp.com/viewport -->
-  	<meta name="viewport" content="width=device-width">
+  	<meta name="viewport" content="width=device-width initial-scale=1, maximum-scale=1">
 	<link href="favicon.ico" type="image/x-icon" rel="icon" />
 	<link href="favicon.ico" type="image/x-icon" rel="shortcut icon" />
 	<link rel="stylesheet" type="text/css" href="css/h5bp.css" />
@@ -31,19 +31,61 @@
 	<div id="container" role="main">
 		<div id="header">
 			<div id="header_right">
-				<h3><a href="#">Help</a></h3>
+				<h3><a href="#" class="helpToggle">Help</a></h3>
+				<h3><a href="https://github.com/justinmc/multitasq">Github</a></h3>
 			</div>
 			<h1>Multitasq</h1>
 			<h2>A new todo</h2>
-			<a href="https://github.com/justinmc/multitasq"><img style="position: absolute; top: 0; left: 0; border: 0; z-index: 2;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
 		</div>
 		<div id="content">
-			<div style="height: 100%; width: 100%; overflow: hidden; background: #efefef; text-align: center;">
-				<svg id="content_tasksvg" height="100%" width="100%" version="1.1" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMin meet">
-					<g id="content_tasksvg_group">
-						<rect id="content_tasksvg_bg" width="100%" height="100%" />
-					</g>
-				</svg>
+			<svg id="content_tasksvg" height="100%" width="100%" version="1.1" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMin meet">
+				<g id="content_tasksvg_group">
+					<rect id="content_tasksvg_bg" width="100%" height="100%" />
+				</g>
+			</svg>
+			<div id="content_overlay">
+				<h3>What is this?</h3>
+				<p>
+					This is Multitasq, a reimagining of the to-do list.  The goal of Multitasq is to create an interface to a task based workflow that goes beyond a glorified paper list and creates something easy to understand at a glance yet that can still scale down to the deepest detail.
+				</p>
+				<h3>How do I use it?</h3>
+				<p>
+					Multitasq is made to be intuitive and usable on touch screen devices as well as the desktop.  Here are a few helpful things you can do:
+				</p>
+				<table>
+					<tr>
+						<td>Create a new task</td>
+						<td>Click any empty area on the screen.  A task will be created under the nearest parent task.</td>
+					</tr>
+					<tr>
+						<td>Edit an existing task</td>
+						<td>Click the task and start typing.  Enter or a click confirms the edit, and escape cancels it.</td>
+					</tr>
+					<tr>
+						<td>Mark a task as finished</td>
+						<td>Click the X in the corner of a task to mark it finished and grey it out.  Clicking the X a second time will delete it.</td>
+					</tr>
+					<tr>
+						<td>Minimize a parent task</td>
+						<td>Click the minus sign (-) to minimize all child tasks of a parent.  Clicking the plus (+) after minimizing will expand the task once more.</td>
+					</tr>
+					<tr>
+						<td>Focus on one subtree</td>
+						<td>You can bring a subtree to the front and center of Multitasq and hide all other tasks by clicking the up arrow (↑).  Clicking the down arrow (↓) will drop the task back into place again.</td>
+					</tr>
+				</table>
+				<br />
+				<h3>What happens to my created tasks?</h3>
+				<p>
+					Your tasks will be saved to localstorage and accessible again right where you left off whenever you open your browser.  I hope to provide online storage of tasks possibly via Google Tasks integration soon...
+				</p>
+				<h3>Where can I get more info?</h3>
+				<p>
+					If you want to view the source code or get involved, check out the github page at <a href="https://github.com/justinmc/multitasq">github.com/justinmc/multitasq</a>.  You can also check out my personal blog at <a href="http://www.justinmccandless.com">justinmccandless.com</a> for any updates.
+				</p>
+				<br /><br />
+				<h3 style="text-align: center;"><a href="#" class="helpToggle">Back to Multitasq</a></h3>
+				<br /><br />
 			</div>
 			<br clear="all" />
 		</div>
@@ -74,13 +116,26 @@
 	<script>
 		$(function(){
 			// create the app
-			var multitasq_sandbox = new Broccoli_Sandbox();
+			var multitasq = new Multitasq_Sandbox();
+
+			// help button listener
+			$(".helpToggle").on("click", function() {
+				if ($("#content_overlay").css("display") == "block") {
+					multitasq.render();
+					$("#content_tasksvg").show();
+					$("#content_overlay").hide();
+				}
+				else {
+					multitasq.clear();
+					$("#content_tasksvg").hide();
+					$("#content_overlay").show();
+				}
+			});
 		});
 	</script>
 	<!-- end scripts -->
 	
-	<!-- Asynchronous Google Analytics snippet. Change UA-XXXXX-X to be your site's ID.
-	 mathiasbynens.be/notes/async-analytics-snippet -->
+	<!-- Asynchronous Google Analytics snippet. -->
 	<script>
 		var _gaq=[['_setAccount','UA-36316395-1'],['_trackPageview']];
 		(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];

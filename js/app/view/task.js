@@ -36,7 +36,7 @@ var Multitasq_TaskView = Backbone.View.extend({
 		var opacity = this.task.get('completed') ? 0.3 : 1;
     	
     	var x = (sandbox.getViewBoxWidth() / 2 - sandbox.taskWidth / 2);
-    	var y = 2;
+    	var y = 4;
     	var level = 0;
 
 		// if we're not adding the very first task

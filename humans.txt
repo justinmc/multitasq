@@ -3,10 +3,10 @@
 
 
 /* TEAM */
-  <your title>: <your name>
-  Site:
-  Twitter:
-  Location:
+  Developer: Justin McCandless
+  Site: www.justinmccandless.com
+  Twitter: @justinjmcc
+  Location: Beijing, China
 
 /* THANKS */
   Names (& URL):
