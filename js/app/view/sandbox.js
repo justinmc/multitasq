@@ -1,22 +1,3 @@
-// Task View
-
-/* todo:
- *
-
-show full title on hover
-	width of text node in svg??
-	or, put a foreignobject in the dom on hover
-
- reorder system
- 	insert a task between two parent/child tasks
- 	delete one task and have its children take its place, children are not deleted
- 
- * nearestSpace functionality
- 
- * 
- */
-
-
 // The main sandbox for manipulating tasks
 var Multitasq_Sandbox = Backbone.View.extend({
 

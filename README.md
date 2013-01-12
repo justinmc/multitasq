@@ -1,6 +1,6 @@
 # Multitasq
 
-A reimagining of the to-do list by Justin McCandless ([justinmccandless.com](justinmccandless.com)) written with HTML5 SVG
+A reimagining of the to-do list by [Justin McCandless](justinmccandless.com) written with HTML5 SVG
 
 ## Introduction
 
@@ -37,5 +37,5 @@ Your tasks will be saved to localstorage and accessible again right where you le
 
 ### More info
 
-If you want to view the source code or get involved, check out the github page at <a href="https://github.com/justinmc/multitasq">github.com/justinmc/multitasq</a>.  You can also check out my personal blog at <a href="http://www.justinmccandless.com">justinmccandless.com</a> for any updates.
+If you want to view the source code or get involved, check out the github page at <a href="https://github.com/justinmc/multitasq">github.com/justinmc/multitasq</a>.  The latest stable version is hosted on <a href="http://www.multitasq.com">multitasq.com</a>.  You can also check out my personal blog at <a href="http://www.justinmccandless.com">justinmccandless.com</a> for any updates.
 
