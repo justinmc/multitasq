@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# 2013-01-09
+# 2013-03-26
 
 # Explicitly cached 'master entries'.
 CACHE:
@@ -19,6 +19,7 @@ js/libs/modernizr-2.5.3.min.js
 
 # Resources that require the user to be online.
 # NETWORK:
+http://fonts.googleapis.com/css?family=Walter+Turncoat
 
 # FALLBACK:
 # servethis ifthisisinaccessible
