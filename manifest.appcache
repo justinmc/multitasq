@@ -20,6 +20,7 @@ js/libs/modernizr-2.5.3.min.js
 # Resources that require the user to be online.
 # NETWORK:
 http://fonts.googleapis.com/css?family=Walter+Turncoat
+http://themes.googleusercontent.com/static/fonts/
 
 # FALLBACK:
 # servethis ifthisisinaccessible
