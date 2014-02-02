@@ -68,7 +68,6 @@ var Multitasq_TaskView = Backbone.View.extend({
         taskText.setAttribute('class', ('content_tasksvg_task_text task'+id));
         taskText.setAttribute('x', (x + 5));
         taskText.setAttribute('y', (y + 40));
-        taskText.setAttribute('textLength', 0);
         var textNode = document.createTextNode(text);
 		taskText.appendChild(textNode);
 		group.appendChild(taskText);
