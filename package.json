@@ -1,0 +1,29 @@
+{
+  "name": "multitasq",
+  "version": "2.0.0",
+  "description": "A new todo",
+  "main": "js/app/view/sandbox.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/justinmc/multitasq.git"
+  },
+  "keywords": [
+    "todo",
+    "to-do",
+    "task",
+    "list"
+  ],
+  "author": "Justin McCandless",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/justinmc/multitasq/issues"
+  },
+  "homepage": "https://github.com/justinmc/multitasq",
+  "devDependencies": {
+    "gulp-util": "^2.2.14",
+    "gulp": "^3.5.2"
+  }
+}
