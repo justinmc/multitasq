@@ -7,9 +7,10 @@ var uglify = require('gulp-uglify');
 var imagemin = require('gulp-imagemin');
 
 var paths = {
-    scripts: ['app/js/**/*.js', '!app/js/libs/**/*.js'],
-    styles: ['app/css/**/*.css'],
-    html: ['app/**/*.html'], 
+    scripts: ['app/scripts/model/task.js', 'app/scripts/collection/tasks.js', 'app/scripts/view/sandbox.js', 'app/scripts/view/task.js', 'app/scripts/app.js'],
+    styles: ['app/styles/**/*.css'],
+    html: ['app/index.html', 'app/404.html'], 
+    app: 'app/',
     dist: 'dist/'
 };
 
@@ -24,7 +25,7 @@ gulp.task('scripts', function() {
         .pipe(jshint.reporter('default'))
         .pipe(uglify())
         .pipe(concat('multitasq.min.js'))
-        .pipe(gulp.dest(paths.dist + 'scripts/'));
+        .pipe(gulp.dest(paths.app + 'scripts/'));
 });
 
 gulp.task('copy', function() {
