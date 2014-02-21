@@ -24,6 +24,11 @@
   "homepage": "https://github.com/justinmc/multitasq",
   "devDependencies": {
     "gulp-util": "^2.2.14",
-    "gulp": "^3.5.2"
+    "gulp": "^3.5.2",
+    "gulp-concat": "~2.1.7",
+    "gulp-uglify": "~0.2.1",
+    "gulp-imagemin": "~0.1.5",
+    "gulp-clean": "~0.2.4",
+    "gulp-jshint": "~1.4.2"
   }
 }
