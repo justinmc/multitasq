@@ -21,7 +21,6 @@
 	<link href="favicon.ico" type="image/x-icon" rel="shortcut icon" />
 	<link rel="stylesheet" type="text/css" href="css/h5bp.css" />
 	<link rel="stylesheet" type="text/css" href="css/style.css" />	
-	<style type="text/css" src="scripts/libs/jquery.svg.package-1.4.5/jquery.svg.css"></style> 
 	<script src="scripts/libs/modernizr-2.5.3.min.js"></script>
 </head>
 <body>
@@ -95,23 +94,18 @@
 		<h3>&copy; <a href="http://www.justinmccandless.com">Justin McCandless</a> 2012</h3>
 	</div>
 	
-	<!-- JavaScript at the bottom for fast page loading -->
-	
 	<!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if offline -->
-	<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-	<script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\/script>')</script> -->
-	<script src="scripts/libs/jquery-1.7.1.min.js"><\/script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\/script>')</script>
 	
-	<!-- scripts concatenated and minified via build script -->
-	<!-- <script type="text/javascript" src="scripts/libs/raphael-min.js"></script> -->
-	<script type="text/javascript" src="scripts/libs/jquery.svg.package-1.4.5/jquery.svg.js"></script>
 	<script type="text/javascript" src="scripts/libs/underscore.js"></script>	
 	<script type="text/javascript" src="scripts/libs/backbone.js"></script>	
 	<script type="text/javascript" src="scripts/libs/backbone.localStorage.js"></script>
-	<script type="text/javascript" src="scripts/app/model/task.js"></script>
-	<script type="text/javascript" src="scripts/app/collection/tasks.js"></script>
-	<script type="text/javascript" src="scripts/app/view/sandbox.js"></script>
-	<script type="text/javascript" src="scripts/app/view/task.js"></script>
+	<script type="text/javascript" src="scripts/model/task.js"></script>
+	<script type="text/javascript" src="scripts/collection/tasks.js"></script>
+	<script type="text/javascript" src="scripts/view/sandbox.js"></script>
+	<script type="text/javascript" src="scripts/view/task.js"></script>
+	<script type="text/javascript" src="scripts/app.js"></script>
 	<script>
 		$(function(){
 			// create the app
@@ -132,7 +126,6 @@
 			});
 		});
 	</script>
-	<!-- end scripts -->
 	
 	<!-- Asynchronous Google Analytics snippet. -->
 	<script>
