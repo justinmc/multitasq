@@ -105,26 +105,6 @@
 	<script type="text/javascript" src="scripts/view/sandbox.js"></script>
 	<script type="text/javascript" src="scripts/view/task.js"></script>
 	<script type="text/javascript" src="scripts/app.js"></script>
-	<script>
-		$(function(){
-			// create the app
-			var multitasq = new Multitasq_Sandbox();
-
-			// help button listener
-			$(".helpToggle").on("click", function() {
-				if ($("#content_overlay").css("display") == "block") {
-					multitasq.render();
-					$("#content_tasksvg").show();
-					$("#content_overlay").hide();
-				}
-				else {
-					multitasq.clear();
-					$("#content_tasksvg").hide();
-					$("#content_overlay").show();
-				}
-			});
-		});
-	</script>
 	
 	<!-- Asynchronous Google Analytics snippet. -->
 	<script>
