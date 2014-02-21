@@ -1,0 +1,32 @@
+{
+  "name": "multitasq",
+  "version": "2.0.0",
+  "homepage": "http://www.multitasq.com",
+  "authors": [
+    "Justin McCandless <justinjmccandless@gmail.com>"
+  ],
+  "description": "A new todo",
+  "main": "app/scripts/app.js",
+  "keywords": [
+    "todo",
+    "tasks",
+    "list",
+    "checklist"
+  ],
+  "license": "BSD",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.0",
+    "underscore": "~1.6.0",
+    "backbone": "~1.1.2",
+    "backbone.localStorage": "~1.1.7"
+  }
+}
