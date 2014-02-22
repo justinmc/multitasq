@@ -23,7 +23,7 @@ gulp.task('scripts', function() {
     return gulp.src(paths.scripts)
         .pipe(jshint())
         .pipe(jshint.reporter('default'))
-        .pipe(uglify())
+        //.pipe(uglify())
         .pipe(concat('multitasq.min.js'))
         .pipe(gulp.dest(paths.app + 'scripts/'));
 });
@@ -31,6 +31,10 @@ gulp.task('scripts', function() {
 gulp.task('copy', function() {
     return gulp.src(paths.html.concat(paths.styles))
         .pipe(gulp.dest(paths.dist));
+});
+
+gulp.task('watch', function() {
+    gulp.watch(paths.scripts, ['scripts']);
 });
 
 gulp.task('default', ['clean', 'scripts', 'copy']);
