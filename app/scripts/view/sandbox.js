@@ -6,41 +6,41 @@ var Multitasq_Sandbox = Backbone.View.extend({
     
     // the tasks collection
     tasks: null,
-    
-    // config
-       taskWidth: 150,
-       taskHeight: 60,
-       taskSpacing: 20,
-       taskLeftmost: Infinity, taskRightmost: 0,
-       taskBottommost: 0,
-       taskTitleLength: 18,
-       scaleDownStep: 0.6,
-       translation: 0,
-       mousestopTimer: null,
-       colorActiveFill: 'green',
-       colorInactiveFill: '#ffffff',
-       colorSelectedStroke: 'green',
-       colorUnselectedStroke: '#afafaf',
 
-       // init
+    // config
+    taskWidth: 150,
+    taskHeight: 60,
+    taskSpacing: 20,
+    taskLeftmost: Infinity, taskRightmost: 0,
+    taskBottommost: 0,
+    taskTitleLength: 18,
+    scaleDownStep: 0.6,
+    translation: 0,
+    mousestopTimer: null,
+    colorActiveFill: 'green',
+    colorInactiveFill: '#ffffff',
+    colorSelectedStroke: 'green',
+    colorUnselectedStroke: '#afafaf',
+
+    // init
     nearest: -1,
     
     events: {
-        'mouseenter':                                      'sandboxEnter',
-        'mouseleave':                                    'sandboxLeave',
+        'mouseenter':                                   'sandboxEnter',
+        'mouseleave':                                   'sandboxLeave',
         'mousemove':                                    'updateTaskSelected',
-        'mouseenter #content_tasksvg_bg':                'sandboxBgEnter',
+        'mouseenter #content_tasksvg_bg':               'sandboxBgEnter',
         'click #content_tasksvg_bg':                    'clickAdd',
         'click .content_tasksvg_task_close':            'clickRemove',
-        'click .content_tasksvg_task_minimize':            'clickMinimize',
-        'click .content_tasksvg_task_updown':            'clickUpdown',
-        'click .content_tasksvg_task_text':                'clickReviveEdit',
-        'click .content_tasksvg_task_box':                'clickReviveEdit',
-        'click .content_tasksvg_task_textfield_submit':    'clickSubmit',
-        'mouseenter .content_tasksvg_task_box':            'enterTask',
-        'mouseenter .content_tasksvg_task_close':        'enterTask',
+        'click .content_tasksvg_task_minimize':         'clickMinimize',
+        'click .content_tasksvg_task_updown':           'clickUpdown',
+        'click .content_tasksvg_task_text':             'clickReviveEdit',
+        'click .content_tasksvg_task_box':              'clickReviveEdit',
+        'click .content_tasksvg_task_textfield_submit': 'clickSubmit',
+        'mouseenter .content_tasksvg_task_box':         'enterTask',
+        'mouseenter .content_tasksvg_task_close':       'enterTask',
         'mouseenter .content_tasksvg_task_text':        'enterTask',
-        'submit .content_tasksvg_task_textfield_form':    'clickSubmit',
+        'submit .content_tasksvg_task_textfield_form':  'clickSubmit',
         'keyup':                                        'keypress'
     },
     
@@ -63,7 +63,7 @@ var Multitasq_Sandbox = Backbone.View.extend({
         // Fill up the collection with data from localstorage if it exists
         this.tasks.fetch();
 
-        // If there was no data in localstorage, reset and trigger default data creatio
+        // If there was no data in localstorage, reset and trigger default data creation
         if (!this.tasks.length) {
             this.tasks.reset();
         }

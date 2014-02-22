@@ -9,7 +9,7 @@ var Multitasq_TaskView = Backbone.View.extend({
     
     // config
 
-       // init
+    // init
     
     events: {
     },

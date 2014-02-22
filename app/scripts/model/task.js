@@ -11,7 +11,7 @@ var Multitasq_Task = Backbone.Model.extend({
       
       return {
         kind: "tasks#task",
-        id: '0',                // FIXME you'll have to use the google task api to create a new id
+        id: '0',                  // FIXME you'll have to use the google task api to create a new id
         etag: '0',                // FIXME google task api
         title: this.defaultTitle,
         updated: date,

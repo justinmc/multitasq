@@ -23,7 +23,7 @@ gulp.task('scripts', function() {
     return gulp.src(paths.scripts)
         .pipe(jshint())
         .pipe(jshint.reporter('default'))
-        //.pipe(uglify())
+        .pipe(uglify())
         .pipe(concat('multitasq.min.js'))
         .pipe(gulp.dest(paths.app + 'scripts/'));
 });
