@@ -316,7 +316,7 @@ var Multitasq_Sandbox = Backbone.View.extend({
                 $(this).remove();
 
                 // write the update and refresh the view
-                task.save({'title': $(input).attr('value')});
+                task.save({'title': $(input).val()});
             });
         }
 
