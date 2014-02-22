@@ -56,7 +56,7 @@ gulp.task('copy', function() {
 });
 
 gulp.task('watch', function() {
-    gulp.watch(paths.scripts, ['scripts']);
+    gulp.watch('app/**/*', ['scripts', 'copy']);
 });
 
 gulp.task('default', ['clean', 'scripts', 'copy']);
