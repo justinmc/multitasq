@@ -170,8 +170,9 @@ var Multitasq_TaskList = Backbone.Collection.extend({
     removeSubtreeRecurse: function(task) {
         // recursively remove all children (if any)
         var children = task.get('children');
-        while(children.length > 0) {
-            var child = this.get(children[0]);
+        var childId;
+        while(childId = task.get('children')[0]) {
+            var child = this.get(childId);
             this.removeSubtreeRecurse(child);
         }
         

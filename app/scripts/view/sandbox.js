@@ -11,8 +11,7 @@ var Multitasq_Sandbox = Backbone.View.extend({
        taskWidth: 150,
        taskHeight: 60,
        taskSpacing: 20,
-       taskLeftmost: Infinity,
-       taskRightmost: 0,
+       taskLeftmost: Infinity, taskRightmost: 0,
        taskBottommost: 0,
        taskTitleLength: 18,
        scaleDownStep: 0.6,
@@ -63,6 +62,11 @@ var Multitasq_Sandbox = Backbone.View.extend({
         
         // Fill up the collection with data from localstorage if it exists
         this.tasks.fetch();
+
+        // If there was no data in localstorage, reset and trigger default data creatio
+        if (!this.tasks.length) {
+            this.tasks.reset();
+        }
     },
     
     // Remove everything from the svg
