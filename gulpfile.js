@@ -15,7 +15,7 @@ var paths = {
     styles: ['styles/**/*.css'],
     html: ['index.html', '404.html'], 
     bower: ['bower_components/jquery/dist/jquery.js', 'bower_components/underscore/underscore.js', 'bower_components/backbone/backbone.js', 'bower_components/backbone.localStorage/backbone.localStorage-min.js'],
-    extras: ['crossdomain.xml', 'humans.txt', 'manifest.appcache', 'robots.txt', 'favicon.ico'],
+    extras: ['crossdomain.xml', 'humans.txt', 'manifest.appcache', 'robots.txt', 'favicon.ico', '.htaccess'],
 };
 
 gulp.task('clean', function() {

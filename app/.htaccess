@@ -541,3 +541,14 @@ AddCharset utf-8 .atom .css .js .json .rss .vtt .xml
 <IfModule mod_php5.c>
   php_value session.cookie_httponly true
 </IfModule>
+
+
+# Justin's pushstate support
+<ifModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} !index
+    RewriteRule (.*) index.html [L]
+</ifModule>
+
