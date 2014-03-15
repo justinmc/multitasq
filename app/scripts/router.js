@@ -1,5 +1,5 @@
 // The main router
-var MultitasqRouter = Backbone.Router.extend({
+Multitasq.Router = Backbone.Router.extend({
 
   routes: {
     "help":                 "help",    // #help

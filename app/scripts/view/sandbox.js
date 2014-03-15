@@ -1,5 +1,5 @@
 // The main sandbox for manipulating tasks
-var Multitasq_Sandbox = Backbone.View.extend({
+Multitasq.Sandbox = Backbone.View.extend({
 
     // The SVG element
     el: $("#content_tasksvg"),
@@ -46,7 +46,7 @@ var Multitasq_Sandbox = Backbone.View.extend({
     
     initialize: function(nodes) {
         // create our main collection of tasks
-        this.tasks = new Multitasq_TaskList(this);
+        this.tasks = new Multitasq.TaskList(this);
         
         /*mytasks.fetch({ 
             succes:    function() {
@@ -422,7 +422,7 @@ var Multitasq_Sandbox = Backbone.View.extend({
         var task = this.tasks.get(id);
         
         // render this task
-        var taskview = new Multitasq_TaskView(task);
+        var taskview = new Multitasq.TaskView(task);
         taskview.render(this);
         
         // render this task's children if not minimized

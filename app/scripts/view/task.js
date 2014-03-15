@@ -1,5 +1,5 @@
 // An individual task in the svg
-var Multitasq_TaskView = Backbone.View.extend({
+Multitasq.TaskView = Backbone.View.extend({
 
     // The SVG element
     el: null,

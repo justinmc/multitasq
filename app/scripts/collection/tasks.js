@@ -1,9 +1,9 @@
 // Task Collection
 
-var Multitasq_TaskList = Backbone.Collection.extend({
+Multitasq.TaskList = Backbone.Collection.extend({
 
     // Reference to this collection's model.
-    model: Multitasq_Task,
+    model: Multitasq.Task,
     
     // Url to call to get the task list
     //url: '/js/tasklist_spread.json',

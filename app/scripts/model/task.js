@@ -1,5 +1,5 @@
 // Task Model
-var Multitasq_Task = Backbone.Model.extend({
+Multitasq.Task = Backbone.Model.extend({
     
     // config, default text in a task
     defaultTitle: 'New Task',

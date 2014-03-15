@@ -1,5 +1,12 @@
 var Multitasq = (function() {
 
+    // object types
+    Obj.Router = null;
+    Obj.Sandbox = null;
+    Obj.TaskView = null;
+    Obj.TaskList = null;
+    Obj.Task = null;
+
     Obj.prototype.sandbox = null;
 
     Obj.prototype.helpShown = false;
@@ -11,10 +18,10 @@ var Multitasq = (function() {
 
         $(function(){
             // create the router
-            that.router = new MultitasqRouter();
+            that.router = new Obj.Router();
 
             // create the main view
-            that.sandbox = new Multitasq_Sandbox();
+            that.sandbox = new Obj.Sandbox();
             that.createEvents();
         });
     }
