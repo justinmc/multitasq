@@ -16,14 +16,15 @@ var Multitasq = (function() {
 
         var that = this;
 
-        $(function(){
-            // create the router
-            that.router = new Obj.Router();
+        // Create the main view
+        that.sandbox = new Obj.Sandbox();
 
-            // create the main view
-            that.sandbox = new Obj.Sandbox();
-            that.createEvents();
-        });
+        // Create the router
+        that.router = new Obj.Router(that);
+        Backbone.history.start({pushState: false});
+
+        // Bind the events
+        that.createEvents();
     }
 
     // Sets events
@@ -34,11 +35,12 @@ var Multitasq = (function() {
         // help dialog toggle buttons
         $(".helpToggle").on("click", function() {
             if (that.helpShown) {
-                that.helpHide();
+                that.router.navigate('', {trigger: true});
             }
             else {
-                that.helpShow();
+                that.router.navigate('help', {trigger: true});
             }
+            event.preventDefault(); 
         });
     };
 

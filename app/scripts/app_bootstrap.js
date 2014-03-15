@@ -1,3 +1,5 @@
 // Auto-initialize the app
-new Multitasq();
+$(function(){
+    new Multitasq();
+});
 
