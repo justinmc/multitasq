@@ -4,7 +4,6 @@ var Multitasq = (function() {
     Obj.Router = null;
     Obj.Sandbox = null;
     Obj.TaskView = null;
-    Obj.Modal = null;
     Obj.TaskList = null;
     Obj.Task = null;
 
@@ -19,9 +18,6 @@ var Multitasq = (function() {
 
         // Create the main view
         that.sandbox = new Obj.Sandbox();
-
-        // Create the modal
-        that.modal = new Obj.Modal();
 
         // Create the router
         that.router = new Obj.Router(that);
