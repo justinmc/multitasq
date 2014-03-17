@@ -6,6 +6,8 @@ Multitasq.Modal = Backbone.View.extend({
 
     parentSelector: ".modal",
 
+    taskId: null,
+
     events: {
         "click .modal-background":      "close",
     },
@@ -13,20 +15,27 @@ Multitasq.Modal = Backbone.View.extend({
     initialize: function() {
     },
 
-    render: function() {
-        var template = this.template();
+    render: function(taskId) {
+        this.taskId = taskId;
+
+        // Create the template
+        var template = this.template({title: 'ok'});
         this.$el = $(this.parentSelector).html(template);
+
+        // Set the events
         this.delegateEvents();
+
+        // Show the modal
+        $(this.parentSelector).show();
+
         return this;
     },
 
     show: function() {
-        $(this.parentSelector).show();
     },
 
     close: function() {
-        console.log('close');
-        $(this.parentSelector).hide();
+        this.remove();
     },
 
 });

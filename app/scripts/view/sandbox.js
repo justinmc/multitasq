@@ -246,7 +246,7 @@ Multitasq.Sandbox = Backbone.View.extend({
     // click to edit task text
     editTask: function(id) {
         var modal = new Multitasq.Modal();
-        modal.render().show();
+        modal.render(id);
 
         var label = $('.content_tasksvg_task_text.task' + id);
         var task = this.tasks.get(id);
