@@ -105,14 +105,19 @@
         <script type="text/template" class="template-modal">
             <div class="modal-background"></div>
             <div class="modal-body">
-                <h2 class="editable"><%= title %></h2>
-                <div class="editable-controls">
-                    <input type="text" value="<%= title %>" />
-                    <br />
-                    <button>Save</button>
-                    <button>Cancel</button>
+                <div class="modal-body-spacing">
+                    <div class="editable-input"></div>
+                    <p class="editable"><%= description %></p>
                 </div>
-                <p class="editable"><%= description %></p>
+            </div>
+        </script>
+        <script type="text/template" class="template-editable-input">
+            <h2 class="editable <% if (editing) { %>hidden<% } %>"><%= text %></h2>
+            <div class="editable-controls <% if (!editing) { %>hidden<% } %>">
+                <input type="text" value="<%= text %>" />
+                <br />
+                <button class="save">Save</button>
+                <button class="cancel">Cancel</button>
             </div>
         </script>
         

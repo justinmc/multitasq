@@ -113,6 +113,10 @@ a:hover {
             background: #ffffff;
         }
 
+            .modal-body-spacing {
+                padding: 16px;
+            }
+
 	#content_tasksvg
 	{
 		background: #efefef;
@@ -188,7 +192,6 @@ a:hover {
 }
 
 .editable-controls {
-    display: none;
 }
 
     .editable-controls button {
@@ -210,6 +213,10 @@ a:hover {
         border-radius: 2px;
         margin-bottom: 12px;
     }
+
+.hidden {
+    display: none;
+}
 
 /* width where header title collides with header_right */
 @media all and (max-width: 690px), (max-height: 610px) {

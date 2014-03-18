@@ -11,7 +11,7 @@ var bases = {
 };
 
 var paths = {
-    scripts: ['scripts/app.js', 'scripts/model/task.js', 'scripts/collection/tasks.js', 'scripts/view/sandbox.js', 'scripts/view/task.js', 'scripts/view/modal.js', 'scripts/router.js', 'scripts/app_bootstrap.js'],
+    scripts: ['scripts/app.js', 'scripts/model/task.js', 'scripts/collection/tasks.js', 'scripts/view/sandbox.js', 'scripts/view/task.js', 'scripts/view/modal.js', 'scripts/view/editable_input.js', 'scripts/router.js', 'scripts/app_bootstrap.js'],
     styles: ['styles/**/*.css'],
     html: ['index.html', '404.html'], 
     bower: ['bower_components/jquery/dist/jquery.js', 'bower_components/underscore/underscore.js', 'bower_components/backbone/backbone.js', 'bower_components/backbone.localStorage/backbone.localStorage-min.js'],
