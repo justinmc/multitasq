@@ -33,7 +33,7 @@ var Multitasq = (function() {
         var that = this;
 
         // help dialog toggle buttons
-        $(".helpToggle").on("click", function() {
+        $(".helpToggle").on("click", function(event) {
             if (that.helpShown) {
                 that.router.navigate('', {trigger: true});
             }
