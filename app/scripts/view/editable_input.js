@@ -18,6 +18,7 @@ Multitasq.EditableInput = Backbone.View.extend({
 
     initialize: function(options) {
         this.task = options.task;
+        this.callback = options.callback;
         this.render();
     },
 

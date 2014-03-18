@@ -10,17 +10,34 @@ Multitasq.Modal = Backbone.View.extend({
 
     events: {
         "click .modal-background":      "close",
+        "keyup body":                   "keyup",
     },
 
+    // Accepts the task to render for, and a callback to call when removing
     initialize: function(options) {
         this.task = options.task;
         this.callback = options.callback;
+
+        // Rerender the view whenever the task changes
+        var that = this;
+        this.task.bind('change', function() {
+            that.render();
+        });
+
+        this.keyupBound = this.keyup.bind(this);
+        $('body').on('keyup', this.keyupBound);
+
         this.render();
     },
 
     render: function() {
         // Create the template
-        this.$el = $(this.template({title: this.task.get('title'), description: this.task.get('description')}));
+        this.$el = $(this.template({
+            title: this.task.get('title'),
+            description: this.task.get('description'),
+            created: this.task.get('created'),
+            updated: this.task.get('updated'),
+        }));
         $(this.parentSelector).html(this.$el);
         
         // Create the subviews
@@ -36,8 +53,17 @@ Multitasq.Modal = Backbone.View.extend({
     },
 
     close: function() {
+        $('body').off('keyup', this.keyupBound);
         this.remove();
         this.callback();
     },
+
+    // Handle generic keyup
+    keyup: function(event) {
+        // if escape, close
+        if (event.which === 27) {
+            this.close();
+        }
+    }
 
 });

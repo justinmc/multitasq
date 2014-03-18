@@ -21,7 +21,8 @@ Multitasq.Task = Backbone.Model.extend({
         status: 'needsAction',
         completed: null,
         // not Google Tasks data, only Multitasq
-        description: 'lol',
+        created: date,
+        description: '',
         children: [],
         level: 0,
         minimized: false,
@@ -31,10 +32,17 @@ Multitasq.Task = Backbone.Model.extend({
 
     // Set any defaults for new entries
     initialize: function(id, title) {
-      if (!this.get("title")) {
-        this.set({"title": this.defaults.title});
-        this.set({"title": this.defaults.parent});
-      }
+        if (!this.get("title")) {
+            this.set({"title": this.defaults.title});
+            this.set({"title": this.defaults.parent});
+        }
+
+        this.bind('change', this.update);
+    },
+
+    // Update the updated field
+    update: function() {
+        this.save({'updated': this.getDateNow()});
     },
     
     // Toggle the minimized setting true/false
