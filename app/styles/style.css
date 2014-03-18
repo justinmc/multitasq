@@ -99,9 +99,10 @@ a:hover {
             border: 1px #efefef solid;
             border-radius: 2px;
             height: 80%;
-            width: 40%;
-            left: 30%;
+            width: 550px;
+            left: 50%;
             top: 10%;
+            margin-left: -275px;
             background: #ffffff;
         }
 
@@ -129,6 +130,7 @@ a:hover {
 			fill: #ffffff; 
 			stroke-width: 2;
 			stroke: #afafaf;
+            cursor: pointer;
 		}
 		.pending .content_tasksvg_task_box {
 			fill: #f1f1f1; 
@@ -138,6 +140,7 @@ a:hover {
 		.content_tasksvg_task_text {
 			fill: #afafaf;
 			font-size: 13px;
+            cursor: pointer;
 		}
 		.content_tasksvg_task_textfield_form {
 			font-size: 13px;
