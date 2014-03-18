@@ -44,7 +44,7 @@
                 </svg>
 
                 <!-- Modal View -->
-                <div class="modal"></div>
+                <div class="modal-view"></div>
 
                 <div id="content_overlay">
                     <h3>What is this?</h3>
@@ -103,11 +103,13 @@
         
         <!-- Templates -->
         <script type="text/template" class="template-modal">
-            <div class="modal-background"></div>
-            <div class="modal-body">
-                <div class="modal-body-spacing">
-                    <div class="editable-input"></div>
-                    <p class="editable"><%= description %></p>
+            <div class="modal">
+                <div class="modal-background"></div>
+                <div class="modal-body">
+                    <div class="modal-body-spacing">
+                        <div class="editable-input"></div>
+                        <p class="editable"><%= description %></p>
+                    </div>
                 </div>
             </div>
         </script>

@@ -4,7 +4,7 @@ Multitasq.Modal = Backbone.View.extend({
         $("script.template-modal").html()
     ),
 
-    parentSelector: ".modal",
+    parentSelector: ".modal-view",
 
     task: null,
 
@@ -20,17 +20,14 @@ Multitasq.Modal = Backbone.View.extend({
 
     render: function() {
         // Create the template
-        var template = this.template({title: this.task.get('title'), description: this.task.get('description')});
-        this.$el = $(this.parentSelector).html(template);
+        this.$el = $(this.template({title: this.task.get('title'), description: this.task.get('description')}));
+        $(this.parentSelector).html(this.$el);
         
         // Create the subviews
         this.editTitle = new Multitasq.EditableInput({task: this.task});
 
         // Set the events
         this.delegateEvents();
-
-        // Show the modal
-        $(this.parentSelector).show();
 
         return this;
     },

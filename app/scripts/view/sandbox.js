@@ -246,7 +246,6 @@ Multitasq.Sandbox = Backbone.View.extend({
     // click to edit task text
     editTask: function(id) {
         var task = this.tasks.get(id);
-        var label = $('.content_tasksvg_task_text.task' + id);
 
         // create the modal
         var that = this;
@@ -259,6 +258,7 @@ Multitasq.Sandbox = Backbone.View.extend({
         
         /*
         // remove the current text in the svg
+        var label = $('.content_tasksvg_task_text.task' + id);
         label.get(0).textContent = '';
 
         // create foreign object in svg
