@@ -12,6 +12,8 @@ Multitasq.EditableInput = Backbone.View.extend({
         "click .editable":  "edit",
         "click .save":      "save",
         "click .cancel":    "close",
+        "keypress input":   "inputKeypress",
+        "keyup input":      "inputKeyup",
     },
 
     initialize: function(options) {
@@ -48,4 +50,20 @@ Multitasq.EditableInput = Backbone.View.extend({
         this.task.save({'title': this.$el.find('input').val()});
         this.close();
     },
+
+    // handle keypress on input
+    inputKeypress: function(event) {
+        // on enter key, save
+        if (event.which === 13) {
+            this.save();
+        }
+    },
+
+    // handle keyup on input
+    inputKeyup: function(event) {
+        // on escape key, close
+        if (event.which === 27) {
+            this.close();
+        }
+    }
 });
