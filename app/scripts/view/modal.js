@@ -19,7 +19,7 @@ Multitasq.Modal = Backbone.View.extend({
         this.task = task;
 
         // Create the template
-        var template = this.template({title: task.get('title')});
+        var template = this.template({title: task.get('title'), description: task.get('description')});
         this.$el = $(this.parentSelector).html(template);
 
         // Set the events

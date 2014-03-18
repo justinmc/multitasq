@@ -21,6 +21,7 @@ Multitasq.Task = Backbone.Model.extend({
         status: 'needsAction',
         completed: null,
         // not Google Tasks data, only Multitasq
+        description: 'lol',
         children: [],
         level: 0,
         minimized: false,
