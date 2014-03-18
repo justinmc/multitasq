@@ -14,13 +14,14 @@ Multitasq.EditableInput = Backbone.View.extend({
         "click .cancel":    "close",
     },
 
-    render: function(text) {
-        if (!this.text) {
-            this.text = text;
-        }
+    initialize: function(options) {
+        this.task = options.task;
+        this.render();
+    },
 
+    render: function() {
         // Create the template
-        var template = this.template({text: this.text, editing: this.editing});
+        var template = this.template({title: this.task.get('title'), editing: this.editing});
         this.$el = $(this.parentSelector).html(template);
 
         // Set the events
@@ -33,6 +34,7 @@ Multitasq.EditableInput = Backbone.View.extend({
     edit: function() {
         this.editing = true;
         this.render();
+        this.$el.find('input').get(0).select();
     },
 
     // change to normal view
@@ -43,7 +45,7 @@ Multitasq.EditableInput = Backbone.View.extend({
 
     // save the changes
     save: function() {
-        this.text = this.$el.find("input").val();
+        this.task.save({'title': this.$el.find('input').val()});
         this.close();
     },
 });

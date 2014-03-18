@@ -249,9 +249,15 @@ Multitasq.Sandbox = Backbone.View.extend({
         var label = $('.content_tasksvg_task_text.task' + id);
 
         // create the modal
-        var modal = new Multitasq.Modal();
-        modal.render(task);
+        var that = this;
+        var modal = new Multitasq.Modal({
+            task: task,
+            callback: function() {
+                that.render();
+            },
+        });
         
+        /*
         // remove the current text in the svg
         label.get(0).textContent = '';
 
@@ -291,6 +297,7 @@ Multitasq.Sandbox = Backbone.View.extend({
         // select the input text for the user
         var input = $('.content_tasksvg_task_textfield.task'+label.parent().data('task')).find('input[type=text]').get(0);
         input.select();
+        */
     },
     
     // Cancel all open task edits without saving

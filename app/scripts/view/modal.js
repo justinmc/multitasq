@@ -12,19 +12,19 @@ Multitasq.Modal = Backbone.View.extend({
         "click .modal-background":      "close",
     },
 
-    initialize: function() {
+    initialize: function(options) {
+        this.task = options.task;
+        this.callback = options.callback;
+        this.render();
     },
 
-    render: function(task) {
-        this.task = task;
-
+    render: function() {
         // Create the template
-        var template = this.template({title: task.get('title'), description: task.get('description')});
+        var template = this.template({title: this.task.get('title'), description: this.task.get('description')});
         this.$el = $(this.parentSelector).html(template);
         
         // Create the subviews
-        var title = new Multitasq.EditableInput();
-        title.render(task.get('title'));
+        this.editTitle = new Multitasq.EditableInput({task: this.task});
 
         // Set the events
         this.delegateEvents();
@@ -40,6 +40,7 @@ Multitasq.Modal = Backbone.View.extend({
 
     close: function() {
         this.remove();
+        this.callback();
     },
 
 });
