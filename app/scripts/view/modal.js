@@ -10,6 +10,7 @@ Multitasq.Modal = Backbone.View.extend({
 
     events: {
         "click .modal-background":      "close",
+        "click .close":                 "close",
         "keyup body":                   "keyup",
     },
 

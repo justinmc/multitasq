@@ -12,7 +12,7 @@ var bases = {
 
 var paths = {
     scripts: ['scripts/app.js', 'scripts/model/task.js', 'scripts/collection/tasks.js', 'scripts/view/sandbox.js', 'scripts/view/task.js', 'scripts/view/modal.js', 'scripts/view/editable_input.js', 'scripts/router.js', 'scripts/app_bootstrap.js'],
-    styles: ['styles/**/*.css'],
+    styles: ['styles/**/*.css', 'styles/**/*.eot', 'styles/**/*.svg', 'styles/**/*.ttf', 'styles/**/*.woff'],
     html: ['index.html', '404.html'], 
     bower: ['bower_components/jquery/dist/jquery.js', 'bower_components/underscore/underscore.js', 'bower_components/backbone/backbone.js', 'bower_components/backbone.localStorage/backbone.localStorage-min.js'],
     extras: ['crossdomain.xml', 'humans.txt', 'manifest.appcache', 'robots.txt', 'favicon.ico', '.htaccess'],
@@ -46,8 +46,8 @@ gulp.task('copy', function() {
         .pipe(gulp.dest(bases.dist));
 
     // copy styles
-    gulp.src(paths.styles, {cwd: bases.app})
-        .pipe(gulp.dest(bases.dist + 'styles'));
+    gulp.src(paths.styles, {cwd: 'app/**'})
+        .pipe(gulp.dest(bases.dist));
 
     // copy bower scripts
     gulp.src(paths.bower, {cwd: 'app/**'})

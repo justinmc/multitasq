@@ -110,6 +110,11 @@ a:hover {
                 padding: 16px;
             }
 
+                .close {
+                    float: right;
+                    cursor: pointer;
+                }
+
 	#content_tasksvg
 	{
 		background: #efefef;
