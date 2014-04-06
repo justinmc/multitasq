@@ -7,7 +7,7 @@ Multitasq.Task = Backbone.Model.extend({
     // default attributes for the task
     defaults: function() {
       // get current date
-      var date = this.getDateNow();
+      var date = Date.now();
       
       return {
         kind: "tasks#task",
@@ -42,7 +42,7 @@ Multitasq.Task = Backbone.Model.extend({
 
     // Update the updated field
     update: function() {
-        this.save({'updated': this.getDateNow()});
+        this.save({'updated': Date.now()}, {silent: true});
     },
     
     // Toggle the minimized setting true/false
@@ -77,24 +77,45 @@ Multitasq.Task = Backbone.Model.extend({
 
     // Set the task as completed
     setCompleted: function() {
-        var date = this.getDateNow();
+        var date = Date.now();
         this.save({completed: date});
         this.save({updated: date});
     },
 
     // Set the task as incomplete
     setIncomplete: function() {
-        var date = this.getDateNow();
+        var date = Date.now();
         this.save({completed: null});
-           this.save({updated: date});
+        this.save({updated: date});
     },
 
-    // Returns the current date formatted in Google Task's format
-    getDateNow: function() {
-        var now = new Date();
-        var date = now.getUTCFullYear() + '-' + now.getUTCMonth() + '-' + now.getUTCDate() + 'T' + now.getUTCHours() + ':' + now.getUTCMinutes() + ':' + now.getUTCSeconds() + '.000Z';
+    // Returns the given date formatted in Google Task's format
+    dateToGoogleTasks: function(date) {
+        date = date.getUTCFullYear() + '-' + date.getUTCMonth() + '-' + date.getUTCDate() + 'T' + date.getUTCHours() + ':' + date.getUTCMinutes() + ':' + date.getUTCSeconds() + '.000Z';
 
         return date;
+    },
+
+    // Returns the created date formatted in a nice readable format
+    getCreatedHuman: function() {
+        return this.dateToHuman(this.get('created'));
+    },
+
+    // Returns the updated date formatted in a nice readable format
+    getUpdatedHuman: function() {
+        return this.dateToHuman(this.get('updated'));
+    },
+
+    // Converts the given date string to a human readable format
+    dateToHuman: function(dateString) {
+        var date = new Date(dateString);
+
+        // Check for an invalid date
+        if (Object.prototype.toString.call(date) === '[object Date]' && isNaN(date.valueOf())) {
+            return '';
+        }
+
+        return date.toLocaleTimeString() + ' ' + date.toLocaleDateString();
     },
 
     // Remove this task from localStorage and delete its view.

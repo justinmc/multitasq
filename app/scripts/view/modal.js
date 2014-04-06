@@ -36,8 +36,8 @@ Multitasq.Modal = Backbone.View.extend({
         this.$el = $(this.template({
             title: this.task.get('title'),
             description: this.task.get('title'),
-            created: this.task.get('created'),
-            updated: this.task.get('updated'),
+            created: this.task.getCreatedHuman(),
+            updated: this.task.getUpdatedHuman(),
         }));
         $(this.parentSelector).html(this.$el);
         
