@@ -62,8 +62,8 @@ Multitasq.Modal = Backbone.View.extend({
 
     // Handle generic keyup
     keyup: function(event) {
-        // if escape, close
-        if (event.which === 27) {
+        // if escape or enter, close
+        if (event.which === 27 || event.which === 13) {
             this.close();
         }
     }
