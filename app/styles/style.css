@@ -96,14 +96,28 @@ a:hover {
         .modal-body {
             position: absolute;
             z-index: 2;
-            border: 1px #efefef solid;
-            border-radius: 2px;
             height: 80%;
             width: 550px;
             left: 50%;
             top: 10%;
             margin-left: -275px;
+            border: 1px #efefef solid;
+            border-radius: 2px;
+            text-align: left;
             background: #ffffff;
+        }
+        @media all and (max-height: 610px) {
+            .modal-body {
+                height: 100%;
+                top: 0;
+            }
+        }
+        @media all and (max-width: 690px) {
+            .modal-body {
+                width: 90%;
+                left: 5%;
+                margin-left: 0;
+            }
         }
 
             .modal-body-spacing {
