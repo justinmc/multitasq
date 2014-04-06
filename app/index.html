@@ -123,7 +123,17 @@
         <script type="text/template" class="template-editable-input">
             <h2 class="editable <% if (editing) { %>hidden<% } %>"><% if (value) { %><%= value %><% } else { %><%= defaultValue %><% } %></h2>
             <div class="editable-controls <% if (!editing) { %>hidden<% } %>">
-                <input type="text" value="<%= value %>" />
+                <input type="text" class="edit" value="<%= value %>" />
+                <br />
+                <button class="save">Save</button>
+                <button class="cancel">Cancel</button>
+            </div>
+        </script>
+
+        <script type="text/template" class="template-editable-input-long">
+            <p class="editable <% if (editing) { %>hidden<% } %>"><% if (value) { %><%= value %><% } else { %><%= defaultValue %><% } %></p>
+            <div class="editable-controls <% if (!editing) { %>hidden<% } %>">
+                <textarea class="edit"><%= value %></textarea>
                 <br />
                 <button class="save">Save</button>
                 <button class="cancel">Cancel</button>

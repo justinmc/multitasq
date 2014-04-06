@@ -15,15 +15,24 @@ Multitasq.EditableInput = Backbone.View.extend({
         "click .editable":  "edit",
         "click .save":      "save",
         "click .cancel":    "close",
-        "keypress input":   "inputKeypress",
-        "keyup input":      "inputKeyup",
+        "keypress .edit":   "inputKeypress",
+        "keyup .edit":      "inputKeyup",
     },
 
     initialize: function(options) {
+        // Set passed in options
         this.task = options.task;
         this.attribute = options.attribute;
         this.parentSelector = options.parentSelector;
         this.callback = options.callback;
+
+        // Change template if needed
+        if (options.long) {
+            this.template = _.template(
+                $("script.template-editable-input-long").html()
+            );
+        }
+
         this.render();
     },
 
@@ -42,7 +51,7 @@ Multitasq.EditableInput = Backbone.View.extend({
     edit: function() {
         this.editing = true;
         this.render();
-        this.$el.find('input').get(0).select();
+        this.$el.find('.edit').get(0).select();
     },
 
     // change to normal view
@@ -54,7 +63,7 @@ Multitasq.EditableInput = Backbone.View.extend({
     // save the changes
     save: function() {
         var saveobj = {};
-        saveobj[this.attribute] = this.$el.find('input').val();
+        saveobj[this.attribute] = this.$el.find('.edit').val();
         this.task.save(saveobj);
         this.close();
     },

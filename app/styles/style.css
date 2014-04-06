@@ -189,6 +189,7 @@ a:hover {
 
 .editable {
     cursor: pointer;
+    clear: both;
 }
 
 .editable-controls {
@@ -207,11 +208,12 @@ a:hover {
         color: #ffffff;
     }
 
-    .editable-controls input {
+    .editable-controls .edit {
         padding: 2px;
         border: 1px #afafaf solid;
         border-radius: 2px;
         margin-bottom: 12px;
+        width: 100%;
     }
 
 .hidden {
