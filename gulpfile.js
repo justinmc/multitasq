@@ -29,7 +29,7 @@ gulp.task('scripts', function() {
         .pipe(jshint.reporter('default'))
         .pipe(uglify())
         .pipe(concat('multitasq.min.js'))
-        .pipe(gulp.dest(bases.dist + 'scripts/'));
+        .pipe(gulp.dest(bases.app + 'scripts/'));
 });
 
 /* Not needed for favicon
@@ -48,6 +48,10 @@ gulp.task('copy', function() {
     // copy styles
     gulp.src(paths.styles, {cwd: 'app/**'})
         .pipe(gulp.dest(bases.dist));
+
+    // copy processed script
+    gulp.src('app/scripts/multitasq.min.js')
+        .pipe(gulp.dest(bases.dist + 'scripts/'));
 
     // copy bower scripts
     gulp.src(paths.bower, {cwd: 'app/**'})
