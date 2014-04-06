@@ -191,6 +191,10 @@ a:hover {
     cursor: pointer;
     clear: both;
 }
+.editable:hover {
+    color: #008000;
+    transition: 0.5s;
+}
 
 .editable-controls {
 }
