@@ -14,10 +14,10 @@ Multitasq.Modal = Backbone.View.extend({
         "keyup body":                   "keyup",
     },
 
-    // Accepts the task to render for, and a callback to call when removing
+    // Accepts the task to render for
     initialize: function(options) {
+        this.app = options.app;
         this.task = options.task;
-        this.callback = options.callback;
 
         // Rerender the view whenever the task changes
         var that = this;
@@ -56,8 +56,8 @@ Multitasq.Modal = Backbone.View.extend({
 
     close: function() {
         $('body').off('keyup', this.keyupBound);
+        this.app.router.navigate('');
         this.remove();
-        this.callback();
     },
 
     // Handle generic keyup

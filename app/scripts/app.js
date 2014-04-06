@@ -14,17 +14,15 @@ var Multitasq = (function() {
     // Constructor
     function Obj() {
 
-        var that = this;
-
         // Create the main view
-        that.sandbox = new Obj.Sandbox();
+        this.sandbox = new Obj.Sandbox(this);
 
         // Create the router
-        that.router = new Obj.Router(that);
+        this.router = new Obj.Router(this);
         Backbone.history.start({pushState: false});
 
         // Bind the events
-        that.createEvents();
+        this.createEvents();
     }
 
     // Sets events

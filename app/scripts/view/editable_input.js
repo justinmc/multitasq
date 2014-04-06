@@ -23,7 +23,6 @@ Multitasq.EditableInput = Backbone.View.extend({
         this.task = options.task;
         this.attribute = options.attribute;
         this.parentSelector = options.parentSelector;
-        this.callback = options.callback;
 
         // Change template if needed
         if (options.long) {

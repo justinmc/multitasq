@@ -44,7 +44,9 @@ Multitasq.Sandbox = Backbone.View.extend({
         'keyup':                                        'keypress'
     },
     
-    initialize: function(nodes) {
+    initialize: function(app) {
+        this.app = app;
+
         // create our main collection of tasks
         this.tasks = new Multitasq.TaskList(this);
         
@@ -67,6 +69,12 @@ Multitasq.Sandbox = Backbone.View.extend({
         if (!this.tasks.length) {
             this.tasks.reset();
         }
+
+        // Rerender the view whenever the tasks change
+        var that = this;
+        this.tasks.bind('change', function() {
+            that.render();
+        });
     },
     
     // Remove everything from the svg
@@ -246,15 +254,7 @@ Multitasq.Sandbox = Backbone.View.extend({
     // click to edit task text
     editTask: function(id) {
         var task = this.tasks.get(id);
-
-        // create the modal
-        var that = this;
-        var modal = new Multitasq.Modal({
-            task: task,
-            callback: function() {
-                that.render();
-            },
-        });
+        this.app.router.navigate('leaf/' + task.id, {trigger: true});
         
         /*
         // remove the current text in the svg
