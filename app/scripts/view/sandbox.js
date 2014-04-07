@@ -44,7 +44,9 @@ Multitasq.Sandbox = Backbone.View.extend({
         'keyup':                                        'keypress'
     },
     
-    initialize: function(nodes) {
+    initialize: function(app) {
+        this.app = app;
+
         // create our main collection of tasks
         this.tasks = new Multitasq.TaskList(this);
         
@@ -67,6 +69,12 @@ Multitasq.Sandbox = Backbone.View.extend({
         if (!this.tasks.length) {
             this.tasks.reset();
         }
+
+        // Rerender the view whenever the tasks change
+        var that = this;
+        this.listenTo(this.tasks, 'change', function() {
+            that.render();
+        });
     },
     
     // Remove everything from the svg
@@ -156,9 +164,6 @@ Multitasq.Sandbox = Backbone.View.extend({
                 'id':         id,
                 'parent':    this.nearest
             });
-            
-            // start editing the task
-            this.editTask(id);
         }
     },    
     
@@ -245,48 +250,8 @@ Multitasq.Sandbox = Backbone.View.extend({
     
     // click to edit task text
     editTask: function(id) {
-        var label = $('.content_tasksvg_task_text.task' + id);
         var task = this.tasks.get(id);
-        
-        // remove the current text in the svg
-        label.get(0).textContent = '';
-
-        // create foreign object in svg
-        var field = document.createElementNS('http://www.w3.org/2000/svg','foreignObject');
-        field.setAttribute('class', 'content_tasksvg_task_textfield task'+label.parent().data('task'));
-        field.setAttribute('data-task', label.parent().data('task'));
-        field.setAttribute('x', label.attr('x'));
-        field.setAttribute('y', (label.attr('y') - 20));
-        field.setAttribute('width', (this.taskWidth - 10));
-        field.setAttribute('height', '50');
-        // and create its body
-        var fieldBody = document.createElement('body');
-        fieldBody.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
-        // create a form
-        var fieldBodyForm = document.createElement('form');
-        fieldBodyForm.setAttribute('class', 'content_tasksvg_task_textfield_form');
-        // create the text input field
-        var fieldBodyFormInput = document.createElement('input');
-        fieldBodyFormInput.setAttribute('type', 'text');
-        fieldBodyFormInput.setAttribute('value', task.get('title'));
-        fieldBodyFormInput.setAttribute('style', ('width: ' + (this.taskWidth - 22) + 'px'));
-        // create the submit button
-        var fieldBodyFormSubmit = document.createElement('input');
-        fieldBodyFormSubmit.setAttribute('type', 'submit');
-        fieldBodyFormSubmit.setAttribute('value', 'Edit');
-        fieldBodyFormSubmit.setAttribute('class', 'content_tasksvg_task_textfield_submit');
-        fieldBodyFormSubmit.setAttribute('hidden', 'hidden');
-        
-        // stick everything together and put it in the DOM
-        fieldBodyForm.appendChild(fieldBodyFormInput);
-        fieldBodyForm.appendChild(fieldBodyFormSubmit);
-        fieldBody.appendChild(fieldBodyForm);
-        field.appendChild(fieldBody);
-        $(this.el).append(field);
-
-        // select the input text for the user
-        var input = $('.content_tasksvg_task_textfield.task'+label.parent().data('task')).find('input[type=text]').get(0);
-        input.select();
+        this.app.router.navigate('leaf/' + task.id, {trigger: true});
     },
     
     // Cancel all open task edits without saving

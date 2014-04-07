@@ -4,6 +4,7 @@ Multitasq.Router = Backbone.Router.extend({
     routes: {
         "":                     "main",    // root
         "help":                 "help",    // #help
+        "leaf/:id":             "leaf",    // individual task
         "*path":                "main",    // all others
     },
 
@@ -19,5 +20,12 @@ Multitasq.Router = Backbone.Router.extend({
     help: function() {
         this.app.helpShow();
     },
+
+    leaf: function(id) {
+        new Multitasq.Modal({
+            task: this.app.sandbox.tasks.get(id),
+            app: this.app,
+        });
+    }
 
 });
