@@ -21,7 +21,7 @@ Multitasq.Modal = Backbone.View.extend({
 
         // Rerender the view whenever the task changes
         var that = this;
-        this.task.bind('change', function() {
+        this.listenTo(this.task, 'change', function() {
             that.render();
         });
 

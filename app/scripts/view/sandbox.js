@@ -164,9 +164,6 @@ Multitasq.Sandbox = Backbone.View.extend({
                 'id':         id,
                 'parent':    this.nearest
             });
-            
-            // start editing the task
-            this.editTask(id);
         }
     },    
     
