@@ -109,7 +109,11 @@
                 <div class="modal-background"></div>
                 <div class="modal-body">
                     <div class="modal-body-spacing">
-                        <span class="close icon-close"></span>
+                        <span class="icon close icon-close"></span>
+                        <span class="icon minimize icon-minus <% if (minimized) { %>hidden<% } %>"></span>
+                        <span class="icon maximize icon-plus <% if (!minimized) { %>hidden<% } %>"></span>
+                        <span class="icon up icon-arrow-up <% if (upped) { %>hidden<% } %>"></span>
+                        <span class="icon down icon-arrow-down <% if (!upped) { %>hidden<% } %>"></span>
                         <div class="editable-input title"></div>
                         <span>Created <%= created %></span>
                         <br />

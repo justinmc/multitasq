@@ -124,9 +124,13 @@ a:hover {
                 padding: 16px;
             }
 
-                .close {
+                .modal-body-spacing .icon {
                     float: right;
+                    margin: 0 6px;
                     cursor: pointer;
+                }
+                .modal-body-spacing .icon:hover {
+                    color: #008000;
                 }
 
 	#content_tasksvg

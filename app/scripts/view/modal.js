@@ -11,6 +11,10 @@ Multitasq.Modal = Backbone.View.extend({
     events: {
         "click .modal-background":      "close",
         "click .close":                 "close",
+        "click .minimize":              "minimize",
+        "click .maximize":              "maximize",
+        "click .up":                    "up",
+        "click .down":                  "down",
         "keyup body":                   "keyup",
     },
 
@@ -36,6 +40,8 @@ Multitasq.Modal = Backbone.View.extend({
         this.$el = $(this.template({
             title: this.task.get('title'),
             description: this.task.get('title'),
+            upped: this.task.get('upped'),
+            minimized: this.task.get('minimized'),
             created: this.task.getCreatedHuman(),
             updated: this.task.getUpdatedHuman(),
         }));
@@ -60,10 +66,35 @@ Multitasq.Modal = Backbone.View.extend({
     show: function() {
     },
 
+    // Close the modal
     close: function() {
         $('body').off('keyup', this.keyupBound);
         this.app.router.navigate('');
         this.remove();
+    },
+
+    // Minimize the task
+    minimize: function() {
+        this.task.save({minimized: true});
+        this.close();
+    },
+
+    // Maximize the task
+    maximize: function() {
+        this.task.save({minimized: false});
+        this.close();
+    },
+
+    // 'up' the task
+    up: function() {
+        this.task.save({upped: true});
+        this.close();
+    },
+
+    // 'down' the task
+    down: function() {
+        this.task.save({upped: false});
+        this.close();
     },
 
     // Handle generic keyup
