@@ -72,7 +72,7 @@ Multitasq.Sandbox = Backbone.View.extend({
 
         // Rerender the view whenever the tasks change
         var that = this;
-        this.tasks.bind('change', function() {
+        this.listenTo(this.tasks, 'change', function() {
             that.render();
         });
     },
