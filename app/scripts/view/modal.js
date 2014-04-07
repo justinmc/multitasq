@@ -15,6 +15,8 @@ Multitasq.Modal = Backbone.View.extend({
         "click .maximize":              "maximize",
         "click .up":                    "up",
         "click .down":                  "down",
+        "click .complete":              "complete",
+        "click .archive":               "archive",
         "keyup body":                   "keyup",
     },
 
@@ -42,6 +44,9 @@ Multitasq.Modal = Backbone.View.extend({
             description: this.task.get('title'),
             upped: this.task.get('upped'),
             minimized: this.task.get('minimized'),
+            completed: !!this.task.get('completed'),
+            childrenLength: this.task.get("children").length,
+            top: this.task.get("parent") === -1,
             created: this.task.getCreatedHuman(),
             updated: this.task.getUpdatedHuman(),
         }));
@@ -94,6 +99,19 @@ Multitasq.Modal = Backbone.View.extend({
     // 'down' the task
     down: function() {
         this.task.save({upped: false});
+        this.close();
+    },
+
+    // complete the task
+    complete: function() {
+        this.task.setCompleted();
+        this.close();
+    },
+
+    // archive the task
+    archive: function() {
+        // TODO
+        //this.task.setArchived();
         this.close();
     },
 
