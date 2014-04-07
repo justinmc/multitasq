@@ -45,6 +45,12 @@ Multitasq.Modal = Backbone.View.extend({
         this.editTitle = new Multitasq.EditableInput({task: this.task, attribute: 'title', parentSelector: '.editable-input.title'});
         this.editDescription = new Multitasq.EditableInput({task: this.task, attribute: 'description', parentSelector: '.editable-input.description', long: true});
 
+        // Start editing the title automatically if it's the default text
+        if (this.task.get('title') === this.task.defaultTitle) {
+            this.editTitle.editing = true;
+            this.editTitle.render();
+        }
+
         // Set the events
         this.delegateEvents();
 

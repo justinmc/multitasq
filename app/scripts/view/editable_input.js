@@ -42,6 +42,11 @@ Multitasq.EditableInput = Backbone.View.extend({
         // Set the events
         this.delegateEvents();
 
+        // Highlight the text if editing
+        if (this.editing) {
+            this.$el.find('.edit').get(0).select();
+        }
+
         return this;
     },
 
@@ -49,7 +54,6 @@ Multitasq.EditableInput = Backbone.View.extend({
     edit: function() {
         this.editing = true;
         this.render();
-        this.$el.find('.edit').get(0).select();
     },
 
     // change to normal view
