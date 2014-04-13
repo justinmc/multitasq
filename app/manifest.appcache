@@ -1,26 +1,26 @@
 CACHE MANIFEST
-# 2013-07-07
+# 2014-04-06
 
 # Explicitly cached 'master entries'.
 CACHE:
 favicon.ico
 index.html
-css/style.css
-css/h5bp.css
-js/app/view/sandbox.js
-js/app/view/task.js
-js/app/model/task.js
-js/app/collection/tasks.js
-js/libs/backbone.js
-js/libs/backbone.localStorage.js
-js/libs/underscore.js
-js/libs/jquery-1.7.1.min.js
-js/libs/modernizr-2.5.3.min.js
+styles/style.css
+styles/h5bp.css
+scripts/app/multitasq.min.js
+bower_components/backbone/backbone.js
+bower_components/backbone.localStorage/backbone.localStorage.js
+bower_components/underscore/underscore.js
+bower_components/jquery/dist/query.js
+css/icomoon/style.css
+css/icomoon/fonts/icomoon.woff
+css/icomoon/fonts/icomoon.eot
+css/icomoon/fonts/icomoon.svg
+css/icomoon/fonts/icomoon.ttf
 
 # Resources that require the user to be online.
 # NETWORK:
 http://fonts.googleapis.com/css?family=Walter+Turncoat
-http://themes.googleusercontent.com/static/fonts/
 
 # FALLBACK:
 # servethis ifthisisinaccessible

@@ -42,7 +42,7 @@ a:hover {
 
 #header {
 	border-bottom: 1px #afafaf solid;
-	height: 80px;
+	height: 48px;
 	background: #ffffff;
 }
 
@@ -57,7 +57,7 @@ a:hover {
 	width: 100%;
 	text-align: left;
 	position: absolute;
-	top: 80px;
+	top: 48px;
 	bottom: 0px;
 }
 
@@ -96,19 +96,42 @@ a:hover {
         .modal-body {
             position: absolute;
             z-index: 2;
-            border: 1px #efefef solid;
-            border-radius: 2px;
             height: 80%;
             width: 550px;
             left: 50%;
             top: 10%;
             margin-left: -275px;
+            border: 1px #efefef solid;
+            border-radius: 2px;
+            text-align: left;
             background: #ffffff;
+        }
+        @media all and (max-height: 610px) {
+            .modal-body {
+                height: 100%;
+                top: 0;
+            }
+        }
+        @media all and (max-width: 690px) {
+            .modal-body {
+                width: 90%;
+                left: 5%;
+                margin-left: 0;
+            }
         }
 
             .modal-body-spacing {
                 padding: 16px;
             }
+
+                .modal-body-spacing .icon {
+                    float: right;
+                    margin: 0 6px;
+                    cursor: pointer;
+                }
+                .modal-body-spacing .icon:hover {
+                    color: #008000;
+                }
 
 	#content_tasksvg
 	{
@@ -184,6 +207,11 @@ a:hover {
 
 .editable {
     cursor: pointer;
+    clear: both;
+}
+.editable:hover {
+    color: #008000;
+    transition: 0.5s;
 }
 
 .editable-controls {
@@ -202,34 +230,15 @@ a:hover {
         color: #ffffff;
     }
 
-    .editable-controls input {
+    .editable-controls .edit {
         padding: 2px;
         border: 1px #afafaf solid;
         border-radius: 2px;
         margin-bottom: 12px;
+        width: 100%;
     }
 
 .hidden {
     display: none;
-}
-
-/* width where header title collides with header_right */
-@media all and (max-width: 690px), (max-height: 610px) {
-	h1 {font-size: 12px;}
-	h2 {font-size: 10px;}
-	h3 {font-size: 8px;}
-	#header {height: 60px;}
-	#header_right {padding: 4px 4px 0 0;}
-	#content {top: 60px;}
-}
-
-/* width where header title collides with header_right again */
-@media all and (max-width: 360px), (max-height: 350px) {
-	h1 {font-size: 9px;}
-	h2 {font-size: 7px;}
-	h3 {font-size: 5px;}
-	#header {height: 40px;}
-	#header_right {padding: 2px 2px 0 0;}
-	#content {top: 40px;}
 }
 

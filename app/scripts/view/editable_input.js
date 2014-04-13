@@ -4,7 +4,10 @@ Multitasq.EditableInput = Backbone.View.extend({
         $("script.template-editable-input").html()
     ),
 
-    parentSelector: ".editable-input",
+    // passed in parent selector
+    parentSelector: null,
+
+    defaultValue: 'Click to edit',
 
     editing: false,
 
@@ -12,23 +15,37 @@ Multitasq.EditableInput = Backbone.View.extend({
         "click .editable":  "edit",
         "click .save":      "save",
         "click .cancel":    "close",
-        "keypress input":   "inputKeypress",
-        "keyup input":      "inputKeyup",
+        "keyup .edit":      "inputKeyup",
     },
 
     initialize: function(options) {
+        // Set passed in options
         this.task = options.task;
-        this.callback = options.callback;
+        this.attribute = options.attribute;
+        this.parentSelector = options.parentSelector;
+
+        // Change template if needed
+        if (options.long) {
+            this.template = _.template(
+                $("script.template-editable-input-long").html()
+            );
+        }
+
         this.render();
     },
 
     render: function() {
         // Create the template
-        var template = this.template({title: this.task.get('title'), editing: this.editing});
+        var template = this.template({value: this.task.get(this.attribute), defaultValue: this.defaultValue, editing: this.editing});
         this.$el = $(this.parentSelector).html(template);
 
         // Set the events
         this.delegateEvents();
+
+        // Highlight the text if editing
+        if (this.editing) {
+            this.$el.find('.edit').get(0).select();
+        }
 
         return this;
     },
@@ -37,7 +54,6 @@ Multitasq.EditableInput = Backbone.View.extend({
     edit: function() {
         this.editing = true;
         this.render();
-        this.$el.find('input').get(0).select();
     },
 
     // change to normal view
@@ -48,16 +64,10 @@ Multitasq.EditableInput = Backbone.View.extend({
 
     // save the changes
     save: function() {
-        this.task.save({'title': this.$el.find('input').val()});
+        var saveobj = {};
+        saveobj[this.attribute] = this.$el.find('.edit').val();
+        this.task.save(saveobj);
         this.close();
-    },
-
-    // handle keypress on input
-    inputKeypress: function(event) {
-        // on enter key, save
-        if (event.which === 13) {
-            this.save();
-        }
     },
 
     // handle keyup on input
@@ -65,6 +75,16 @@ Multitasq.EditableInput = Backbone.View.extend({
         // on escape key, close
         if (event.which === 27) {
             this.close();
+
+            // Stop propagation to prevent closing the modal
+            event.stopPropagation();
+        }
+        // on enter key, save
+        else if (event.which === 13) {
+            this.save();
+
+            // Stop propagation to prevent closing the modal
+            event.stopPropagation();
         }
     }
 });

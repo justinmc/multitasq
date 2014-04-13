@@ -1,5 +1,5 @@
 // Auto-initialize the app
 $(function(){
-    new Multitasq();
+    window.multitasq = new Multitasq();
 });
 

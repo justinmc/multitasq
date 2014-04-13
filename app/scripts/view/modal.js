@@ -10,17 +10,24 @@ Multitasq.Modal = Backbone.View.extend({
 
     events: {
         "click .modal-background":      "close",
+        "click .close":                 "close",
+        "click .minimize":              "minimize",
+        "click .maximize":              "maximize",
+        "click .up":                    "up",
+        "click .down":                  "down",
+        "click .complete":              "complete",
+        "click .archive":               "archive",
         "keyup body":                   "keyup",
     },
 
-    // Accepts the task to render for, and a callback to call when removing
+    // Accepts the task to render for
     initialize: function(options) {
+        this.app = options.app;
         this.task = options.task;
-        this.callback = options.callback;
 
         // Rerender the view whenever the task changes
         var that = this;
-        this.task.bind('change', function() {
+        this.listenTo(this.task, 'change', function() {
             that.render();
         });
 
@@ -34,14 +41,26 @@ Multitasq.Modal = Backbone.View.extend({
         // Create the template
         this.$el = $(this.template({
             title: this.task.get('title'),
-            description: this.task.get('description'),
-            created: this.task.get('created'),
-            updated: this.task.get('updated'),
+            description: this.task.get('title'),
+            upped: this.task.get('upped'),
+            minimized: this.task.get('minimized'),
+            completed: !!this.task.get('completed'),
+            childrenLength: this.task.get("children").length,
+            top: this.task.get("parent") === -1,
+            created: this.task.getCreatedHuman(),
+            updated: this.task.getUpdatedHuman(),
         }));
         $(this.parentSelector).html(this.$el);
         
         // Create the subviews
-        this.editTitle = new Multitasq.EditableInput({task: this.task});
+        this.editTitle = new Multitasq.EditableInput({task: this.task, attribute: 'title', parentSelector: '.editable-input.title'});
+        this.editDescription = new Multitasq.EditableInput({task: this.task, attribute: 'description', parentSelector: '.editable-input.description', long: true});
+
+        // Start editing the title automatically if it's the default text
+        if (this.task.get('title') === this.task.defaultTitle) {
+            this.editTitle.editing = true;
+            this.editTitle.render();
+        }
 
         // Set the events
         this.delegateEvents();
@@ -52,16 +71,54 @@ Multitasq.Modal = Backbone.View.extend({
     show: function() {
     },
 
+    // Close the modal
     close: function() {
         $('body').off('keyup', this.keyupBound);
+        this.app.router.navigate('');
         this.remove();
-        this.callback();
+    },
+
+    // Minimize the task
+    minimize: function() {
+        this.task.save({minimized: true});
+        this.close();
+    },
+
+    // Maximize the task
+    maximize: function() {
+        this.task.save({minimized: false});
+        this.close();
+    },
+
+    // 'up' the task
+    up: function() {
+        this.task.save({upped: true});
+        this.close();
+    },
+
+    // 'down' the task
+    down: function() {
+        this.task.save({upped: false});
+        this.close();
+    },
+
+    // complete the task
+    complete: function() {
+        this.task.setCompleted();
+        this.close();
+    },
+
+    // archive the task
+    archive: function() {
+        // TODO
+        //this.task.setArchived();
+        this.close();
     },
 
     // Handle generic keyup
     keyup: function(event) {
-        // if escape, close
-        if (event.which === 27) {
+        // if escape or enter, close
+        if (event.which === 27 || event.which === 13) {
             this.close();
         }
     }

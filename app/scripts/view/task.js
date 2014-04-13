@@ -105,9 +105,13 @@ Multitasq.TaskView = Backbone.View.extend({
             group.appendChild(updown);
         }
                 
-        // create the -/+ minimize button
+        // create the -/+ minimize button if has children
+        var minHidden = '';
+        if (this.task.get('children').length <= 0) {
+            minHidden = 'hidden';
+        }
         var minimize = document.createElementNS('http://www.w3.org/2000/svg','text');
-        minimize.setAttribute('class', ('content_tasksvg_task_minimize task'+id));
+        minimize.setAttribute('class', ('content_tasksvg_task_minimize task'+id + ' ' + minHidden));
         minimize.setAttribute('x', (x + sandbox.taskWidth - 36));
         minimize.setAttribute('y', (y + 16));
         minimize.setAttribute('textLength', 0);
@@ -121,7 +125,7 @@ Multitasq.TaskView = Backbone.View.extend({
         close.setAttribute('x', (x + sandbox.taskWidth - 16));
         close.setAttribute('y', (y + 16));
         close.setAttribute('textLength', 20);
-        var closeText = document.createTextNode('X');
+        var closeText = document.createTextNode('✓');
         close.appendChild(closeText);
         group.appendChild(close);
         

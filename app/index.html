@@ -21,6 +21,9 @@
         <link href="favicon.ico" type="image/x-icon" rel="shortcut icon" />
         <link rel="stylesheet" type="text/css" href="styles/h5bp.css" />
         <link rel="stylesheet" type="text/css" href="styles/style.css" />	
+
+        <!-- icomoon -->
+        <link rel="stylesheet" type="text/css" href="styles/icomoon/style.css">
     </head>
     <body>
         <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you support IE 6.
@@ -28,13 +31,15 @@
         <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
 
         <div id="container" role="main">
+
+            <!-- Modal View -->
+            <div class="modal-view"></div>
+
             <div id="header">
                 <div id="header_right">
                     <h3><a href="#" class="helpToggle">Help</a></h3>
-                    <h3><a href="https://github.com/justinmc/multitasq" target="_blank">Github</a></h3>
                 </div>
                 <h1>Multitasq</h1>
-                <h2>A new todo</h2>
             </div>
             <div id="content">
                 <svg id="content_tasksvg" height="100%" width="100%" version="1.1" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMin meet">
@@ -42,9 +47,6 @@
                         <rect id="content_tasksvg_bg" width="100%" height="100%" />
                     </g>
                 </svg>
-
-                <!-- Modal View -->
-                <div class="modal-view"></div>
 
                 <div id="content_overlay">
                     <h3>What is this?</h3>
@@ -107,19 +109,35 @@
                 <div class="modal-background"></div>
                 <div class="modal-body">
                     <div class="modal-body-spacing">
-                        <div class="editable-input"></div>
+                        <span class="icon close icon-close"></span>
+                        <span class="icon complete icon-checkmark2 <% if (completed) { %>hidden<% } %>"></span>
+                        <span class="icon archive icon-checkmark <% if (!completed) { %>hidden<% } %>"></span>
+                        <span class="icon minimize icon-minus <% if (minimized || childrenLength <= 0) { %>hidden<% } %>"></span>
+                        <span class="icon maximize icon-plus <% if (!minimized || childrenLength <= 0) { %>hidden<% } %>"></span>
+                        <span class="icon up icon-arrow-up <% if (upped || top) { %>hidden<% } %>"></span>
+                        <span class="icon down icon-arrow-down <% if (!upped || top) { %>hidden<% } %>"></span>
+                        <div class="editable-input title"></div>
                         <span>Created <%= created %></span>
                         <br />
                         <span>Updated <%= updated %></span>
-                        <p class="editable"><%= description %></p>
+                        <div class="editable-input description"></div>
                     </div>
                 </div>
             </div>
         </script>
         <script type="text/template" class="template-editable-input">
-            <h2 class="editable <% if (editing) { %>hidden<% } %>"><%= title %></h2>
+            <h2 class="editable <% if (editing) { %>hidden<% } %>"><% if (value) { %><%= value %><% } else { %><%= defaultValue %><% } %></h2>
             <div class="editable-controls <% if (!editing) { %>hidden<% } %>">
-                <input type="text" value="<%= title %>" />
+                <input type="text" class="edit" value="<%= value %>" />
+                <br />
+                <button class="save">Save</button>
+                <button class="cancel">Cancel</button>
+            </div>
+        </script>
+        <script type="text/template" class="template-editable-input-long">
+            <p class="editable <% if (editing) { %>hidden<% } %>"><% if (value) { %><%= value %><% } else { %><%= defaultValue %><% } %></p>
+            <div class="editable-controls <% if (!editing) { %>hidden<% } %>">
+                <textarea class="edit"><%= value %></textarea>
                 <br />
                 <button class="save">Save</button>
                 <button class="cancel">Cancel</button>
