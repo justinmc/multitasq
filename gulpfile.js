@@ -40,7 +40,7 @@ gulp.task('imagemin', function() {
 });
 */
 
-gulp.task('copy', function() {
+gulp.task('copy', ['clean', 'scripts'], function() {
     // copy html
     gulp.src(paths.html, {cwd: bases.app})
         .pipe(gulp.dest(bases.dist));
@@ -62,9 +62,24 @@ gulp.task('copy', function() {
         .pipe(gulp.dest(bases.dist));
 });
 
+gulp.task('testclean', function(callback) {
+
+    return gulp.src('dist/bower_components/**')
+        .pipe(clean());
+});
+
+gulp.task('testcopy', ['testclean'], function() {
+
+    // copy bower scripts
+    gulp.src(paths.bower, {cwd: 'app/**'})
+        .pipe(gulp.dest(bases.dist));
+});
+
 gulp.task('watch', function() {
     gulp.watch('app/**/*', ['scripts', 'copy']);
 });
 
 gulp.task('default', ['clean', 'scripts', 'copy']);
+
+gulp.task('practice', ['testclean', 'testcopy']);
 
