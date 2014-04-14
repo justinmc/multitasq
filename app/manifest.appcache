@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# 2014-04-13 2
+# 2014-04-13
 
 # Explicitly cached 'master entries'.
 CACHE:
@@ -7,11 +7,12 @@ favicon.ico
 index.html
 styles/style.css
 styles/h5bp.css
-scripts/app/multitasq.min.js
+images/logo.png
+scripts/multitasq.min.js
 bower_components/backbone/backbone.js
-bower_components/backbone.localStorage/backbone.localStorage.js
+bower_components/backbone.localStorage/backbone.localStorage-min.js
 bower_components/underscore/underscore.js
-bower_components/jquery/dist/query.js
+bower_components/jquery/dist/jquery.js
 styles/icomoon/style.css
 styles/icomoon/fonts/icomoon.woff
 styles/icomoon/fonts/icomoon.eot
@@ -20,8 +21,9 @@ styles/icomoon/fonts/icomoon.ttf
 
 # Resources that require the user to be online.
 NETWORK:
-http://fonts.googleapis.com/css?family=Walter+Turncoat
-http://www.google-analytics.com/ga.js 
+http://fonts.googleapis.com/
+http://themes.googleusercontent.com/
+http://www.google-analytics.com/
 
 # FALLBACK:
 # servethis ifthisisinaccessible

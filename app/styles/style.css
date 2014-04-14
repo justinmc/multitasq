@@ -10,6 +10,10 @@ body {
 h1 {
 	margin: 0 auto;
 	font-family: 'Walter Turncoat', cursive;
+    text-decoration: none;
+}
+h1 a {
+    text-decoration: none;
 }
 
 h2 {
@@ -45,6 +49,25 @@ a:hover {
 	height: 48px;
 	background: #ffffff;
 }
+
+    .logo a {
+        display: inline-block;
+        width: 210px;
+        height: 36px;
+        margin: 6px 0 0 0;
+        background: url('../images/logo.png');
+        color: transparent;
+    }
+
+    @media all and (max-width: 690px) {
+        .logo {
+            text-align: left;
+        }
+
+        .logo a {
+            margin: 6px 0 0 6px;
+        }
+    }
 
 	#header_right {
 		padding: 10px; 
