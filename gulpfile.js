@@ -11,7 +11,7 @@ var bases = {
 };
 
 var paths = {
-    scripts: ['scripts/app.js', 'scripts/model/task.js', 'scripts/collection/tasks.js', 'scripts/view/sandbox.js', 'scripts/view/task.js', 'scripts/view/modal.js', 'scripts/view/editable_input.js', 'scripts/router.js', 'scripts/app_bootstrap.js'],
+    scripts: ['scripts/app.js', 'scripts/model/task.js', 'scripts/collection/tasks.js', 'scripts/collection/tasks_archived.js', 'scripts/view/sandbox.js', 'scripts/view/task.js', 'scripts/view/modal.js', 'scripts/view/editable_input.js', 'scripts/router.js', 'scripts/app_bootstrap.js'],
     styles: ['styles/**/*.css', 'styles/**/*.eot', 'styles/**/*.svg', 'styles/**/*.ttf', 'styles/**/*.woff'],
     images: ['images/**/*.png', 'images/**/*.jpg', 'images/**/*.svg', 'images/**/*.gif'],
     html: ['index.html', '404.html'], 
