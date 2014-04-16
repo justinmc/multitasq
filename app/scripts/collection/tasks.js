@@ -40,7 +40,12 @@ Multitasq.TaskList = Backbone.Collection.extend({
             });
         });
 
-        // Listen for tasks being archived and remove them
+        // Listen for tasks being completed and complete whole subtree
+        this.bind('completed', function(task) {
+            this.setCompletedSubtree(task);
+        });
+
+        // Listen for tasks being archived and remove them and subtree
         this.bind('archived', function(task) {
             this.removeSubtree(task, sandbox);
         });

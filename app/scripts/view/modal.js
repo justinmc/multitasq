@@ -104,13 +104,13 @@ Multitasq.Modal = Backbone.View.extend({
 
     // complete the task
     complete: function() {
-        this.task.setCompleted();
+        this.task.setCompletedSubtree();
         this.close();
     },
 
     // archive the task
     archive: function() {
-        this.task.setArchived();
+        this.task.setArchivedSubtree();
         this.close();
     },
 
