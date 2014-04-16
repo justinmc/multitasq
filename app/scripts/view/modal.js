@@ -110,8 +110,7 @@ Multitasq.Modal = Backbone.View.extend({
 
     // archive the task
     archive: function() {
-        // TODO
-        //this.task.setArchived();
+        this.task.setArchived();
         this.close();
     },
 

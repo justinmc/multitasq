@@ -22,6 +22,7 @@ Multitasq.Task = Backbone.Model.extend({
         completed: null,
         // not Google Tasks data, only Multitasq
         created: date,
+        archived: null,
         description: '',
         children: [],
         level: 0,
@@ -79,14 +80,18 @@ Multitasq.Task = Backbone.Model.extend({
     setCompleted: function() {
         var date = Date.now();
         this.save({completed: date});
-        this.save({updated: date});
     },
 
     // Set the task as incomplete
     setIncomplete: function() {
         var date = Date.now();
         this.save({completed: null});
-        this.save({updated: date});
+    },
+
+    // Set the task as archived
+    setArchived: function() {
+        var date = Date.now();
+        this.save({archived: date});
     },
 
     // Returns the given date formatted in Google Task's format
