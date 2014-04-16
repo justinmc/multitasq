@@ -147,18 +147,23 @@ a:hover {
                 padding: 16px;
             }
 
-                .modal-body-spacing .icon {
-                    float: right;
-                    margin: 0 6px;
-                    cursor: pointer;
-                }
-                .modal-body-spacing .icon:hover {
-                    color: #008000;
+                .modal-body-spacing .iconbar {
+                    overflow: auto;
+                    margin-bottom: 8px;
                 }
 
-                .modal-body-spacing .icon.archive {
-                    color: #ff0000;
-                }
+                    .modal-body-spacing .icon {
+                        float: right;
+                        margin: 0 6px;
+                        cursor: pointer;
+                    }
+                    .modal-body-spacing .icon:hover {
+                        color: #008000;
+                    }
+
+                    .modal-body-spacing .icon.archive {
+                        color: #ff0000;
+                    }
 
 	#content_tasksvg
 	{
