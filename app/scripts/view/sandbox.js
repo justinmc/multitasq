@@ -211,19 +211,11 @@ Multitasq.Sandbox = Backbone.View.extend({
 
         // the task's parent must not be completed
         if ((task.get('level') === 0) || !this.tasks.get(task.get('parent')).get('completed')) {
-            // if the task is completed, bring it back to life
-            if (task.get('completed')) {
-                this.tasks.setIncompleteSubtree(task);
-                this.tasks.collectionUpdated(this);
+            // if we're already editing something, confirm that one first
+            if ($('.content_tasksvg_task_textfield').length) {
+                this.editTaskConfirmAll();
             }
-            // if incomplete, edit the task
-            else {
-                // if we're already editing something, confirm that one first
-                if ($('.content_tasksvg_task_textfield').length) {
-                    this.editTaskConfirmAll();
-                }
-                this.editTask(id);
-            }
+            this.editTask(id);
         }
     },
     
@@ -434,7 +426,7 @@ Multitasq.Sandbox = Backbone.View.extend({
     // breadth first recursively renders a subtree
     renderSubtree: function(id) {
         var task = this.tasks.get(id);
-        
+
         // render this task
         var taskview = new Multitasq.TaskView(task);
         taskview.render(this);
