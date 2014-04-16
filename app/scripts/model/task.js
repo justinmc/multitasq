@@ -76,7 +76,7 @@ Multitasq.Task = Backbone.Model.extend({
         }
     },
 
-    // Set the task as completed
+    // Set the task and subtree as completed
     setCompleted: function() {
         var date = Date.now();
         this.save({completed: date});
@@ -88,10 +88,11 @@ Multitasq.Task = Backbone.Model.extend({
         this.save({completed: null});
     },
 
-    // Set the task as archived
+    // Set the task and subtree as archived
     setArchived: function() {
         var date = Date.now();
         this.save({archived: date});
+        this.trigger('archived', this);
     },
 
     // Returns the given date formatted in Google Task's format

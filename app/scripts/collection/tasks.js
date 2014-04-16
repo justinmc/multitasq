@@ -25,7 +25,7 @@ Multitasq.TaskList = Backbone.Collection.extend({
         
         // Sync parent data and localstorage on remove (don't update view automatically though!)
         this.bind('remove', function(task) {
-               // remove from parent's "children" data!
+            // remove from parent's "children" data!
             var parent = this.get(task.get('parent'));
             if (typeof parent !== 'undefined') {
                 var siblings = parent.get('children');
@@ -38,6 +38,11 @@ Multitasq.TaskList = Backbone.Collection.extend({
                 success: function() {return;},
                 error: function() {return;}
             });
+        });
+
+        // Listen for tasks being archived and remove them
+        this.bind('archived', function(task) {
+            this.removeSubtree(task, sandbox);
         });
     },
     

@@ -184,6 +184,10 @@ Multitasq.Sandbox = Backbone.View.extend({
             this.tasks.collectionUpdated(this);
         }
     },
+
+    wut: function(task) {
+        this.tasks.removeSubtree(task, this);
+    },
     
     // - button click to minimize/expand
     clickMinimize: function(e) {
