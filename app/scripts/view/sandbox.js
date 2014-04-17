@@ -73,7 +73,7 @@ Multitasq.Sandbox = Backbone.View.extend({
         // Rerender the view whenever the tasks change
         var that = this;
         this.listenTo(this.tasks, 'change', function() {
-            that.render();
+            that.tasks.collectionUpdated(that);
         });
 
         // Rerender on window resize
@@ -186,7 +186,6 @@ Multitasq.Sandbox = Backbone.View.extend({
         // if the task is not completed, just mark it as completed, but don't remove it
         else {
             this.tasks.setCompletedSubtree(task);
-            this.tasks.collectionUpdated(this);
         }
     },
 
@@ -197,7 +196,6 @@ Multitasq.Sandbox = Backbone.View.extend({
         // if the task has no children, you cannot minimize/expand
         if (task.get("children").length > 0) {
             task.toggleMinimized();
-            this.tasks.collectionUpdated(this);
         }
     },
     
@@ -206,7 +204,6 @@ Multitasq.Sandbox = Backbone.View.extend({
         var task = this.tasks.get($(e.target).parent().data('task'));
         
         task.toggleUpdown();
-        this.tasks.collectionUpdated(this);
     },
     
     // Handler for clicking a task, either edit it or bring it back from completed status
@@ -334,9 +331,6 @@ Multitasq.Sandbox = Backbone.View.extend({
                 task.save({'title': $(input).val()});
             });
         }
-
-        // refresh the view
-        this.tasks.collectionUpdated(this);
     },
     
     // Set a task as visually active (and clear any other active tasks)
