@@ -324,11 +324,15 @@ Multitasq.Sandbox = Backbone.View.extend({
                 var input = $(this).find('input[type=text]');
                 var task = sandbox.tasks.get(id);
         
-                // remove the textfield
-                $(this).remove();
-
-                // write the update and refresh the view
-                task.save({'title': $(input).val()});
+                // if the title changed, write the update
+                if ($(input).val() !== task.get('title')) {
+                    task.save({'title': $(input).val()});
+                }
+                // otherwise, restore the original text
+                else {
+                    $('.content_tasksvg_task_text.task' + id).get(0).textContent = task.get('title');
+                    $(this).remove();
+                }
             });
         }
     },
