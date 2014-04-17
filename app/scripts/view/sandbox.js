@@ -75,6 +75,11 @@ Multitasq.Sandbox = Backbone.View.extend({
         this.listenTo(this.tasks, 'change', function() {
             that.render();
         });
+
+        // Rerender on window resize
+        $(window).on('resize', function() {
+            that.render();
+        });
     },
     
     // Remove everything from the svg
