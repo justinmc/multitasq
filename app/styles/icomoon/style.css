@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'icomoon';
-	src:url('fonts/icomoon.eot?-pjl0hi');
-	src:url('fonts/icomoon.eot?#iefix-pjl0hi') format('embedded-opentype'),
-		url('fonts/icomoon.woff?-pjl0hi') format('woff'),
-		url('fonts/icomoon.ttf?-pjl0hi') format('truetype'),
-		url('fonts/icomoon.svg?-pjl0hi#icomoon') format('svg');
+	src:url('fonts/icomoon.eot?vmipp9');
+	src:url('fonts/icomoon.eot?#iefixvmipp9') format('embedded-opentype'),
+		url('fonts/icomoon.woff?vmipp9') format('woff'),
+		url('fonts/icomoon.ttf?vmipp9') format('truetype'),
+		url('fonts/icomoon.svg?vmipp9#icomoon') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -26,21 +26,27 @@
 .icon-close:before {
 	content: "\e600";
 }
-.icon-checkmark:before {
-	content: "\e605";
-}
-.icon-checkmark2:before {
-	content: "\e606";
+.icon-plus:before {
+	content: "\e602";
 }
 .icon-minus:before {
 	content: "\e601";
-}
-.icon-plus:before {
-	content: "\e602";
 }
 .icon-arrow-up:before {
 	content: "\e603";
 }
 .icon-arrow-down:before {
 	content: "\e604";
+}
+.icon-checkmark:before {
+	content: "\e605";
+}
+.icon-checkmark2:before {
+	content: "\e606";
+}
+.icon-undo:before {
+	content: "\e607";
+}
+.icon-remove:before {
+	content: "\e608";
 }

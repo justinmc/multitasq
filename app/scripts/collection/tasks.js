@@ -49,6 +49,11 @@ Multitasq.TaskList = Backbone.Collection.extend({
         this.bind('archived', function(task) {
             this.removeSubtree(task, sandbox);
         });
+
+        // Listen for tasks being restored and set their subtree as incomplete
+        this.bind('restored', function(task) {
+            this.setIncompleteSubtree(task);
+        });
     },
     
     // Sync the data and the UI

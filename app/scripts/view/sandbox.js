@@ -211,14 +211,11 @@ Multitasq.Sandbox = Backbone.View.extend({
         var id = $(e.target).parent().data('task');
         var task = this.tasks.get(id);
 
-        // the task's parent must not be completed
-        if ((task.get('level') === 0) || !this.tasks.get(task.get('parent')).get('completed')) {
-            // if we're already editing something, confirm that one first
-            if ($('.content_tasksvg_task_textfield').length) {
-                this.editTaskConfirmAll();
-            }
-            this.editTask(id);
+        // if we're already editing something, confirm that one first
+        if ($('.content_tasksvg_task_textfield').length) {
+            this.editTaskConfirmAll();
         }
+        this.editTask(id);
     },
     
     // Handler for submitting a task edit

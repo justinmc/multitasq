@@ -111,12 +111,13 @@
                     <div class="modal-body-spacing">
                         <div class="iconbar">
                             <span class="icon close icon-close"></span>
-                            <span class="icon complete icon-checkmark2 <% if (completed) { %>hidden<% } %>"></span>
-                            <span class="icon archive icon-checkmark <% if (!completed) { %>hidden<% } %>"></span>
                             <span class="icon minimize icon-minus <% if (minimized || childrenLength <= 0) { %>hidden<% } %>"></span>
                             <span class="icon maximize icon-plus <% if (!minimized || childrenLength <= 0) { %>hidden<% } %>"></span>
                             <span class="icon up icon-arrow-up <% if (upped || top) { %>hidden<% } %>"></span>
                             <span class="icon down icon-arrow-down <% if (!upped || top) { %>hidden<% } %>"></span>
+                            <span class="icon complete icon-checkmark <% if (completed) { %>hidden<% } %>"></span>
+                            <span class="icon restore icon-undo <% if (!completed) { %>hidden<% } %>"></span>
+                            <span class="icon archive icon-remove <% if (!completed) { %>hidden<% } %>"></span>
                         </div>
                         <div class="editable-input title"></div>
                         <span>Created <%= created %></span>

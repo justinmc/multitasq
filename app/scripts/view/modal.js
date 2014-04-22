@@ -16,6 +16,7 @@ Multitasq.Modal = Backbone.View.extend({
         "click .up":                    "up",
         "click .down":                  "down",
         "click .complete":              "complete",
+        "click .restore":               "restore",
         "click .archive":               "archive",
         "keyup body":                   "keyup",
     },
@@ -105,6 +106,12 @@ Multitasq.Modal = Backbone.View.extend({
     // complete the task
     complete: function() {
         this.task.setCompletedSubtree();
+        this.close();
+    },
+
+    // restore the task
+    restore: function() {
+        this.task.setIncompleteSubtree();
         this.close();
     },
 

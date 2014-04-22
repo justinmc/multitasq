@@ -93,6 +93,11 @@ Multitasq.Task = Backbone.Model.extend({
         this.save({completed: null});
     },
 
+    // Set the task and subtree as incomplete
+    setIncompleteSubtree: function() {
+        this.trigger('restored', this);
+    },
+
     // Set the task and subtree as archived
     setArchivedSubtree: function() {
         var date = Date.now();
