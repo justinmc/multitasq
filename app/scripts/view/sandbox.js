@@ -31,9 +31,6 @@ Multitasq.Sandbox = Backbone.View.extend({
         'mousemove':                                    'updateTaskSelected',
         'mouseenter #content_tasksvg_bg':               'sandboxBgEnter',
         'click #content_tasksvg_bg':                    'clickAdd',
-        'click .content_tasksvg_task_close':            'clickRemove',
-        'click .content_tasksvg_task_minimize':         'clickMinimize',
-        'click .content_tasksvg_task_updown':           'clickUpdown',
         'click .content_tasksvg_task_text':             'clickReviveEdit',
         'click .content_tasksvg_task_box':              'clickReviveEdit',
         'click .content_tasksvg_task_textfield_submit': 'clickSubmit',
@@ -536,7 +533,6 @@ Multitasq.Sandbox = Backbone.View.extend({
     moveTaskTo: function(which, where) {
         $(".content_tasksvg_task_box.task"+which).get(0).setAttribute('x', where);
         $(".content_tasksvg_task_text.task"+which).get(0).setAttribute('x', (where + 5));
-        $(".content_tasksvg_task_close.task"+which).get(0).setAttribute('x', (where + this.taskWidth - 16));
         $(".content_tasksvg_task_updown.task"+which).get(0).setAttribute('x', (where + this.taskWidth - 54));
         $(".content_tasksvg_task_minimize.task"+which).get(0).setAttribute('x', (where + this.taskWidth - 32));
         // move connector based on parent's position

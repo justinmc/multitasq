@@ -72,42 +72,25 @@ Multitasq.TaskView = Backbone.View.extend({
         taskText.appendChild(textNode);
         group.appendChild(taskText);
         
-        // create the title text via foreignobject
-        /*
-        var title = document.createElementNS('http://www.w3.org/2000/svg','foreignObject');
-        title.setAttribute('class', ('content_tasksvg_task_text task'+id));
-        title.setAttribute('x', (x + 5));
-        title.setAttribute('y', (y + 10));
-        title.setAttribute('height', 40);
-        title.setAttribute('width', sandbox.taskWidth - 10);
-        // and create its body
-        var titleBody = document.createElement('body');
-        titleBody.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
-        // and put a p tag in there
-        var titleBodyP = document.createElement('p');
-        titleBodyP.setAttribute('style', 'color: #cfcfcf;');
-        titleBodyP.innerHTML = this.task.get('title');
-        // and append everything
-        titleBody.appendChild(titleBodyP);
-        title.appendChild(titleBody);
-        group.appendChild(title);
-        */
-        
         // create the up/down arrrow button if not the absolute top node
+        var arrowHidden = '';
+        if (!this.task.get('upped')) {
+            arrowHidden = 'hidden';
+        }
         if (parent != -1) {
             var updown = document.createElementNS('http://www.w3.org/2000/svg','text');
-            updown.setAttribute('class', ('content_tasksvg_task_updown task'+id));
+            updown.setAttribute('class', ('content_tasksvg_task_updown task'+id + ' ' + arrowHidden));
             updown.setAttribute('x', (x + sandbox.taskWidth - 54));
             updown.setAttribute('y', (y + 16));
             updown.setAttribute('textLength', 0);
-            var updownText = document.createTextNode((this.task.get("id") == sandbox.tasks.top) ? '↓' : '↑');
+            var updownText = document.createTextNode('↓');
             updown.appendChild(updownText);
             group.appendChild(updown);
         }
                 
         // create the -/+ minimize button if has children
         var minHidden = '';
-        if (this.task.get('children').length <= 0) {
+        if (!this.task.get('minimized')) {
             minHidden = 'hidden';
         }
         var minimize = document.createElementNS('http://www.w3.org/2000/svg','text');
@@ -115,20 +98,10 @@ Multitasq.TaskView = Backbone.View.extend({
         minimize.setAttribute('x', (x + sandbox.taskWidth - 36));
         minimize.setAttribute('y', (y + 16));
         minimize.setAttribute('textLength', 0);
-        var minimizeText = document.createTextNode(this.task.get("minimized") ? '+' : '-');
+        var minimizeText = document.createTextNode('+');
         minimize.appendChild(minimizeText);
         group.appendChild(minimize);
-        
-        // create the X close button
-        var close = document.createElementNS('http://www.w3.org/2000/svg','text');
-        close.setAttribute('class', ('content_tasksvg_task_close task'+id));
-        close.setAttribute('x', (x + sandbox.taskWidth - 16));
-        close.setAttribute('y', (y + 16));
-        close.setAttribute('textLength', 20);
-        var closeText = document.createTextNode('✓');
-        close.appendChild(closeText);
-        group.appendChild(close);
-        
+
         // create the connector to its parent (if it has one)
         if ((parent != -1) && (!this.task.get("upped"))) {
             var connect = document.createElementNS('http://www.w3.org/2000/svg','line');
