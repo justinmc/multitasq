@@ -124,8 +124,8 @@ a:hover {
             left: 50%;
             top: 20%;
             margin-left: -275px;
-            border: 1px #efefef solid;
-            border-radius: 2px;
+            border: 2px #afafaf solid;
+            border-radius: 16px;
             text-align: left;
             background: #ffffff;
         }
