@@ -126,6 +126,7 @@ a:hover {
             margin-left: -275px;
             border: 2px #afafaf solid;
             border-radius: 16px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
             text-align: left;
             background: #ffffff;
         }
