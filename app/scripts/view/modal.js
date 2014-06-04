@@ -9,7 +9,7 @@ Multitasq.Modal = Backbone.View.extend({
     task: null,
 
     events: {
-        "click .modal-background":      "close",
+        "click":                        "clickModal",
         "click .close":                 "close",
         "click .minimize":              "minimize",
         "click .maximize":              "maximize",
@@ -70,6 +70,14 @@ Multitasq.Modal = Backbone.View.extend({
     },
 
     show: function() {
+    },
+
+    // Handle a click on the modal background
+    clickModal: function(event) {
+        // Prevent bubbled up events from triggering a close
+        if (event.target === this.$el.get(0)) {
+            this.close();
+        }
     },
 
     // Close the modal
