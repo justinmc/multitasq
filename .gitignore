@@ -2,5 +2,6 @@
 *.swp
 node_modules/
 dist/
+app/scripts/multitasq.min.js
 app/bower_components/
 .DS_Store
