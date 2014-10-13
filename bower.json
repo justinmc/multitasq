@@ -28,5 +28,8 @@
     "underscore": "~1.6.0",
     "backbone": "~1.1.2",
     "backbone.localStorage": "~1.1.7"
+  },
+  "resolutions": {
+    "backbone": "~1.1.2"
   }
 }
