@@ -16,12 +16,12 @@ h1 a {
 }
 
 h2 {
-	font-size: 18px;
+  font-size: 1rem;
 	margin-top: 0px;
 }
 
 h3 {
-	font-size: 15px;
+	font-size: 1.2rem;
 	margin: 0 auto;
 }
 
@@ -35,6 +35,23 @@ a:hover {
 	color: #008000;
 }
 
+button, a.button {
+    display: inline-block;
+    min-width: 80px;
+    height: 30px;
+    border: 1px #afafaf solid;
+    border-radius: 4px;
+    line-height: 1.9rem;
+    padding: 0 12px;
+    background: #ffffff;
+    color: #afafaf;
+    text-decoration: none;
+}
+button:hover, a.button:hover {
+    background: #008000;
+    color: #ffffff;
+}
+
 #container {
 	text-align: center;
 	height: 100%;
@@ -43,9 +60,14 @@ a:hover {
 
 #header {
 	border-bottom: 1px #afafaf solid;
-	height: 48px;
+	height: 47px;
 	background: #ffffff;
 }
+
+  .logo {
+    position: absolute;
+    width: 100%;
+  }
 
     .logo a {
         display: inline-block;
@@ -67,11 +89,31 @@ a:hover {
     }
 
 	#header_right {
-		padding: 10px; 
-		position: absolute; 
-		right: 0px; 
+    position: relative;
+    float: right;
+    height: 100%;
 		text-align: left;
 	}
+
+  .nav {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .nav li {
+     height: 100%;
+  }
+
+    .nav-button {
+      display: inline-block;
+      padding: 13px 20px 12px 20px;
+      text-decoration: none;
+    }
+    .nav-button:hover {
+      background: #f5f5f5;
+    }
 
 #content {
 	width: 100%;
@@ -90,6 +132,12 @@ a:hover {
 		padding: 8px 10% 0 10%;
 		text-align: left;
 	}
+
+    #content_overlay .back {
+      width: 100%;
+      margin-bottom: 60px;
+      text-align: center;
+    }
 
 		#content_overlay table td {
 			padding: 6px;
@@ -237,6 +285,10 @@ a:hover {
 }
 #footer a {color: #afafaf;}
 
+  #footer h3 {
+    font-size: 1rem;
+  }
+
 .editable {
     cursor: pointer;
     clear: both;
@@ -248,19 +300,6 @@ a:hover {
 
 .editable-controls {
 }
-
-    .editable-controls button {
-        width: 80px;
-        height: 30px;
-        border: 1px #afafaf solid;
-        border-radius: 4px;
-        background: #ffffff;
-        color: #afafaf;
-    }
-    .editable-controls button:hover {
-        background: #008000;
-        color: #ffffff;
-    }
 
     .editable-controls .edit {
         padding: 2px;
