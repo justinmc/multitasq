@@ -65,7 +65,8 @@ Multitasq.TaskList = Backbone.Collection.extend({
         if (!this.length) {
             this.create({
                 'id': this.newId(),
-                'title': 'Conquer the world'
+                'title': 'Click to edit!',
+                'description': 'This is your first task! You can click the title above or this description itself to enter your own. Be sure to make this task broad, as it will be the parent for all other tasks.  When you want to create a new task, close this modal and try clicking anywhere underneath a task.'
             });
         }
         
