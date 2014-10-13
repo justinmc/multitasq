@@ -9,7 +9,6 @@ body {
 
 h1 {
 	margin: 0 auto;
-	font-family: 'Walter Turncoat', cursive;
     text-decoration: none;
 }
 h1 a {
@@ -17,13 +16,11 @@ h1 a {
 }
 
 h2 {
-	font-family: 'Walter Turncoat', cursive;
 	font-size: 18px;
 	margin-top: 0px;
 }
 
 h3 {
-	font-family: 'Walter Turncoat', cursive;
 	font-size: 15px;
 	margin: 0 auto;
 }

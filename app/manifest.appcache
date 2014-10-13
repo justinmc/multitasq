@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# 2014-06-3
+# 2014-10-12
 
 # Explicitly cached 'master entries'.
 CACHE:
@@ -25,7 +25,6 @@ styles/icomoon/fonts/icomoon.ttf?vmipp9
 
 # Resources that require the user to be online.
 NETWORK:
-http://fonts.googleapis.com/
 http://themes.googleusercontent.com/
 http://www.google-analytics.com/
 
