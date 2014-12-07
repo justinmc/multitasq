@@ -18,7 +18,7 @@ Multitasq.Modal = Backbone.View.extend({
         "click .complete":              "complete",
         "click .restore":               "restore",
         "click .archive":               "archive",
-        "keyup body":                   "keyup",
+        "keydown body":                 "keydown",
     },
 
     // Accepts the task to render for
@@ -32,8 +32,8 @@ Multitasq.Modal = Backbone.View.extend({
             that.render();
         });
 
-        this.keyupBound = this.keyup.bind(this);
-        $('body').on('keyup', this.keyupBound);
+        this.keydownBound = this.keydown.bind(this);
+        $('body').on('keydown', this.keydownBound);
 
         this.render();
     },
@@ -82,7 +82,7 @@ Multitasq.Modal = Backbone.View.extend({
 
     // Close the modal
     close: function() {
-        $('body').off('keyup', this.keyupBound);
+        $('body').off('keydown', this.keydownBound);
         this.app.router.navigate('');
         this.remove();
     },
@@ -129,8 +129,8 @@ Multitasq.Modal = Backbone.View.extend({
         this.close();
     },
 
-    // Handle generic keyup
-    keyup: function(event) {
+    // Handle generic keydown
+    keydown: function(event) {
         // if escape or enter, close
         if (event.which === 27 || event.which === 13) {
             this.close();

@@ -11,11 +11,17 @@ Multitasq.EditableInput = Backbone.View.extend({
 
     editing: false,
 
+    // Is this a textarea?
+    long: null,
+
+    // True if ctrl or cmd keys are held
+    ctrl: false,
+
     events: {
         "click .editable":  "edit",
         "click .save":      "save",
         "click .cancel":    "close",
-        "keyup .edit":      "inputKeyup",
+        "keydown .edit":    "inputKeydown",
     },
 
     initialize: function(options) {
@@ -23,9 +29,10 @@ Multitasq.EditableInput = Backbone.View.extend({
         this.task = options.task;
         this.attribute = options.attribute;
         this.parentSelector = options.parentSelector;
+        this.long = options.long;
 
         // Change template if needed
-        if (options.long) {
+        if (this.long) {
             this.template = _.template(
                 $("script.template-editable-input-long").html()
             );
@@ -70,8 +77,10 @@ Multitasq.EditableInput = Backbone.View.extend({
         this.close();
     },
 
-    // handle keyup on input
-    inputKeyup: function(event) {
+    // Handle keydown on input
+    inputKeydown: function(event) {
+        this.ctrl = event.ctrlKey || event.metaKey;
+
         // on escape key, close
         if (event.which === 27) {
             this.close();
@@ -79,12 +88,16 @@ Multitasq.EditableInput = Backbone.View.extend({
             // Stop propagation to prevent closing the modal
             event.stopPropagation();
         }
+
         // on enter key, save
         else if (event.which === 13) {
+          // If textarea, just use a normal enter
+          if (!this.long || this.ctrl) {
             this.save();
+          }
 
-            // Stop propagation to prevent closing the modal
-            event.stopPropagation();
+          // Stop propagation to prevent closing the modal
+          event.stopPropagation();
         }
     }
 });
