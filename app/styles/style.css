@@ -178,7 +178,7 @@ button:hover, a.button:hover {
         }
         @media all and (max-height: 610px) {
             .modal-body {
-                min-height: 80%;
+                min-height: 280px;
                 margin-top: 32px;
                 margin-bottom: 32px;
             }
