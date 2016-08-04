@@ -153,7 +153,7 @@ Multitasq.Sandbox = Backbone.View.extend({
     },
     
     // Add a task nearest the cursor
-     clickAdd: function() {
+    clickAdd: function() {
         // if a task is being edited, confirm the edit, don't add a task
         if ($('.content_tasksvg_task_textfield').length) {
             this.editTaskConfirmAll();
@@ -231,8 +231,23 @@ Multitasq.Sandbox = Backbone.View.extend({
     
     // Read keypresses
     keypress: function(e) {
-        // if the escape key is hit, cancel all edits
+        // if the escape key is hit
         if (e.keyCode === 27) {
+            // are we currently editing a task?
+            var editingInput = document.querySelector('.content_tasksvg_task_textfield_form');
+            if (editingInput) {
+                // is that task being edited brand new?
+                var editingId = editingInput.parentElement.parentElement.getAttribute('data-task');
+                var task = this.tasks.get(editingId);
+                var isNew = task.get('title') === Multitasq.Task.prototype.defaults().title &&
+                  task.get('description') === Multitasq.Task.prototype.defaults().description;
+                if (isNew) {
+                  // remove the task!
+                  this.tasks.removeSubtree(task, this);
+                }
+            }
+
+            // Cancel all edits
             this.editTaskCancel();
         }
     },
